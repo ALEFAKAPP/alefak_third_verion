@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1045812827198",
+    "project_id": "alefak-c0ebd",
+    "storage_bucket": "alefak-c0ebd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045812827198:android:b04972d470f76ed907ad6f",
+        "android_client_info": {
+          "package_name": "com.alefakeltawinea.alefakaltawinea_animals_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045812827198-sref37vrf1egsif4tp9ef94lomt9fm0t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alefakeltawinea.alefakaltawinea_animals_app",
+            "certificate_hash": "53902c8328088eccbea422c8632e6aaa00bc79b5"
+          }
+        },
+        {
+          "client_id": "1045812827198-vmbja4vvm2ac1jfphu36a9jb44iih265.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh3Gyx1pB_vK-dUoNifkp2h2immbNtlYc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045812827198-vmbja4vvm2ac1jfphu36a9jb44iih265.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

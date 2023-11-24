@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "413164119523",
+    "project_id": "alefak-altawnia",
+    "storage_bucket": "alefak-altawnia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413164119523:android:35429363d393fb54f26cd6",
+        "android_client_info": {
+          "package_name": "com.alefakeltawinea.alefakaltawinea_animals_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAgWakVlH-T-souGnub03RKn3_0Qp0Xfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
