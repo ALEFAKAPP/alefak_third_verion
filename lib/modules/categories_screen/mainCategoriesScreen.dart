@@ -41,7 +41,7 @@ class _MainCategoriesScreenState extends State<MainCategoriesScreen> {
     //getRegions();
     categoriesProviderModel=Provider.of<CategoriesProviderModel>(context,listen: false);
     utilsProviderModel=Provider.of<UtilsProviderModel>(context,listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance!.addPostFrameCallback((_){
       adsSliderProviderModel!.getAdsSlider();
       categoriesProviderModel!.getCategoriesList();
       notificationNavigation();

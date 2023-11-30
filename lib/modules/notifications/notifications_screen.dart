@@ -35,7 +35,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
       ///bottom bar selection
       bottomBarProviderModel =
           Provider.of<BottomBarProviderModel>(context, listen: false);

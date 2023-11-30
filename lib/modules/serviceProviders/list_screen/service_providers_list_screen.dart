@@ -42,7 +42,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen>  
     super.initState();
     controller = ScrollController()..addListener(_scrollListener);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
 
       ///bottom bar selection
       bottomBarProviderModel=Provider.of<BottomBarProviderModel>(context,listen: false);

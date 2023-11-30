@@ -35,7 +35,7 @@ class _MyAdoptionScreenState extends State<MyAdoptionScreen> {
     super.initState();
     adoptionProviderModel=Provider.of<AdoptionProviderModel>(context,listen: false);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
       await adoptionProviderModel!.getCategoriesList();
       await adoptionProviderModel!.getMyAnimals();
     });

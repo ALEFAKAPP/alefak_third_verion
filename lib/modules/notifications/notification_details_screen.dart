@@ -39,7 +39,7 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       for(int i=0;i<widget.notificationModel.shop!.offers!.length;i++){
         if(widget.notificationModel.id==widget.notificationModel.shop!.offers![i].id){
           MyUtils.navigate(context, NotificationOfferDetailsScreen(widget.notificationModel.shop!,i));

@@ -20,11 +20,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app_states/provider/app_state_provider.dart';
 import 'choce_language_screen.dart';
+import 'data/app_info_model.dart';
 import 'data/regions_api.dart';
 
 
@@ -39,77 +41,46 @@ class SplashScreen extends StatefulWidget{
 
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin{
 
-  AdsSliderProviderModel?adsSliderProviderModel;
   SharedPreferences? prefs;
   UtilsProviderModel? utilsProviderModel;
-  UserProviderModel?userProviderModel;
   RegionsApi regionsApi=RegionsApi();
-  AppStataProviderModel?appStataProviderModel;
   double _minimumVersion = 1.0 ;
 
   @override
   void initState() {
     super.initState();
-    appStataProviderModel=Provider.of<AppStataProviderModel>(context,listen:false);
-    userProviderModel=Provider.of<UserProviderModel>(context,listen: false);
-    adsSliderProviderModel=Provider.of<AdsSliderProviderModel>(context,listen: false);
     if(Platform.isIOS){
       Constants.DEVICE_TYPE="ios";
     }else{
       Constants.DEVICE_TYPE="android";
     }
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
       await _initPref(context);
-      await FCM().notificationSubscrib(Constants.prefs!.get(Constants.LANGUAGE_KEY!)=="ar");
-
-      // await adsSliderProviderModel!.getAdsSlider();
-      // await appStataProviderModel!.getAppActiveState(context);
-      // await appStataProviderModel!.getApplePayState();
-      // await appStataProviderModel!.getAppUpdateState();
       await getAppInfo();
-      print('${Constants.APP_INFO?.appMinimumVersionAndroid}');
-      print('adsSliderProviderModel!.adsSliderModelList');
-      print("${adsSliderProviderModel!.adsSliderModelList.length}");
-      if(Constants.APP_INFO!.maintenanceMode! != null && Constants.APP_INFO!.maintenanceMode! == true){
-        await Get.offAll(() => PageMaintenanceScreen());
-      }else if(GetPlatform.isAndroid ) {
-        _minimumVersion = Constants.APP_INFO!.appMinimumVersionAndroid!;
-      }else if(GetPlatform.isIOS) {
-        _minimumVersion = Constants.APP_INFO!.appMinimumVersionIos!;
-      }
-      print("Constants.APP_VERSION");
-      print("${Constants.APP_VERSIONs}");
-      if(Constants.APP_VERSIONs < _minimumVersion) {
-        await Get.offAll(() => PageUpdateScreen());
-        // Get.offNamed(RouteHelper.getUpdateRoute(AppConstants.APP_VERSION < _minimumVersion));
+
+      if( Constants.APP_INFO!=null){
+        if((Constants.APP_INFO!.maintenanceMode)!= null && (Constants.APP_INFO!.maintenanceMode??true)){
+          MyUtils.navigateAsFirstScreen(context, PageMaintenanceScreen());
+        }else if(GetPlatform.isAndroid ) {
+          _minimumVersion = Constants.APP_INFO!.appMinimumVersionAndroid!;
+        }else if(GetPlatform.isIOS) {
+          _minimumVersion = Constants.APP_INFO!.appMinimumVersionIos!;
+        }
+
+        if(Constants.APP_VERSIONs < _minimumVersion) {
+          MyUtils.navigateAsFirstScreen(context, PageUpdateScreen());
+        }
       }
 
-
-      if(Constants.IS_FORCE_UPDATE){
-        MyUtils.basePopup(context, body: UpdateAppPopup(content: tr("update"),onOkPressed: (){
-          Future.delayed(Duration(milliseconds: 1)).then((value){
-            if(Platform.isIOS){
-              exit(0);
-            }else{
-              SystemNavigator.pop();
-            }
-          });
-        },));
-      }else{
-        await login();
-      }
-
+      login();
     });
 
 
   }
   @override
   Widget build(BuildContext context) {
-    appStataProviderModel=Provider.of<AppStataProviderModel>(context,listen:false);
     utilsProviderModel=Provider.of<UtilsProviderModel>(Constants.mainContext!,listen: true);
     Constants.utilsProviderModel=utilsProviderModel;
-    adsSliderProviderModel=Provider.of<AdsSliderProviderModel>(context,listen: true);
-    userProviderModel=Provider.of<UserProviderModel>(context,listen: true);
 
 
     return BaseScreen(
@@ -140,31 +111,27 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   }
 
 
-
-  // getRegions()async{
-  //   Constants.STATES.clear();
-  //   await regionsApi.getRegions().then((value) {
-  //     Constants.REGIONS=value.data;
-  //     for(int i=0;i<Constants.REGIONS.length;i++){
-  //       print('start test');
-  //       print('${Constants.REGIONS[i].getStates![0].name}');
-  //       Constants.STATES.addAll( Constants.REGIONS[i].getStates!);
-  //     }
-  //   });
-  //
-  // }
   getAppInfo()async{
     await regionsApi.getAppInfo().then((value) {
-      Constants.APP_INFO=value.data;
+      if(value.data==null){
+        regionsApi.getAppInfo().then((value) {
+          Constants.APP_INFO=value.data as AppInfoModel;
+        });
+      }
+      Constants.APP_INFO=value.data as AppInfoModel;
     });
   }
 
   _initPref(BuildContext ctx)async{
-    if((Constants.prefs!.getString(Constants.TOKEN_KEY!)??'').isNotEmpty){
-      Apis.TOKEN_VALUE=Constants.prefs!.getString(Constants.TOKEN_KEY!)??'';
+    if(Constants.prefs==null){
+      prefs =  await SharedPreferences.getInstance();
+      Constants.prefs=prefs;
     }
-    if(Constants.prefs!.get(Constants.LANGUAGE_KEY!)!=null){
-      if(Constants.prefs!.get(Constants.LANGUAGE_KEY!)=="ar"){
+    if((Constants.prefs!.getString(Constants.TOKEN_KEY)??'').isNotEmpty){
+      Apis.TOKEN_VALUE=Constants.prefs!.getString(Constants.TOKEN_KEY)??'';
+    }
+    if(Constants.prefs!.get(Constants.LANGUAGE_KEY)!=null){
+      if(Constants.prefs!.get(Constants.LANGUAGE_KEY)=="ar"){
         utilsProviderModel!.setLanguageState("ar");
         utilsProviderModel!.setCurrentLocal(ctx, Locale('ar','EG'));
       }else{
@@ -195,45 +162,36 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     }
   }
   login()async{
-    await UserProviderModel().getSavedUser(context).then((value)async{
-      await FCM().openClosedAppFromNotification();
-      // await getRegions();
+    bool isLogin=false;
+    try{
+       isLogin=await UserProviderModel().getSavedUser(context)??false;
+    }catch(e){
+       isLogin=false;
+    }
 
-      print('value  $value');
-      if(value){
-        if(Constants.currentUser!.userTypeId.toString()=="6"){
-          MyUtils.navigateAsFirstScreen(context, SpHomeScreen());
-        }
-        else{
-          bool isShowed=await Constants.prefs!.getBool("intro${Constants.currentUser!.id}")??false;
-          if(!isShowed&&Constants.APPLE_PAY_STATE){
-            MyUtils.navigateAsFirstScreen(context, IntroScreen());
-          }else{
-            // if(appStataProviderModel!.app_active_state){
-            //   MyUtils.navigateAsFirstScreen(context, MaintainanceScreen());
-            // }else{
-              if(widget.toHome??false){
-                MyUtils.navigateReplaceCurrent(context, MainCategoriesScreen());
-              }else{
-                if(value){
-                  MyUtils.navigateReplaceCurrent(context, MainCategoriesScreen());
 
-                }else{
-                  MyUtils.navigateReplaceCurrent(context, ChoceLanguageScreen());
-
-                }
-              }
-            // }
-          }
-        }
-      }else{
-        MyUtils.navigateReplaceCurrent(context, ChoceLanguageScreen());
+    if(isLogin){
+      if(Constants.currentUser!.userTypeId.toString()=="6"){
+        MyUtils.navigateAsFirstScreen(context, SpHomeScreen());
       }
-
-
-
-
-
-    });
+      else{
+        bool isShowed=await Constants.prefs!.getBool("intro${Constants.currentUser!.id}")??false;
+        if(!isShowed&&Constants.APPLE_PAY_STATE){
+          MyUtils.navigateAsFirstScreen(context, IntroScreen());
+        }else{
+          // if(appStataProviderModel!.app_active_state){
+          //   MyUtils.navigateAsFirstScreen(context, MaintainanceScreen());
+          // }else{
+          if(widget.toHome??false){
+            MyUtils.navigateReplaceCurrent(context, MainCategoriesScreen());
+          }else{
+              MyUtils.navigateReplaceCurrent(context, MainCategoriesScreen());
+          }
+          // }
+        }
+      }
+    }else{
+      MyUtils.navigateReplaceCurrent(context, ChoceLanguageScreen());
+    }
   }
 }

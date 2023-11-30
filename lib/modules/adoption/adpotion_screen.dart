@@ -38,7 +38,7 @@ class _AdoptionScreenState extends State<AdoptionScreen> {
     super.initState();
     controller = ScrollController()..addListener(_scrollListener);
     adoptionProviderModel=Provider.of<AdoptionProviderModel>(context,listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       adoptionProviderModel!.getCategoriesList();
     });
 

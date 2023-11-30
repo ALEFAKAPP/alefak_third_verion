@@ -1,4 +1,3 @@
-
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
@@ -111,9 +110,14 @@ class _MyAppState extends State<MyApp> {
     initPref();
     utilsProviderModel=Provider.of<UtilsProviderModel>(context,listen: false);
     Constants.utilsProviderModel=utilsProviderModel;
-    fcm!.requestPermission();
-    fcm!.getFCMToken();
-    fcm!.initInfo();
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      await fcm!.requestPermission();
+      await fcm!.getFCMToken();
+      await fcm!.initInfo();
+      await FCM().notificationSubscrib((Constants.prefs!.get(Constants.LANGUAGE_KEY)??"ar")=="ar");
+      await FCM().openClosedAppFromNotification();
+    });
+
   }
   @override
   Widget build(BuildContext context) {

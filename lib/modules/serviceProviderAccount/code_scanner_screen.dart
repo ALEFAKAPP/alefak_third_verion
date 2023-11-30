@@ -35,7 +35,7 @@ class _CodeScannerScreenState extends State<CodeScannerScreen> {
     scanCodeProvider = Provider.of<ScanCodeProvider>(context, listen: false);
     bottomBarProviderModel=Provider.of<BottomBarProviderModel>(context,listen: false);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       scanQR();
     });
   }

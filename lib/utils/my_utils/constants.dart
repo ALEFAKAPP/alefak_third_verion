@@ -8,7 +8,7 @@ import '../../modules/spalshScreen/data/app_info_model.dart';
 
 class Constants extends Object{
   static String? SELECTED_LANGUAGE="ar";
-  static String? LANGUAGE_KEY="LANGUAGE_KEY";
+  static String LANGUAGE_KEY="LANGUAGE_KEY";
   static String? DEVICE_TYPE="";
   static double APP_VERSION=192;
 
@@ -35,7 +35,7 @@ class Constants extends Object{
   static double DEVICE_HEIGHT=0.0;
   static double DEVICE_WIDTH=0.0;
   static bool IS_FORCE_UPDATE=false;
-  static String? TOKEN_KEY="TOKEN_KEY";
+  static String TOKEN_KEY="TOKEN_KEY";
   static double APP_VERSIONs=1.0;
 
 
