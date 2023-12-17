@@ -33,21 +33,21 @@ class UserData {
   });
 
   UserData.fromJson(dynamic json) {
-    id = json['id'];
-    name = json['name'];
-    address = json['address'];
-    phone = json['phone'];
-    whatsapp = json['whatsapp'];
-    email = json['email'];
-    website = json['website'];
-    photo = json['photo'];
-    bannerPhoto = json['banner_photo'];
-    longitude = json['longitude'];
-    latitude = json['latitude'];
-    regionId = json['region_id'];
-    regionName = json['region_name'];
-    stateId = json['state_id'];
-    stateName = json['state_name'];
+    id = json['id']??"";
+    name = json['name']??"";
+    address = json['address']??"";
+    phone = json['phone']??"";
+    whatsapp = json['whatsapp']??"";
+    email = json['email']??"";
+    website = json['website']??"";
+    photo = json['photo']??"";
+    bannerPhoto = json['banner_photo']??"";
+    longitude = json['longitude']??"";
+    latitude = json['latitude']??"";
+    regionId = json['region_id']??"";
+    regionName = json['region_name']??"";
+    stateId = json['state_id']??"";
+    stateName = json['state_name']??"";
     isOnline = json['is_online'];
     categoryId = json['category_id'];
     if (json['offers'] != null) {

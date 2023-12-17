@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/servies/firebase/analytics_helper.dart';
 import '../../utils/my_widgets/action_bar_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -32,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> with  InputValidationMixin{
 @override
   void initState() {
     super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-تسجيل الدخول");
     userProviderModel=Provider.of<UserProviderModel>(context,listen: false);
   }
 

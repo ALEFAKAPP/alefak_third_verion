@@ -61,6 +61,12 @@ class _OtpScreenState extends State<OtpScreen> {
     });
   }
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    timer.cancel();
+  }
+  @override
   Widget build(BuildContext context) {
     otpProviderModel=Provider.of<OtpProviderModel>(context,listen: true);
     userProviderModel=Provider.of<UserProviderModel>(context,listen: true);

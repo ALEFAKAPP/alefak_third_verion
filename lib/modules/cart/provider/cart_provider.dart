@@ -46,7 +46,7 @@ class CartProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  getMyCart({int shop_id=0,int offer_id=0}) async {
+  getMyCart({int shop_id=0,int offer_id=0,bool? deleteExpires}) async {
     myCarts.clear();
     setIsLoading(true);
     MyResponse<MyCartsModel> response =
@@ -54,7 +54,17 @@ class CartProvider with ChangeNotifier{
     if (response.status == Apis.CODE_SUCCESS){
       setIsLoading(false);
       MyCartsModel data=response.data;
-      myCarts.addAll(data.data!);
+      if(deleteExpires??false){
+        for(int i=0;i<data.data!.length;i++){
+          if(!DateTime.parse(data.data![i].expiration_at??'2028-03-01').isBefore(DateTime.now())){
+            myCarts.add(data.data![i]);
+          }
+        }
+      }else{
+        myCarts.addAll(data.data!);
+      }
+
+
       if(shop_id>0){
         useCode(shop_id,offer_id,myCarts[0].id!);
       }
@@ -63,6 +73,7 @@ class CartProvider with ChangeNotifier{
     }else{
       setIsLoading(false);
     }
+
     notifyListeners();
   }
   useCode(int shop_id,int offer_id,int card_id) async {

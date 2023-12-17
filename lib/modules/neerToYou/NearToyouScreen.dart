@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/categories_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/provider/categories_provider_model.dart';
@@ -41,6 +42,7 @@ class _NearToYouScreenState extends State<NearToYouScreen> {
   @override
   void initState() {
     super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-الأقرب إليك");
     serviceProvidersProviderModel =
         Provider.of<ServiceProvidersProviderModel>(context, listen: false);
     categoriesProviderModel =

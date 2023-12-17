@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/servies/firebase/analytics_helper.dart';
 import '../../utils/my_utils/apis.dart';
 import '../cart/add_cart_screen.dart';
 import '../login/provider/user_provider_model.dart';
@@ -40,6 +41,7 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   void initState() {
     super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-الإعدادات");
     userProviderModel=Provider.of<UserProviderModel>(context,listen: false);
   }
   @override

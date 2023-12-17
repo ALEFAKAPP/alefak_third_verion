@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/categories_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/homeTabsScreen/provider/bottom_bar_provider_model.dart';
@@ -19,7 +20,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'notification_details_screen.dart';
 
 class NotificationsScreen extends StatefulWidget {
   NotificationsScreen();
@@ -35,6 +35,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   void initState() {
     super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-العروض الحصرية");
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       ///bottom bar selection
       bottomBarProviderModel =

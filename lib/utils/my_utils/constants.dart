@@ -21,7 +21,7 @@ class Constants extends Object{
   //static String? SAVED_PASSWORD_KEY="SAVED_PASSWORD";
   static List<RegionsModel> REGIONS=[];
   static List<Get_states> STATES=[];
-  static int currentState=currentUser!=null?int.parse(currentUser!.stateId!.isNotEmpty?currentUser!.stateId??"0":"0"):REGIONS[0].getStates![0].id!;
+  static int currentState=currentUser!=null?int.parse((currentUser!.stateId??"0")):REGIONS[0].getStates![0].id!;
   static String MAPS_API_KEY="AIzaSyDuvS1cZBr4opbX8FmSRyuuKixykzVY3So";
   static bool show_adoption_alert=false;
   static AppInfoModel? APP_INFO;
@@ -36,7 +36,7 @@ class Constants extends Object{
   static double DEVICE_WIDTH=0.0;
   static bool IS_FORCE_UPDATE=false;
   static String TOKEN_KEY="TOKEN_KEY";
-  static double APP_VERSIONs=1.0;
+  static double APP_VERSIONs=1.92;
 
 
 

@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/animal_cart_widget.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/delete_card_popup.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/edite_card_popup.dart';
@@ -32,6 +33,7 @@ class _MyCardsScreenState extends State<MyCardsScreen> {
   @override
   void initState() {
     super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-بطاقاتي");
     cartProvider = Provider.of<CartProvider>(context, listen: false);
     cartProvider!.getMyCart();
   }

@@ -1,3 +1,5 @@
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
+import 'package:alefakaltawinea_animals_app/firebase_options.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
@@ -34,9 +36,12 @@ FCM? fcm;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  await Firebase.initializeApp().whenComplete(() async {
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform
+  ).whenComplete(() async {
     fcm = FCM();
     await fcm!.init();
+    AnalyticsHelper().init();
     runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider<IntroProviderModel>(

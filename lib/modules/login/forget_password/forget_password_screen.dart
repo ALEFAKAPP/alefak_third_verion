@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/login_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/provider/user_provider_model.dart';
@@ -30,6 +31,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> with InputV
 @override
   void initState() {
     super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-نسيت كلة المرور");
     userProviderModel=Provider.of<UserProviderModel>(context,listen: false);
 
 }

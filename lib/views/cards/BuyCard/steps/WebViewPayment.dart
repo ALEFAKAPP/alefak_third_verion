@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/core/view_model/BuyCards/BuyCardsViewModel.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/shared/components/CircularProgressDialog.dart';
@@ -20,6 +21,7 @@ class _WebViewPaymentState extends State<WebViewPayment> {
   @override
   void initState() {
     super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-الدفع");
     if (Platform.isAndroid) WebView.platform = AndroidWebView();
   }
   BuyCardViewModel _buyCardViewModel = Get.find();
@@ -50,8 +52,15 @@ class _WebViewPaymentState extends State<WebViewPayment> {
           print("$value" );
           if (value.toString().contains("success-callback")){
             ShowSnackBar(context,message:  tr("تمت عملية الدفع بنجاح"),type: 'success');
+            AnalyticsHelper().setEvent(eventName: "الدفع",parameters: {
+              "status":"تم الدفع بنجاح"
+            });
+
           }
           if(value.toString().contains("error-callback")){
+            AnalyticsHelper().setEvent(eventName: "الدفع",parameters: {
+              "status":"فشل عملية الدفع"
+            });
             ShowSnackBar(context,message:  tr("فشل عملية الدفع حاول مرة اخري"),type: 'error');
             Navigator.pop(context);
           }
@@ -61,10 +70,16 @@ class _WebViewPaymentState extends State<WebViewPayment> {
           webViewController.currentUrl().then((value) {
             print("$value");
             if (value.toString().contains("success-callback")){
+              AnalyticsHelper().setEvent(eventName: "الدفع",parameters: {
+                "status":"تم الدفع بنجاح"
+              });
               ShowSnackBar(context,message:  tr("تمت عملية الدفع بنجاح"),type: 'info');
               _buyCardViewModel.changeStateAfterPayment();
             }
             if(value.toString().contains("error-callback")){
+              AnalyticsHelper().setEvent(eventName: "الدفع",parameters: {
+                "status":"فشل عملية الدفع"
+              });
               Navigator.pop(context);
               ShowSnackBar(context,message:  tr("فشل عملية الدفع حاول مرة اخري"),type: 'error');
             }
@@ -72,6 +87,9 @@ class _WebViewPaymentState extends State<WebViewPayment> {
         },
         navigationDelegate: (NavigationRequest request) {
           if (request.url.contains("success")){
+            AnalyticsHelper().setEvent(eventName: "الدفع",parameters: {
+              "status":"تم الدفع بنجاح"
+            });
             ShowSnackBar(context,message:  tr("تمت عملية الدفع بنجاح"),type: 'info');
             _buyCardViewModel.changeStateAfterPayment();
             return NavigationDecision.prevent;

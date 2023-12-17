@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseDimentions.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
@@ -21,7 +22,12 @@ class AboutAppScreen extends StatefulWidget {
 }
 
 class _AboutAppScreenState extends State<AboutAppScreen> {
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-عن اليفك");
+}
   @override
   Widget build(BuildContext context) {
     return Stack(children: [

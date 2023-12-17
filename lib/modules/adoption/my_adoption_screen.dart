@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/adoption/data/animal_pager_list_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/adoption/provider/adoption_provider_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
@@ -33,8 +34,8 @@ class _MyAdoptionScreenState extends State<MyAdoptionScreen> {
   @override
   void initState() {
     super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-عروضي للتبني");
     adoptionProviderModel=Provider.of<AdoptionProviderModel>(context,listen: false);
-
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       await adoptionProviderModel!.getCategoriesList();
       await adoptionProviderModel!.getMyAnimals();

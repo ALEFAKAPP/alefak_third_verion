@@ -37,7 +37,9 @@ class _OfferCodeScreenState extends State<OfferCodeScreen> {
     cartProvider = Provider.of<CartProvider>(context, listen: false);
     cartProvider!.getMyCart(
         shop_id: widget.serviceProviderData.id!,
-        offer_id: widget.offerModel.id!);
+        offer_id: widget.offerModel.id!,
+    deleteExpires: true);
+
   }
 
   @override

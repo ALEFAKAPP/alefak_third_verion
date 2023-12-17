@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseDimentions.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
@@ -22,7 +23,12 @@ class PrivacyScreen extends StatefulWidget {
 }
 
 class _PrivacyScreenState extends State<PrivacyScreen> {
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-سياسة الخصوصية");
+}
   @override
   Widget build(BuildContext context) {
     return Stack(children: [

@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/homeTabsScreen/provider/bottom_bar_provider_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/intro/intro_screen.dart';
@@ -82,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
   @override
   void initState() {
     super.initState();
-
+    AnalyticsHelper().setScreen(screenName: "شاشة-حسابي");
     cartProvider=Provider.of<CartProvider>(context,listen: false);
     bottomBarProviderModel=Provider.of<BottomBarProviderModel>(context,listen: false);
     utilsProviderModel=Provider.of<UtilsProviderModel>(context,listen: false);
@@ -186,10 +187,10 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
     return Container();
   }
   void _initUserData(){
-    _nameController.text=Constants.currentUser!.name!;
-    _phoneController.text=Constants.currentUser!.phone!;
-    _emailController.text=Constants.currentUser!.email!;
-    _cityController.text=Constants.currentUser!.stateName!;
+    _nameController.text=Constants.currentUser!.name??"";
+    _phoneController.text=Constants.currentUser!.phone??"";
+    _emailController.text=Constants.currentUser!.email??"";
+    _cityController.text=Constants.currentUser!.stateName??tr("select_reagion");
   }
   Widget _region(){
     return Container(

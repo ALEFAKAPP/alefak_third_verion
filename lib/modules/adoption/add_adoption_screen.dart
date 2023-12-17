@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/adoption/data/adoption_categories_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/adoption/data/animal_pager_list_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/adoption/provider/adoption_provider_model.dart';
@@ -63,6 +64,7 @@ class _AddAdoptionScreenState extends State<AddAdoptionScreen> with InputValidat
 
   void initState() {
     super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-إضافة تبني");
     _getCitiesNameList();
     selectedCity=Constants.currentUser!.stateName??"";
     _selectedGenders=_genders[0];

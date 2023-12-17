@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/login_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/provider/user_provider_model.dart';
@@ -50,6 +51,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with InputValid
   @override
   void initState() {
     super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-التسجيل");
     _selectedGenders.add(_genders[0]);
     userProviderModel = Provider.of<UserProviderModel>(context, listen: false);
     _phoneController.text = widget.phone!;

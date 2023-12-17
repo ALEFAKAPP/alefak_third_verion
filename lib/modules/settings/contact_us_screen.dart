@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/provider/user_provider_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/otp/phone_screen.dart';
@@ -7,11 +8,9 @@ import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/input%20_validation_mixing.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
-import 'package:alefakaltawinea_animals_app/utils/my_utils/myUtils.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/laoding_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/my_widgets/action_bar_widget.dart';
@@ -34,6 +33,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> with  InputValidation
   @override
   void initState() {
     super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-تواصل معنا");
     settingsProvider=Provider.of<SettingsProvider>(context,listen: false);
   }
 

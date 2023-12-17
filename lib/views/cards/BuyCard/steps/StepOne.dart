@@ -1,4 +1,5 @@
 import 'package:alefakaltawinea_animals_app/app_config.dart';
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/shared/components/buttons.dart';
 import 'package:alefakaltawinea_animals_app/shared/components/dialog.dart';
 import 'package:alefakaltawinea_animals_app/shared/components/text.dart';
@@ -6,6 +7,7 @@ import 'package:alefakaltawinea_animals_app/shared/components/utlite.dart';
 import 'package:alefakaltawinea_animals_app/shared/constance/colors.dart';
 import 'package:alefakaltawinea_animals_app/shared/constance/fonts.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
+import 'package:alefakaltawinea_animals_app/views/cards/BuyCard/steps/StepTow.dart';
 import 'package:alefakaltawinea_animals_app/views/cards/BuyCard/steps/Widgets/CouponSection.dart';
 import 'package:alefakaltawinea_animals_app/views/cards/BuyCard/steps/Widgets/HedersStep.dart';
 import 'package:alefakaltawinea_animals_app/views/cards/BuyCard/steps/Widgets/TypeCard.dart';
@@ -25,6 +27,11 @@ class BuyCard extends StatefulWidget {
 
 class _BuyCardState extends State<BuyCard> {
   BuyCardViewModel _buyCardViewModel = Get.put(BuyCardViewModel());
+  @override
+  void initState() {
+    super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-إصدار البطاقة");
+  }
 
   @override
   Widget build(BuildContext context) {

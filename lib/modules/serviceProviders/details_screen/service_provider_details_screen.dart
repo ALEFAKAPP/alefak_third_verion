@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/offers/offers_list/service_provider_offers_list_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
@@ -27,6 +28,16 @@ class ServiceProviderDetailsScreen extends StatefulWidget {
 class _ServiceProviderDetailsScreenState extends State<ServiceProviderDetailsScreen> with InputValidationMixin{
   final _controller = PageController();
   int _currentSliderPager=0;
+  @override
+  void initState() {
+    super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-مزود الخدمة");
+    AnalyticsHelper().setEvent(eventName: "شاشة-مزود الخدمة",parameters: {
+      "name":"${widget.serviceProviderData.name}",
+      "phone":"${widget.serviceProviderData.phone}"
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return BaseScreen(

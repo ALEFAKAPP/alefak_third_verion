@@ -2,11 +2,12 @@ import 'package:alefakaltawinea_animals_app/modules/cart/my_carts_model.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseDimentions.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.dart';
+import 'package:easy_localization/easy_localization.dart'hide TextDirection;
 import 'package:flutter/Material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../my_utils/constants.dart';
-import '../my_utils/myColors.dart';
 
 class AnimalCartWidget extends StatefulWidget {
   MyCart cart;
@@ -149,6 +150,23 @@ class _AnimalCartWidgetState extends State<AnimalCartWidget> {
                     ],
                   ),
                 ),
+                Visibility(
+                  visible:DateTime.parse(widget.cart.expiration_at??'2028-03-01').isBefore(DateTime.now()),
+                  child: Container(
+                      width: D.size(180),
+                      height: D.size(104),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(D.default_10),
+                      ),
+                    child: Center(child: Container(
+                        width: D.size(180),
+                        padding: EdgeInsets.all(2.w),
+                        color: Colors.white.withOpacity(0.9),
+                        child: Text(tr('expire_card'),textAlign: TextAlign.center,style: TextStyle(color: Colors.redAccent,fontSize: 18.sp,fontWeight:
+                        FontWeight.w800),)),),
+                  ),
+                )
               ],
             )));
   }

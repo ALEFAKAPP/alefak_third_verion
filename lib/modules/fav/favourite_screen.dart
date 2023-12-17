@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/categories_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/homeTabsScreen/provider/bottom_bar_provider_model.dart';
@@ -36,6 +37,7 @@ class _FavScreenState extends State<FavScreen>  {
   @override
   void initState() {
     super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-المفضلة");
     ///bottom bar selection
     bottomBarProviderModel=Provider.of<BottomBarProviderModel>(context,listen: false);
     bottomBarProviderModel!.setSelectedScreen(1);

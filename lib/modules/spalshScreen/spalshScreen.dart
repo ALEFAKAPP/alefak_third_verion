@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/ads/provider/ads_slider_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/mainCategoriesScreen.dart';
@@ -55,6 +56,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       Constants.DEVICE_TYPE="android";
     }
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      AnalyticsHelper().setScreen(screenName: "splash_screen");
       await _initPref(context);
       await getAppInfo();
 
@@ -69,10 +71,13 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
         if(Constants.APP_VERSIONs < _minimumVersion) {
           MyUtils.navigateAsFirstScreen(context, PageUpdateScreen());
+        }else{
+          login();
         }
+      }else{
+        login();
       }
 
-      login();
     });
 
 

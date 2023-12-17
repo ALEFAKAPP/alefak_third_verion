@@ -267,5 +267,7 @@
   "بطاقة" : "Card",
   "discount" : "Discount",
   "المبلغ_الإجمالي" : "Total Amount",
-  "not_pay_card" : "*The price shown is the subscription fee for one year"
+  "not_pay_card" : "*The price shown is the subscription fee for one year",
+  "expire_card": "Card has expired"
+
 }

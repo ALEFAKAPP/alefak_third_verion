@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/ads/ads_slider.dart';
 import 'package:alefakaltawinea_animals_app/modules/ads/provider/ads_slider_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
@@ -38,6 +39,7 @@ class _MainCategoriesScreenState extends State<MainCategoriesScreen> {
   @override
   void initState() {
     super.initState();
+    AnalyticsHelper().setScreen(screenName: "شاشة-الرئيسية");
     //getRegions();
     categoriesProviderModel=Provider.of<CategoriesProviderModel>(context,listen: false);
     utilsProviderModel=Provider.of<UtilsProviderModel>(context,listen: false);
