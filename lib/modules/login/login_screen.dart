@@ -1,5 +1,6 @@
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/mainCategoriesScreen.dart';
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/new_main_categories_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/provider/user_provider_model.dart';
 import 'package:alefakaltawinea_animals_app/shared/components/input_forms.dart';
 import 'package:alefakaltawinea_animals_app/shared/components/text.dart';
@@ -85,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> with  InputValidationMixin{
         SizedBox(width: D.default_10,),
         InkWell(
           onTap: (){
-            MyUtils.navigate(context, MainCategoriesScreen());
+            MyUtils.navigate(context, NewMainCategoriesScreen());
           },
           child: Text(tr("guest"),style: S.h1(color: C.BASE_BLUE,fontSize: D.textSize(5)),),)
       ],));

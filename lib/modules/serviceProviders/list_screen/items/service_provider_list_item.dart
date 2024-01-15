@@ -8,6 +8,7 @@ import 'package:alefakaltawinea_animals_app/utils/my_utils/my_fonts.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/resources.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ServiceProviderListItem extends StatefulWidget {
   int index;
@@ -36,14 +37,15 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
           borderRadius: BorderRadius.circular(D.default_10),
           color: Colors.white,
           boxShadow:[BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              offset:Offset(3,3),
+              color: Colors.grey.withOpacity(0.3),
               blurRadius:3,
-              spreadRadius: 0.5
+              spreadRadius:2
           )]
       ),
       child: Stack(children: [
-        Column(children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           Expanded(child:
           Container(
           padding: EdgeInsets.all(D.default_10),
@@ -54,9 +56,8 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
         color: Colors.white,
       ),)),
           Container(
-            height: D.default_50,
             width: double.infinity,
-            padding: EdgeInsets.all(D.default_10),
+            padding: EdgeInsets.symmetric(horizontal:D.default_10,vertical:D.default_10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(D.default_10),bottomRight: Radius.circular(D.default_10)),
               color: Colors.white,
@@ -66,7 +67,7 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
               children: [
                 Expanded(child: Text(
                   widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].name!
-                  ,style: S.h1(color:C.BASE_BLUE,font: MyFonts.VazirBlack)),),
+                  ,style: TextStyle(fontFamily: MyFonts.VazirBlack,fontWeight: FontWeight.w700,fontSize: 12.sp)),),
                 InkWell(
                   onTap: (){
                     widget.serviceProvidersProviderModel!.setFav(widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].id!);
@@ -77,12 +78,19 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
                   child: TransitionImage(
                     widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].is_fav==0?
                   fav_icon:Res.IC_FAV_BLUE,
-                  height: D.default_25,
-                  width: D.default_25,
+                  height: D.default_20,
+                  width: D.default_20,
                 ),)
 
               ],),
-          )
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: D.default_10),
+            child: Text(
+                widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].offers![0].title??''
+                ,style: TextStyle(color: Colors.grey[600],fontFamily: MyFonts.VazirBlack,fontWeight: FontWeight.w700,fontSize: 10.sp)),
+          ),
+          SizedBox(height: 10.h,),
         ],),
         Positioned(child: Container(
           padding: EdgeInsets.all(D.default_5),

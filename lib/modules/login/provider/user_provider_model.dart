@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:alefakaltawinea_animals_app/data/dio/my_rasponce.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/mainCategoriesScreen.dart';
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/new_main_categories_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/data/login_api.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/data/returnSuccessModel.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/data/user_data.dart';
@@ -63,7 +64,7 @@ class UserProviderModel with ChangeNotifier{
               MyUtils.navigateAsFirstScreen(ctx, IntroScreen());
             }else{
               await FCM().openClosedAppFromNotification();
-              MyUtils.navigateAsFirstScreen(ctx, MainCategoriesScreen());
+              MyUtils.navigateAsFirstScreen(ctx, NewMainCategoriesScreen());
             }
           }
         }else{
@@ -156,7 +157,7 @@ class UserProviderModel with ChangeNotifier{
         MyUtils.navigateAsFirstScreen(ctx, IntroScreen());
       }else{
         await FCM().openClosedAppFromNotification();
-        MyUtils.navigateAsFirstScreen(ctx, MainCategoriesScreen());
+        MyUtils.navigateAsFirstScreen(ctx, NewMainCategoriesScreen());
       }
 
     }else if(response.status == Apis.CODE_ACTIVE_USER &&response.data!=null){

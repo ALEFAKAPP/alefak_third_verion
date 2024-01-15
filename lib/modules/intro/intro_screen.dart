@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/new_main_categories_screen.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
 import 'package:alefakaltawinea_animals_app/views/cards/BuyCard/steps/StepOne.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -94,7 +95,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       Positioned(child: InkWell(
                         onTap: ()async{
                           await Constants.prefs!.setBool("intro${Constants.currentUser!.id}",true);
-                          MyUtils.navigateAsFirstScreen(context, MainCategoriesScreen());
+                          MyUtils.navigateAsFirstScreen(context, NewMainCategoriesScreen());
                         },
                         child: Text(tr("skip"),style: S.h1Bold(color: C.BASE_BLUE),),),bottom: D.default_40,)
                     ],

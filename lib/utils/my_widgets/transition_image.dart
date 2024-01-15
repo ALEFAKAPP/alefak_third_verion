@@ -188,7 +188,7 @@ class _TransitionImageState extends State<TransitionImage> {
             return Container(
                 child: widget.placeWidget == null
                     ? Icon(widget.placeHolder ??
-                    Icons.image)
+                    Icons.image,color: C.BASE_BLUE,)
                     : widget.placeWidget);
           }),
       width: widget.width,

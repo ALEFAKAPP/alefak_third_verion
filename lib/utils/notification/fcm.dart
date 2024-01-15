@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:alefakaltawinea_animals_app/modules/categories_screen/mainCategoriesScreen.dart';
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/new_main_categories_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/login_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/registeration/registration_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_screen.dart';
@@ -208,7 +208,7 @@ class FCM extends Object{
 
     /// add card
     if (type=="1") {
-       await Get.off(()=>MainCategoriesScreen(navigateTo:(){
+       await Get.off(()=>NewMainCategoriesScreen(navigateTo:(){
         if(Constants.currentUser!=null){
            Get.to(()=>BuyCard());
         }else{
@@ -220,7 +220,7 @@ class FCM extends Object{
     /// service provider
     else if(type=="2"){
       Get.back();
-       await Get.off(()=>MainCategoriesScreen(navigateTo:()async{
+       await Get.off(()=>NewMainCategoriesScreen(navigateTo:()async{
         GetServiceProvidersApi api=GetServiceProvidersApi();
         await api.getServiceProvider(int.parse(providerId.isNotEmpty?providerId:"0")).then((value){
           Data provide=value.data;
@@ -231,7 +231,7 @@ class FCM extends Object{
     }
     /// url
     else if (type=="3") {
-       await Get.off(()=>MainCategoriesScreen(navigateTo:() async{
+       await Get.off(()=>NewMainCategoriesScreen(navigateTo:() async{
         final String ure=link;
         String  url = ure;
         if (await canLaunch(url)) {
@@ -242,7 +242,7 @@ class FCM extends Object{
       } ,),preventDuplicates: false);
 
     }else{
-      await Get.to(MainCategoriesScreen());
+      await Get.to(NewMainCategoriesScreen());
     }
   }
 }

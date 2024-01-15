@@ -1,5 +1,6 @@
 
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/mainCategoriesScreen.dart';
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/new_main_categories_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/fav/favourite_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/homeTabsScreen/provider/bottom_bar_provider_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/login_screen.dart';
@@ -94,7 +95,7 @@ class _HomeTabsScreenState extends State<HomeTabsScreen> with TickerProviderStat
     return Expanded(
       child: InkWell(onTap: (){
         bottomBarProviderModel!.setSelectedScreen(0);
-        MyUtils.navigateAsFirstScreen(context, MainCategoriesScreen());
+        MyUtils.navigateAsFirstScreen(context, NewMainCategoriesScreen());
       }
         ,child:Column(
         mainAxisAlignment: MainAxisAlignment.center,

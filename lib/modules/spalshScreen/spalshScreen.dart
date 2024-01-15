@@ -3,6 +3,7 @@ import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_help
 import 'package:alefakaltawinea_animals_app/modules/ads/provider/ads_slider_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/mainCategoriesScreen.dart';
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/new_main_categories_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/intro/intro_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/provider/user_provider_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviderAccount/SpHomeScreen.dart';
@@ -184,13 +185,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         if(!isShowed&&Constants.APPLE_PAY_STATE){
           MyUtils.navigateAsFirstScreen(context, IntroScreen());
         }else{
-          // if(appStataProviderModel!.app_active_state){
-          //   MyUtils.navigateAsFirstScreen(context, MaintainanceScreen());
-          // }else{
           if(widget.toHome??false){
-            MyUtils.navigateReplaceCurrent(context, MainCategoriesScreen());
+            MyUtils.navigateReplaceCurrent(context, NewMainCategoriesScreen());
           }else{
-              MyUtils.navigateReplaceCurrent(context, MainCategoriesScreen());
+              MyUtils.navigateReplaceCurrent(context, NewMainCategoriesScreen());
           }
           // }
         }
