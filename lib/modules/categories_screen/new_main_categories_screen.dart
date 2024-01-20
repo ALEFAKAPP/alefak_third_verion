@@ -1,8 +1,11 @@
 import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/ads/provider/ads_slider_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/home_offers_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/notifications/data/notification_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/notifications/provider/notification_provider.dart';
+import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_screen.dart';
+import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/hom_offers_all_list.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/service_providers_list_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/settings/settings_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/spalshScreen/data/regions_api.dart';
@@ -22,6 +25,7 @@ import 'package:provider/provider.dart';
 import '../../shared/constance/fonts.dart';
 import '../../utils/my_utils/baseDimentions.dart';
 import '../search/search_screen.dart';
+import 'data/home_singl_offer_model.dart';
 import 'provider/categories_provider_model.dart';
 
 class NewMainCategoriesScreen extends StatefulWidget {
@@ -48,9 +52,10 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> {
     categoriesProviderModel=Provider.of<CategoriesProviderModel>(context,listen: false);
     utilsProviderModel=Provider.of<UtilsProviderModel>(context,listen: false);
     WidgetsBinding.instance!.addPostFrameCallback((_)async{
-      adsSliderProviderModel!.getAdsSlider();
+      //adsSliderProviderModel!.getAdsSlider();
       categoriesProviderModel!.getCategoriesList();
-      await context.read<NotificationProvider>().getNotificationsList();
+      categoriesProviderModel!.getHomeOffersList();
+      //await context.read<NotificationProvider>().getNotificationsList();
       notificationNavigation();
     });
 
@@ -97,12 +102,21 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> {
                    child: Text(tr("know_about_alifak"),style:
                    S.h2(),textAlign:TextAlign.center ,),
                  ),
+                 
                  SizedBox(height: D.default_50,),
                  gatigoriesList(),
-                 SizedBox(height: D.default_30,),
-                 offersList(title: "عروض الاسبوع"),
-                 SizedBox(height: D.default_10,),
-                 offersList(title: "اخر العروض")
+                 SizedBox(height: D.default_50,),
+                 Consumer<CategoriesProviderModel>(
+                     builder: (context,model,_) {
+                       return Column(children: List.generate(model.homeOffersLists.length, (index){
+                         return  offersList(
+                           id: model.homeOffersLists[index].id,
+                             title: Constants.utilsProviderModel!.isArabic?
+                         model.homeOffersLists[index].nameAr:model.homeOffersLists[index].nameEn,
+                         data: model.homeOffersLists[index].offers);
+                       }));
+                   }
+                 ),
                ],
              ))
             ],),
@@ -173,37 +187,38 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> {
       }
     );
 }
-Widget offersList({required String title}){
-    return Consumer<NotificationProvider>(
-      builder: (context, model,_) {
-        return model.notificationsList.isNotEmpty?Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
-          child:
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-            Row(children: [
-              SizedBox(width: 8.w,),
-              Expanded(child: Text(title,style: TextStyle(fontSize: 14.sp,fontFamily: fontPrimary,fontWeight: FontWeight.w900),)),
-              GestureDetector(
+Widget offersList({required int id,required String title,required List<OfferElement>data}){
+    return data.isNotEmpty?Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      child:
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [
+            SizedBox(width: 8.w,),
+            Expanded(child: Text(title,style: TextStyle(fontSize: 14.sp,fontFamily: fontPrimary,fontWeight: FontWeight.w900),)),
+            GestureDetector(
                 onTap: (){
+                  MyUtils.navigate(context,HomeOffersAllList(title:title,listId: id,));
+
                   /// navigate to all offers screen
                 },
                 child:Text(tr("home_offers_more"),style: TextStyle(color: Colors.grey,fontSize: 12.sp,fontFamily: fontPrimary,fontWeight: FontWeight.w800),))
-            ],),
-              SizedBox(height: 5.h,),
-              SizedBox(
-                height: 200.h,
-                width:double.infinity,
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  scrollDirection: Axis.horizontal,
-                  itemCount:model.notificationsList.length ,
-                    itemBuilder: (ctx,index){
+          ],),
+          SizedBox(height: 5.h,),
+          SizedBox(
+            height: 200.h,
+            width:double.infinity,
+            child: data.isNotEmpty?ListView.builder(
+                padding: EdgeInsets.zero,
+                scrollDirection: Axis.horizontal,
+                itemCount:data.length ,
+                itemBuilder: (ctx,index){
 
                   return InkWell(
                     onTap: (){
+                      MyUtils.navigate(context, ServiceProviderDetailsScreen(data[index].offer.shop));
                     },
                     child: Container(
                       margin: EdgeInsets.all(D.default_10),
@@ -221,29 +236,27 @@ Widget offersList({required String title}){
                         Column(
                           crossAxisAlignment:CrossAxisAlignment.start,
                           children: [
-                          Container(
-                            height: 130.h,
-                            padding: EdgeInsets.all(D.default_10),
-                            decoration: BoxDecoration(
-                              image: DecorationImage(image: NetworkImage(model.notificationsList[index].shop!.bannerPhoto??"",
-                              ),fit:BoxFit.cover),
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(D.default_10),topRight: Radius.circular(D.default_10)),
-                              color: Colors.white,
+                            Container(
+                              height: 130.h,
+                              padding: EdgeInsets.all(D.default_10),
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: NetworkImage("",
+                                ),fit:BoxFit.cover),
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(D.default_10),topRight: Radius.circular(D.default_10)),
+                                color: Colors.white,
+                              ),),
+                            Padding(
+                              padding:  EdgeInsets.all(5.h),
+                              child: Text(data[index].offer.shop.name??'',style: TextStyle(fontWeight: FontWeight.w900,fontFamily:fontPrimary,fontSize: 11.sp )),
+                            ),
+                            Expanded(child: Padding(
+                              padding:  EdgeInsets.all(5.h),
+                              child: Text(
+                                  Constants.utilsProviderModel!.isArabic?data[index].offer.shop.offers![0].title??'':data[index].offer.shop.offers![0].titleEn??''
+                                  ,style: TextStyle(fontWeight: FontWeight.w500,fontFamily:fontPrimary,fontSize: 10.sp,color: Colors.grey )),
                             ),),
-                          Padding(
-                            padding:  EdgeInsets.all(5.h),
-                            child: Text(
-                                model.notificationsList[index].shop!.name!
-                                ,style: TextStyle(fontWeight: FontWeight.w900,fontFamily:fontPrimary,fontSize: 11.sp )),
-                          ),
-                          Expanded(child: Padding(
-                            padding:  EdgeInsets.all(5.h),
-                            child: Text(
-                                model.notificationsList[index].shop!.offers![0].title??''
-                                ,style: TextStyle(fontWeight: FontWeight.w500,fontFamily:fontPrimary,fontSize: 10.sp,color: Colors.grey )),
-                          ),),
 
-                        ],),
+                          ],),
                         Positioned(child: Container(
                           padding: EdgeInsets.all(D.default_5),
                           margin: EdgeInsets.all(D.default_10),
@@ -260,7 +273,7 @@ Widget offersList({required String title}){
                               )]
                           ),
                           child:TransitionImage(
-                            model.notificationsList[index].shop!.photo??'',
+                            "",
                             radius: D.default_10,
                             fit: BoxFit.cover,
                             width: double.infinity,
@@ -268,12 +281,10 @@ Widget offersList({required String title}){
                         ),),
                       ],),
                     ),);
-                }),
-              )
-          ],)
-          ,):SizedBox();
-      }
-    );
+                }):Center(child: Text(tr("no_offers")),),
+          )
+        ],)
+      ,):SizedBox();
 }
   void _onCategoryClick(int id,int index,BuildContext ctx){
     if(id==-1){

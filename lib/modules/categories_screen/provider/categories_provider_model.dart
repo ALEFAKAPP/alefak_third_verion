@@ -1,6 +1,8 @@
 import 'package:alefakaltawinea_animals_app/data/dio/my_rasponce.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/categories_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/get_categories_list_api.dart';
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/get_home_offers_api.dart';
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/home_offers_model.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/apis.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/resources.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -18,6 +20,7 @@ class CategoriesProviderModel with ChangeNotifier {
   /// ..........categories...........
   List<CategoriesDataModel> categoriesList=[];
   GetCategoriesListApi getCategoriesListApi=GetCategoriesListApi();
+  List<HomeListOfOffersModel> homeOffersLists=[];
   getCategoriesList() async {
     setIsLoading(true);
     categoriesList.clear();
@@ -25,6 +28,24 @@ class CategoriesProviderModel with ChangeNotifier {
         await getCategoriesListApi.getCategoriesList();
     if (response.status == Apis.CODE_SUCCESS &&response.data!=null){
       setCategoriesList(response.data);
+      setIsLoading(false);
+    }else if(response.status == Apis.CODE_SUCCESS &&response.data==null){
+      setIsLoading(false);
+    }else{
+      setIsLoading(false);
+    }
+    notifyListeners();
+
+  }
+
+
+  getHomeOffersList() async {
+    setIsLoading(true);
+    MyResponse<HomeOffersModel> response =
+    await GetHomeOffersListApi().getHomeOffers();
+    if (response.status == Apis.CODE_SUCCESS &&response.data!=null){
+      homeOffersLists.clear();
+      homeOffersLists.addAll((response.data as HomeOffersModel).data);
       setIsLoading(false);
     }else if(response.status == Apis.CODE_SUCCESS &&response.data==null){
       setIsLoading(false);

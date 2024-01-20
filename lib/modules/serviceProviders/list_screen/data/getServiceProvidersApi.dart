@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:alefakaltawinea_animals_app/data/dio/dio_utils.dart';
 import 'package:alefakaltawinea_animals_app/data/dio/my_rasponce.dart';
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/home_offers_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/apis.dart';
 
@@ -45,6 +46,16 @@ class GetServiceProvidersApi{
           json.decode(jsonEncode(response.data)));
     } else {
       return MyResponse<Data>.init(Apis.CODE_ERROR, "", null);
+    }
+  }
+  Future<MyResponse<HomeListOfOffersModel>> getHomeOffersById(int id) async {
+    final url = "${Apis.GET_HOME_OFFERS_BY_ID}$id}";
+    final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_GET, url);
+    if (response != null && response.statusCode == 200) {
+      return MyResponse<HomeListOfOffersModel>.fromJson(
+          json.decode(jsonEncode(response.data)));
+    } else {
+      return MyResponse<HomeListOfOffersModel>.init(Apis.CODE_ERROR, "", null);
     }
   }
 

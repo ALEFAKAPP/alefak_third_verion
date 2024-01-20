@@ -76,5 +76,11 @@ class Apis{
   static String EDITE_CARD="${BASE_URL}/edit-card";
   static String DELETE_CARD="${BASE_URL}/delete-card";
 
+  ///..............home offers.........................
+  static String GET_HOME_OFFERS="${BASE_URL}/offers-categories";
+  static String GET_HOME_OFFERS_BY_ID="${BASE_URL}/offers-categories/";
+
+
+
 
 }

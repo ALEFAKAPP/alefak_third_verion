@@ -1,6 +1,7 @@
 import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/firebase_options.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
+import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/provider/home_offers_provider.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/providers.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -86,6 +88,10 @@ void main() async{
         ChangeNotifierProvider<SettingsProvider>(
           create: (ctx) => SettingsProvider(),
         ),
+        ChangeNotifierProvider<HomeOffersProvider>(
+          create: (ctx) => HomeOffersProvider(),
+        ),
+
       ],
       child: EasyLocalization(
           supportedLocales: [Locale('en', 'US'), Locale('ar', 'EG')],
@@ -136,12 +142,11 @@ class _MyAppState extends State<MyApp> {
               splitScreenMode: true,
               builder: (context , child) {
               return GetMaterialApp(
-                  theme: ThemeData(
+                theme: ThemeData(
                       primaryColor:C.BASE_BLUE,
                       focusColor:C.BASE_BLUE,
-
-
-                  ),
+                    fontFamily: GoogleFonts.getFont('IBM Plex Sans Arabic').fontFamily,
+                ),
                   builder: EasyLoading.init(),
                   localizationsDelegates: EasyLocalization.of(context)?.delegates,
                   supportedLocales: [Locale('en', 'US'), Locale('ar', 'EG')],

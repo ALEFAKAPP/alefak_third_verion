@@ -2,6 +2,7 @@
 import 'package:alefakaltawinea_animals_app/modules/adoption/data/adoption_categories_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/adoption/data/animal_pager_list_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/categories_model.dart';
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/home_offers_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/data/user_data.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
 import 'package:alefakaltawinea_animals_app/modules/spalshScreen/data/regions_model.dart';
@@ -122,6 +123,14 @@ class MyResponse<T> extends Object {
       case Data:
         _data = Data.fromJson(json) as T;
         break;
+      case HomeOffersModel:
+        _data = HomeOffersModel.fromJson(json) as T;
+        break;
+      case HomeListOfOffersModel:
+        _data = HomeListOfOffersModel.fromJson(json) as T;
+        break;
+
+
 
       default:_data = null;
     }
