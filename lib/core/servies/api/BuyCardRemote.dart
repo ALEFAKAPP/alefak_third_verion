@@ -26,12 +26,14 @@ class BuyCardRemote {
 
     http.MultipartRequest request = new http.MultipartRequest("POST", Uri.parse(Apis.UPLOAD_CART_IMAGE_V2));
     // var bytes = images.map((el) => el.path);
-
+    request.headers['Authorization'] = 'Bearer ${Apis.TOKEN_VALUE}';
     if (file != null) {
       request.files.add(await http.MultipartFile.fromPath('file', file.path));
     }
 
     request.headers.addAll(headers);
+    print(request.headers);
+    print(request);
     var response = await request.send();
     final respStr = await response.stream.bytesToString();
     print('${respStr}');
