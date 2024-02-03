@@ -38,13 +38,13 @@ class ServiceProvidersProviderModel with ChangeNotifier {
   ServiceProviderModel? serviceProviderModel;
   ServiceProviderModel? searchServiceProviderModel;
   GetServiceProvidersApi getServiceProvidersApi=GetServiceProvidersApi();
-  getServiceProvidersList(int categoryId,int page,{String lat="",String long="",String keyword="",String state_id=""}) async {
+  getServiceProvidersList(int categoryId,int page,{String lat="",String long="",String keyword="",String state_id="",bool? isOnline}) async {
     setIsLoading(true);
     if(page==1) {
       serviceProviderModel = null;
     }
     MyResponse<ServiceProviderModel> response =
-    await getServiceProvidersApi.getServiceProviders(categoryId, page,keyword: keyword);
+    await getServiceProvidersApi.getServiceProviders(categoryId, page,keyword: keyword,isOnline:isOnline );
     if (response.status == Apis.CODE_SUCCESS &&response.data!=null){
       ServiceProviderModel model=response.data;
       if(page>1){

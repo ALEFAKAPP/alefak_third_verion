@@ -9,7 +9,7 @@ class LoadingProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black.withOpacity(.20),
+      color: Colors.white,
       width: double.infinity,
       height: double.infinity,
       child:Center(child: Container(

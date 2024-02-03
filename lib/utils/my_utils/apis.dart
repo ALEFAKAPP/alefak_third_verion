@@ -12,8 +12,12 @@ class Apis{
   static const REQ_FAILED = "failed";
   static const ExCEPTION = "Exception";
 
-  static String BASE_URL="https://sehakhanah.topbits-tech.com/api/v1";
-  static String BASE_URL2="https://sehakhanah.topbits-tech.com/api/v2";
+  static String Baselink="https://sehakhanah.topbits-tech.com/";
+  static String BASE_URL="${Baselink}api/v1";
+  static String BASE_URL2="${Baselink}api/v2";
+  static String IMAGE_PATH1="${Baselink}uploads/";
+  static String IMAGE_PATH2="${Baselink}uploads/";
+
   static String GET_CATEGORIES_LIST="${BASE_URL}/categories";
   static String GET_SERVICE_PROVIDERS_LIST="${BASE_URL}/shops";
   static String GET_SERVICE_PROVIDER="${BASE_URL}/get-shop";

@@ -119,6 +119,7 @@ class BuyCardViewModel extends GetxController {
       hideDialogProgress(Get.context);
       linkPayment.value = response.data.url;
       await Get.to(WebViewPayment());
+      //changeStateAfterPayment();
     }else if(response.status == Apis.CODE_SUCCESS &&response.data==null){
       hideDialogProgress(Get.context);
     }else{

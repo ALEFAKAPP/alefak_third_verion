@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/new_service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/provider/sevice_providers_provicer_model.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseDimentions.dart';
@@ -25,7 +26,7 @@ class _FavListItemState extends State<FavListItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        MyUtils.navigate(context, ServiceProviderDetailsScreen(widget.serviceProvidersProviderModel!.favList[widget.index]));
+        MyUtils.navigate(context, NewServiceProviderDetailsScreen(widget.serviceProvidersProviderModel!.favList[widget.index]));
       },
       child: Container(
         margin: EdgeInsets.all(D.default_10),
@@ -36,9 +37,9 @@ class _FavListItemState extends State<FavListItem> {
             color: Colors.white,
             boxShadow:[BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
-                offset:Offset(3,3),
-                blurRadius:3,
-                spreadRadius: 0.5
+                offset:Offset(0,0),
+                blurRadius:1,
+                spreadRadius:1
             )]
         ),
         child: Stack(children: [

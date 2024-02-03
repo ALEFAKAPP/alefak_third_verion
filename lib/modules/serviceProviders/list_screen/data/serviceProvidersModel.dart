@@ -8,7 +8,7 @@ class ServiceProviderModel {
   int? from;
   int? lastPage;
   String? lastPageUrl;
-  List<Links>? links;
+  List<Socials>? links;
   String? nextPageUrl;
   String? path;
   int? perPage;
@@ -44,9 +44,9 @@ class ServiceProviderModel {
     lastPage = json['last_page'];
     lastPageUrl = json['last_page_url'];
     if (json['links'] != null) {
-      links = <Links>[];
+      links = <Socials>[];
       json['links'].forEach((v) {
-        links!.add(new Links.fromJson(v));
+        links!.add(new Socials.fromJson(v));
       });
     }
     nextPageUrl = json['next_page_url'];
@@ -67,9 +67,6 @@ class ServiceProviderModel {
     data['from'] = this.from;
     data['last_page'] = this.lastPage;
     data['last_page_url'] = this.lastPageUrl;
-    if (this.links != null) {
-      data['links'] = this.links!.map((v) => v.toJson()).toList();
-    }
     data['next_page_url'] = this.nextPageUrl;
     data['path'] = this.path;
     data['per_page'] = this.perPage;
@@ -103,10 +100,8 @@ class Data {
   List<OfferModel>? offers;
   List<PhotoModel>? photos;
   String?contact_phone;
-
-
-
-
+  List<Socials>?links;
+  List<AddressModel>?addresses;
 
   Data(
       {this.id,
@@ -130,7 +125,9 @@ class Data {
         this.photos,
         this.type_id,
         this.url,
-        this.contact_phone
+        this.contact_phone,
+        this.links,
+        this.addresses
       });
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -157,13 +154,27 @@ class Data {
     if (json['offers'] != null) {
       offers = <OfferModel>[];
       json['offers'].forEach((v) {
-        offers!.add(new OfferModel.fromJson(v));
+        if((OfferModel.fromJson(v).title??"").isNotEmpty){
+          offers!.add(new OfferModel.fromJson(v));
+        }
       });
     }
     if (json['photos'] != null) {
       photos = <PhotoModel>[];
       json['photos'].forEach((v) {
         photos!.add(new PhotoModel.fromJson(v));
+      });
+    }
+    if (json['socials'] != null) {
+      links = <Socials>[];
+      json['socials'].forEach((v) {
+        links!.add(new Socials.fromJson(v));
+      });
+    }
+    if (json['addresses'] != null) {
+      addresses = <AddressModel>[];
+      json['addresses'].forEach((v) {
+        addresses!.add( AddressModel.fromJson(v));
       });
     }
   }
@@ -200,24 +211,91 @@ class Data {
   }
 }
 
-class Links {
-  String? url;
-  String? label;
-  bool? active;
+class Socials {
+  num? id;
+  String? name;
+  String? link;
+  String?icon;
 
-  Links({this.url, this.label, this.active});
+  Socials({
+    this.id,
+    this.name,
+    this.link,
+    this.icon
+  });
 
-  Links.fromJson(Map<String, dynamic> json) {
-    url = json['url'];
-    label = json['label'];
-    active = json['active'];
+  Socials.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    link = json['link'];
+    icon = json['icon'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = this.url;
-    data['label'] = this.label;
-    data['active'] = this.active;
-    return data;
-  }
+}
+class AddressModel{
+  int? id;
+  String? phone;
+  String? contactPhone;
+  String? address;
+  String? addressEn;
+  String? longitude;
+  String? latitude;
+  String? title_ar;
+  String? title_en;
+
+
+  AddressModel({
+     this.id,
+     this.phone,
+     this.contactPhone,
+     this.longitude,
+     this.latitude,
+     this.address,
+     this.addressEn,
+    this.title_ar,
+    this.title_en
+});
+  factory AddressModel.fromJson(Map<String, dynamic> json) => AddressModel(
+    id: json["id"],
+    phone: json["phone"],
+    contactPhone: json["contact_phone"],
+      longitude:json["longitude"],
+    latitude:json["latitude"],
+      address:json["address"],
+      addressEn:json["addressEn"],
+    title_ar: json["title_ar"],
+    title_en: json["title_en"]
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "phone": phone,
+    "contact_phone": contactPhone,
+    "longitude":longitude,
+
+  };
+
+}
+class SocialLinksModel {
+  final dynamic url;
+  final String label;
+  final bool active;
+
+  SocialLinksModel({
+    required this.url,
+    required this.label,
+    required this.active,
+  });
+
+  factory SocialLinksModel.fromJson(Map<String, dynamic> json) => SocialLinksModel(
+    url: json["url"],
+    label: json["label"],
+    active: json["active"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "url": url,
+    "label": label,
+    "active": active,
+  };
 }

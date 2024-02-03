@@ -4,6 +4,7 @@ import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_help
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/categories_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/provider/categories_provider_model.dart';
+import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/new_service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/provider/sevice_providers_provicer_model.dart';
 import 'package:alefakaltawinea_animals_app/utils/location/location_utils.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseDimentions.dart';
@@ -15,6 +16,7 @@ import 'package:alefakaltawinea_animals_app/utils/my_widgets/laoding_view.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -72,7 +74,7 @@ class _NearToYouScreenState extends State<NearToYouScreen> {
                               child: serviceProvidersProviderModel!.isLoading
                                   ? _buildMap()
                                   : _buildMap()),
-                          _newTabsContainer()
+
                         ],
                       )
                     : LoadingProgress(),
@@ -81,6 +83,11 @@ class _NearToYouScreenState extends State<NearToYouScreen> {
             serviceProvidersProviderModel!.currentSelectedShop != null
                 ? _shopItem()
                 : Container(),
+            Positioned(child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+              _newTabsContainer()
+            ],)),
             serviceProvidersProviderModel!.isLoading?LoadingProgress():SizedBox()
           ],
         ));
@@ -138,7 +145,7 @@ class _NearToYouScreenState extends State<NearToYouScreen> {
   Widget _shopItem() {
     return  serviceProvidersProviderModel!.currentSelectedShop!=null?InkWell(
       onTap: (){
-        MyUtils.navigate(context, ServiceProviderDetailsScreen(serviceProvidersProviderModel!.currentSelectedShop!));
+        MyUtils.navigate(context, NewServiceProviderDetailsScreen(serviceProvidersProviderModel!.currentSelectedShop!));
       },
       child: Container(
           margin: EdgeInsets.all(D.default_10),
@@ -189,111 +196,80 @@ class _NearToYouScreenState extends State<NearToYouScreen> {
       margin: EdgeInsets.all(D.default_10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(D.default_10),
-          color: C.BASE_BLUE,
+          color: Colors.white,
           boxShadow:[BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              offset:Offset(1,1),
+              color: Colors.grey.withOpacity(0.2),
               blurRadius:1,
               spreadRadius: 1
           )]
       ),
       child: Column(children: [
+        SizedBox(height: 5.h,),
         Expanded(
             child: TransitionImage(
               getItemImage(index),
-              width: double.infinity,
-              fit: index==0?BoxFit.contain:BoxFit.contain,
             )),
-        Container(
-          height: D.default_1,
-          color: C.BASE_ORANGE,
-          margin: EdgeInsets.only(top:D.default_5),
-        ),
+        SizedBox(height: 3.h,),
         Container(
           height: D.default_30,
           child: Center(
             child: Text(getItemTitle(index),
-                style: S.h2(color: Colors.white)),
-          ),)],),),);
+                style: TextStyle(color: C.BASE_BLUE,fontWeight: FontWeight.w600,fontSize: 12.sp)),
+          ),),
+        SizedBox(height: 5.h,)
+      ],),),);
   }
   String getItemImage(int index){
-    switch(index){
-      case 0:{
-        return "assets/images/logo_new_img.png";
-      };
-      case 1:{
-        return "assets/images/clinics_img.png";
-      };
-      case 2:{
-        return "assets/images/shops_img.png";
-      };
-      case 3:{
-        return "assets/images/home_care-img.png";
-      };
-      default :{
-        return "assets/images/logo_new_img.png";
-      };
-
-    }
-
+      return categoriesProviderModel!.categoriesList.where((element) => (element.id??0)==1||(element.id??0)==4).toList()[index].photo??Res.IC_HOME_BLUE;
   }
   String getItemTitle(int index){
-    switch(index){
-      case 0:{
-        return tr("all");
-      };
-      case 1:{
-        return tr("clinic");
-      };
-      case 2:{
-        return tr("shops");
-      };
-      case 3:{
-        return tr("home_care");
-      };
-      default :{
-        return "";
-      };
-
-    }
-
+    return categoriesProviderModel!.categoriesList.where((element) => (element.id??0)==1||(element.id??0)==4).toList()[index].name??"";
   }
   onItemClick(int index)async{
-
-    if(index>0){
-
-      serviceProvidersProviderModel!.selectedCategory = categoriesProviderModel!.categoriesList[index-1];
-        await serviceProvidersProviderModel!.getClosestList(
-            context,
-            categoriesProviderModel!.categoriesList[index-1].id!,
-            _position!.latitude.toString(),
-            _position!.longitude.toString(),
-          categoriesProviderModel!.categoriesList,
-        );
-    }else{
       serviceProvidersProviderModel!.markers.clear();
-      await serviceProvidersProviderModel!.getAllClosestList(
+      await serviceProvidersProviderModel!.getClosestList(
             context,
+          categoriesProviderModel!.categoriesList.where((element) => (element.id??0)==1||(element.id??0)==4).toList()[index].id??0,
             _position!.latitude.toString(),
             _position!.longitude.toString(),
-             categoriesProviderModel!.categoriesList
+          categoriesProviderModel!.categoriesList.where((element) => (element.id??0)==1||(element.id??0)==4).toList()
         );
-    }
-
   }
   Widget _newTabsContainer(){
     return Container(
-      color: Colors.white.withOpacity(0.90),
-      height: D.size(110),
+      padding: EdgeInsets.only(top: 10.h),
+        decoration:BoxDecoration(
+            borderRadius: BorderRadius.only(topRight:Radius.circular(D.default_15),topLeft:Radius.circular(D.default_10)),
+          color: Colors.black.withOpacity(0.6),
+        ),
+      height: D.size(88),
       child: Column(children: [
-      Expanded(child: Row(children: [
-        Expanded(child: _newIem(0)),
-        Expanded(child: _newIem(1),)
-      ],),),
-      Expanded(child: Row(children: [
-        Expanded(child: _newIem(2),),
-        Expanded(child: _newIem(3),)
-      ],),),
+      Expanded(child: Row(children:List.generate(
+          categoriesProviderModel!.categoriesList.where((element) => (element.id??0)==1||(element.id??0)==4).toList().length,
+              (index) {
+        return Expanded(child: _newIem(index));
+      }),),),
+        SizedBox(height:5.h,),
+        InkWell(
+          onTap: ()async{
+            serviceProvidersProviderModel!.selectedCategory =null;
+            await serviceProvidersProviderModel!.getAllClosestList(
+            context,
+            _position!.latitude.toString(),
+            _position!.longitude.toString(),
+            categoriesProviderModel!.categoriesList.where((element) => (element.id??0)==1||(element.id??0)==4).toList(),
+            );
+          },
+          child: Container(
+          margin: EdgeInsets.symmetric(horizontal:5.w),
+          padding: EdgeInsets.all(10.h),
+    decoration:BoxDecoration(
+    borderRadius: BorderRadius.all(Radius.circular(D.default_15)),
+    color: Colors.white,
+    ),
+          child: Center(child: Text(tr("all"), style:TextStyle(color: C.BASE_BLUE,fontWeight: FontWeight.w600,fontSize: 12.sp)),),),
+        ),
+        SizedBox(height:10.h,)
 
     ]),);
   }

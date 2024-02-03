@@ -1,10 +1,12 @@
 /*fonts*/
-const fontRegular = 'Regular';
-const fontMedium = 'Medium';
-const fontSemibold = 'Semibold';
-const fontBold = 'Bold';
- const fontPrimaryBold = "SuisseIntlBold";
- const fontPrimary = "SuisseIntl";
+import 'package:google_fonts/google_fonts.dart';
+
+final fontRegular = GoogleFonts.getFont('IBM Plex Sans Arabic').fontFamily;
+final fontMedium = GoogleFonts.getFont('IBM Plex Sans Arabic').fontFamily;
+final fontSemibold = GoogleFonts.getFont('IBM Plex Sans Arabic').fontFamily;
+final fontBold = GoogleFonts.getFont('IBM Plex Sans Arabic').fontFamily;
+final fontPrimaryBold = GoogleFonts.getFont('IBM Plex Sans Arabic').fontFamily;
+ final fontPrimary = GoogleFonts.getFont('IBM Plex Sans Arabic').fontFamily;
  /* font sizes*/
  const textSizeSSSmall = 8.0;
  const textSizeSSmall = 10.0;

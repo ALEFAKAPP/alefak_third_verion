@@ -13,6 +13,7 @@ import 'package:alefakaltawinea_animals_app/utils/my_widgets/laoding_view.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -54,7 +55,7 @@ class _FavScreenState extends State<FavScreen>  {
         showBottomBar: true,
         showSettings: false,
         body: Column(children: [
-          ActionBarWidget(tr('fav_screen_title'), context),
+          _header(context),
           Expanded(child:serviceProvidersProviderModel!.isLoading?LoadingProgress():SmartRefresher(
             key: _refresherKey,
             controller: _refreshController,
@@ -79,12 +80,11 @@ class _FavScreenState extends State<FavScreen>  {
   }
   Widget _listitem(){
     return serviceProvidersProviderModel!.favList.isNotEmpty?Container(
-      color: C.BASE_ORANGE,
       child: ListView.builder(
         itemCount: serviceProvidersProviderModel!.favList.length,
         padding: EdgeInsets.all(D.default_10),
         itemBuilder: (context,index){
-          return  FavListItem(index,serviceProvidersProviderModel);
+          return  ServiceProviderListItem(index,serviceProvidersProviderModel);
         }),):_noData();
   }
 Widget _noData(){
@@ -97,4 +97,23 @@ Widget _noData(){
 
       ],),);
 }
+  Widget _header(BuildContext ctx){
+    return   Column(
+      children: [
+        SizedBox(height: 2.h,),
+        Padding(
+          padding:  EdgeInsets.symmetric(vertical: 2.h,horizontal: 3.w),
+          child: Row(children: [
+            SizedBox(width: 15.h,),
+            Text(tr('fav_screen_title'),style: TextStyle(color: C.BASE_BLUE,fontSize: 16.sp,fontWeight: FontWeight.w700),),
+            Expanded(child:TransitionImage(Res.IC_HOME_BLUE,width: D.default_80,height: D.default_60,),),
+            SizedBox(width: 25.h,),
+          ],),
+        ),
+        SizedBox(height: 3.h,),
+        Container(height: 1,color: Colors.grey[200],width: double.infinity,)
+      ],
+    );
+  }
+
 }

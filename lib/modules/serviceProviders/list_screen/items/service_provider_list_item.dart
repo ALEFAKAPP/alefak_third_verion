@@ -1,3 +1,4 @@
+import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/new_service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/provider/sevice_providers_provicer_model.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseDimentions.dart';
@@ -12,10 +13,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ServiceProviderListItem extends StatefulWidget {
   int index;
-  Color? color;
   ServiceProvidersProviderModel? serviceProvidersProviderModel;
 
-   ServiceProviderListItem(this.index,this.serviceProvidersProviderModel,{this.color=C.BASE_BLUE});
+   ServiceProviderListItem(this.index,this.serviceProvidersProviderModel);
 
   @override
   _ServiceProviderListItemState createState() => _ServiceProviderListItemState();
@@ -27,7 +27,7 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        MyUtils.navigate(context, ServiceProviderDetailsScreen(widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index]));
+        MyUtils.navigate(context, NewServiceProviderDetailsScreen(widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index]));
       },
     child: Container(
       margin: EdgeInsets.all(D.default_10),
@@ -38,8 +38,8 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
           color: Colors.white,
           boxShadow:[BoxShadow(
               color: Colors.grey.withOpacity(0.3),
-              blurRadius:3,
-              spreadRadius:2
+              blurRadius:1,
+              spreadRadius:1
           )]
       ),
       child: Stack(children: [
@@ -53,11 +53,12 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
         image: DecorationImage(image: NetworkImage(widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].bannerPhoto!,
         ),fit:BoxFit.cover),
         borderRadius: BorderRadius.only(topLeft: Radius.circular(D.default_10),topRight: Radius.circular(D.default_10)),
-        color: Colors.white,
+        color: Colors.grey.withOpacity(0.2),
       ),)),
+          SizedBox(height: D.default_10,),
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal:D.default_10,vertical:D.default_10),
+            padding: EdgeInsets.symmetric(horizontal:D.default_10,vertical:D.default_2),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(D.default_10),bottomRight: Radius.circular(D.default_10)),
               color: Colors.white,
@@ -67,7 +68,7 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
               children: [
                 Expanded(child: Text(
                   widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].name!
-                  ,style: TextStyle(fontFamily: MyFonts.VazirBlack,fontWeight: FontWeight.w700,fontSize: 12.sp)),),
+                  ,style: TextStyle(fontWeight: FontWeight.w800,fontSize: 11.sp)),),
                 InkWell(
                   onTap: (){
                     widget.serviceProvidersProviderModel!.setFav(widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].id!);
@@ -86,9 +87,10 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: D.default_10),
-            child: Text(
-                widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].offers![0].title??''
-                ,style: TextStyle(color: Colors.grey[600],fontFamily: MyFonts.VazirBlack,fontWeight: FontWeight.w700,fontSize: 10.sp)),
+            child: (widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].offers??[]).isNotEmpty?Text(
+                  widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].offers![0].title??''
+                  ,style: TextStyle(color: Colors.grey[600],fontWeight: FontWeight.w500,fontSize: 11.sp)):SizedBox(),
+
           ),
           SizedBox(height: 10.h,),
         ],),
@@ -101,10 +103,10 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
               borderRadius: BorderRadius.circular(D.default_10),
               color: Colors.white,
               boxShadow:[BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  offset:Offset(4,4),
-                  blurRadius:4,
-                  spreadRadius: 2
+                  color: Colors.grey.withOpacity(0.2),
+                  offset:Offset(0,0),
+                  blurRadius:1,
+                  spreadRadius: 1
               )]
           ),
           child:TransitionImage(

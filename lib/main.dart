@@ -1,6 +1,7 @@
 import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/firebase_options.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
+import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/provider/home_offers_provider.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
@@ -91,6 +92,10 @@ void main() async{
         ChangeNotifierProvider<HomeOffersProvider>(
           create: (ctx) => HomeOffersProvider(),
         ),
+        ChangeNotifierProvider<ServiceProviderDetailsProvider>(
+          create: (ctx) => ServiceProviderDetailsProvider(),
+        ),
+
 
       ],
       child: EasyLocalization(

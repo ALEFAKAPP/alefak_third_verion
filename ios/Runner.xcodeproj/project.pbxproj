@@ -394,7 +394,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.93.0;
+				MARKETING_VERSION = 1.99.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alefakeltawinea.alefakaltawineaAnimalsApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -533,7 +533,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.93.0;
+				MARKETING_VERSION = 1.99.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alefakeltawinea.alefakaltawineaAnimalsApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -566,7 +566,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.93.0;
+				MARKETING_VERSION = 1.99.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alefakeltawinea.alefakaltawineaAnimalsApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

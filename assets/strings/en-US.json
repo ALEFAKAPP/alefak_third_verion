@@ -272,6 +272,27 @@
   "what_alifak_want":"What your Alefak need?",
   "know_about_alifak": "To know more about Alefak Altawnia press here",
   "home_offers_more": "more >",
-  "offers": "offers"
+  "offers": "offers",
+  "first_offer_sheet_title": "Do you really want to use the offer?",
+  "second_offer_sheet_title": "If you confirm yes, the display screen will open and you cannot undo",
+  "close_offer_sheet_title": "Do you want to close?",
+  "close_offer_sheet_subtitle": "If you confirm yes, the display will close",
+  "discount_value": "Discount %s %",
+  "on": "on",
+  "please_login": "Please login",
+  "login_to_complete": "Please log in to benefit from all the features of the application ",
+  "please_create_cart":"Please issue a card",
+  "please_create_cart_full":"Please issue an ALIFIC cooperative card to enjoy all offers",
+  "create_cart": "Add Card",
+  "Shops": "Shops",
+  "online_shops": "Online shops",
+  "cant_call_number": "can't call this number",
+  "offer_code": "Offer code",
+  "copy": "Copy",
+  "done_copy": "Copied",
+  "go_to_shop": "Go to shop",
+  "all":"all",
+  "no_addresses": "No addresses"
+
 
 }

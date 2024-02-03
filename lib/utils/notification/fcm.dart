@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/new_main_categories_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/login_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/registeration/registration_screen.dart';
+import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/new_service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/getServiceProvidersApi.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
@@ -224,7 +225,7 @@ class FCM extends Object{
         GetServiceProvidersApi api=GetServiceProvidersApi();
         await api.getServiceProvider(int.parse(providerId.isNotEmpty?providerId:"0")).then((value){
           Data provide=value.data;
-          Get.to(()=>ServiceProviderDetailsScreen(provide));
+          Get.to(()=>NewServiceProviderDetailsScreen(provide));
         });
       } ,),preventDuplicates: false);
       return;

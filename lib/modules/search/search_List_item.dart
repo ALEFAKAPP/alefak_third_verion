@@ -9,6 +9,8 @@ import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.da
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../serviceProviders/details_screen/new_service_provider_details_screen.dart';
+
 class SearchListItem extends StatefulWidget {
   int index;
 
@@ -32,7 +34,7 @@ class _SearchListItemState extends State<SearchListItem> {
 
     return InkWell(
       onTap: (){
-        MyUtils.navigate(context, ServiceProviderDetailsScreen(serviceProvidersProviderModel!.searchServiceProviderModel!.data![widget.index]));
+        MyUtils.navigate(context, NewServiceProviderDetailsScreen(serviceProvidersProviderModel!.searchServiceProviderModel!.data![widget.index]));
       },
       child: Container(
         margin: EdgeInsets.all(D.default_10),

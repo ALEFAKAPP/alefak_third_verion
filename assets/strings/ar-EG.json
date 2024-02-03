@@ -274,6 +274,24 @@
  "what_alifak_want":"ايش يحتاج أليفك؟",
  "know_about_alifak": "لمعرفة  المزيد عن أليفك التعاونية اضغط هنا",
  "home_offers_more": "المزيد >",
- "offers": "العروض"
+ "offers": "العروض",
+ "first_offer_sheet_title": "هل تريد حقاً استخدام العرض؟",
+ "second_offer_sheet_title": "في حالة التأكيد بنعم سيتم فتح شاشة العرض ولا يمكنك التراجع",
+ "close_offer_sheet_title": "هل تريد الإغلاق؟",
+ "close_offer_sheet_subtitle": "في حالة التأكيد بنعم سيتم غلق شاشة العرض",
+ "discount_value": "خصم %s %",
+ "on": "على",
+ "please_login": "الرجاء تسجيل الدخول",
+ "login_to_complete": "الرجاء تسجيل الدخول للإستفادة بجميع مزايا التطبيق ",
+ "Shops": "المتاجر",
+ "online_shops": "متاجر إلكترونية",
+ "cant_call_number": "لا يمكن الاتصال بهذا الرقم",
+ "offer_code": "كود الخصم",
+ "copy": "انسخ",
+ "done_copy": "تم النسخ",
+ "go_to_shop": "اذهب للمتجر",
+ "all": "الكل",
+ "no_addresses": "لا يوجد عناوين"
+
 
 }

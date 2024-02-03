@@ -1,4 +1,5 @@
 import 'package:alefakaltawinea_animals_app/modules/login/login_screen.dart';
+import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/new_service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
 import 'package:alefakaltawinea_animals_app/shared/components/dialog.dart';
@@ -43,7 +44,7 @@ class _AdsSliderItemState extends State<AdsSliderItem> {
             onTap: ()async{
               switch(widget.AdsItem.type_id){
                 case "0":{
-                  MyUtils.navigate(context, ServiceProviderDetailsScreen(widget.AdsItem));
+                  MyUtils.navigate(context, NewServiceProviderDetailsScreen(widget.AdsItem));
                 }
                   break;
                 case "1":{

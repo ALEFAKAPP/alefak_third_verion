@@ -8,8 +8,13 @@ import 'package:alefakaltawinea_animals_app/utils/my_utils/apis.dart';
 
 class GetServiceProvidersApi{
 
-  Future<MyResponse<ServiceProviderModel>> getServiceProviders(int categoryId,int page,{String lat="",String long="",String keyword="",String state_id=""}) async {
-    String url = "${Apis.GET_SERVICE_PROVIDERS_LIST}/${categoryId}?page=${page}"; //keyword=&region_id=&state_id
+  Future<MyResponse<ServiceProviderModel>> getServiceProviders(int categoryId,int page,{String lat="",String long="",String keyword="",String state_id="",bool? isOnline}) async {
+    String url = "${Apis.GET_SERVICE_PROVIDERS_LIST}/${categoryId}?page=${page}";
+    if(isOnline??false){
+      url=url+"&&is_online=1";
+    }else{
+      url=url+"&&is_online=0";
+    }
     final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_GET, url);
     if (response != null && response.statusCode == 200) {
       return MyResponse<ServiceProviderModel>.fromJson(

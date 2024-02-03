@@ -14,6 +14,10 @@ class OfferModel {
   String?photo;
   String?url;
   String?photoEn;
+  String?description_ar;
+  String?description_en;
+  String?is_first;
+  String?thumb;
 
   OfferModel(
       {this.id,
@@ -30,7 +34,12 @@ class OfferModel {
         this.updatedAt,
       this.photo,
         this.photoEn,
-      this.url});
+      this.url,
+        this.description_ar,
+        this.description_en,
+        this.is_first,
+        this.thumb
+      });
 
   OfferModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -53,6 +62,10 @@ class OfferModel {
     photo=json["photo"];
     url=json["url"];
     photoEn=json["photo_en"];
+    description_ar=json["description_ar"]??"";
+    description_en=json["description_en"];
+    is_first=json["is_first"]??"";
+    thumb=json["thumb"]??"";
   }
 
   Map<String, dynamic> toJson() {

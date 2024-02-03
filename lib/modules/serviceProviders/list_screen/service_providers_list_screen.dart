@@ -21,9 +21,10 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 
 class ServiceProviderListScreen extends StatefulWidget {
-  CategoriesDataModel? selectedCategory;
+  int categoryId;
   String title;
-   ServiceProviderListScreen(this.selectedCategory,this.title);
+
+   ServiceProviderListScreen(this.categoryId,this.title);
 
   @override
   _ServiceProviderListScreenState createState() => _ServiceProviderListScreenState();
@@ -53,7 +54,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen>  
 
       ///service providers data
       serviceProvidersProviderModel=Provider.of<ServiceProvidersProviderModel>(context,listen: false);
-      serviceProvidersProviderModel!.getServiceProvidersList(widget.selectedCategory!.id!, _currentLoadedPage);
+      serviceProvidersProviderModel!.getServiceProvidersList(widget.categoryId, _currentLoadedPage);
     });
 
   }
@@ -75,7 +76,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen>  
           serviceProvidersProviderModel!.isLoading&&((serviceProvidersProviderModel!.serviceProviderModel)!=null?serviceProvidersProviderModel!.serviceProviderModel!.data!.isEmpty:true)?LoadingProgress():_listitem(),
           serviceProvidersProviderModel!.serviceProviderModel!=null?serviceProvidersProviderModel!.isLoading&&serviceProvidersProviderModel!.serviceProviderModel!.data!.isNotEmpty?
           Container():Container():Container(),
-          serviceProvidersProviderModel!.isLoading?Container(color: Colors.black.withOpacity(0.3),height: MediaQuery.of(context).size.height,width: MediaQuery.of(context).size.width,):Container()
+          serviceProvidersProviderModel!.isLoading?Container(color: Colors.white.withOpacity(0.3),height: MediaQuery.of(context).size.height,width: MediaQuery.of(context).size.width,):Container()
         ],)),
             serviceProvidersProviderModel!.serviceProviderModel!=null?serviceProvidersProviderModel!.isLoading&&serviceProvidersProviderModel!.serviceProviderModel!.data!.isNotEmpty?
             Container(height: D.default_60,width: D.default_250,child: Center(child: SpinKitCircle(
@@ -95,7 +96,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen>  
           itemCount: serviceProvidersProviderModel!.serviceProviderModel!.data!.length,
         padding: EdgeInsets.all(D.default_10),
         itemBuilder: (context,index){
-          return  ServiceProviderListItem(index,serviceProvidersProviderModel,color:Color(int.parse(widget.selectedCategory!.color!.replaceAll("#", "0xff"))) ,);
+          return  ServiceProviderListItem(index,serviceProvidersProviderModel);
         }),):Center(child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -106,7 +107,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen>  
     print(controller!.position.extentAfter);
     if ((!serviceProvidersProviderModel!.isLoading)&&(controller!.position.extentAfter < serviceProvidersProviderModel!.serviceProviderModel!.data!.length-1)) {
       _currentLoadedPage=_currentLoadedPage+1;
-       serviceProvidersProviderModel!.getServiceProvidersList(widget.selectedCategory!.id!, _currentLoadedPage);
+       serviceProvidersProviderModel!.getServiceProvidersList(widget.categoryId, _currentLoadedPage);
     }
   }
   Widget _header(BuildContext ctx){

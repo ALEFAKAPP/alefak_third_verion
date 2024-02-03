@@ -1,14 +1,17 @@
 import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
+import 'package:alefakaltawinea_animals_app/modules/adoption/adpotion_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/ads/provider/ads_slider_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/home_offers_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/notifications/data/notification_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/notifications/provider/notification_provider.dart';
+import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/new_service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/hom_offers_all_list.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/service_providers_list_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/settings/settings_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/spalshScreen/data/regions_api.dart';
+import 'package:alefakaltawinea_animals_app/utils/my_utils/apis.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
@@ -25,6 +28,8 @@ import 'package:provider/provider.dart';
 import '../../shared/constance/fonts.dart';
 import '../../utils/my_utils/baseDimentions.dart';
 import '../search/search_screen.dart';
+import '../serviceProviders/list_screen/shops_tab_screen.dart';
+import '../settings/about_screen.dart';
 import 'data/home_singl_offer_model.dart';
 import 'provider/categories_provider_model.dart';
 
@@ -92,15 +97,18 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> {
                  SizedBox(height: D.default_30,),
                  Text("${Constants.currentUser!=null?(Constants.currentUser!.name):''} ${tr("what_alifak_want")}",style:S.h1Bold(),textAlign: TextAlign.center,),
                  SizedBox(height: D.default_20,),
-                 Container(
-                   margin:  EdgeInsets.symmetric(horizontal: D.default_70),
-                   padding:  EdgeInsets.symmetric(vertical: D.default_10,horizontal: D.default_10),
-                   decoration: BoxDecoration(
-                     borderRadius: BorderRadius.circular(D.default_10),
-                     color: C.BASE_BLUE,
+                 InkWell(
+                   onTap: (){MyUtils.navigate(context, AboutAppScreen());},
+                   child: Container(
+                     margin:  EdgeInsets.symmetric(horizontal: D.default_70),
+                     padding:  EdgeInsets.symmetric(vertical: D.default_10,horizontal: D.default_10),
+                     decoration: BoxDecoration(
+                       borderRadius: BorderRadius.circular(D.default_10),
+                       color: C.BASE_BLUE,
+                     ),
+                     child: Text(tr("know_about_alifak"),style:
+                     S.h2(),textAlign:TextAlign.center ,),
                    ),
-                   child: Text(tr("know_about_alifak"),style:
-                   S.h2(),textAlign:TextAlign.center ,),
                  ),
                  
                  SizedBox(height: D.default_50,),
@@ -137,7 +145,7 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> {
             }, icon: Icon(Icons.segment,color: C.BASE_BLUE,size: D.default_35,),) ,
             Expanded(child:TransitionImage(Res.IC_HOME_BLUE,width: D.default_80,height: D.default_80,),),
             IconButton(onPressed: () {
-             // MyUtils.navigate(context, SearchScreen(""));
+              MyUtils.navigate(context, SearchScreen(tr("search")));
             }, icon: Icon(Icons.search,color: C.BASE_BLUE,size: D.default_35,),) ,
           ],),
         ),
@@ -152,7 +160,7 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> {
       builder: (context,model,_) {
         return model.categoriesList.isNotEmpty?
         Container(
-          height: D.default_140,
+          height: D.default_120,
           width: double.infinity,
             margin: EdgeInsets.symmetric(horizontal: D.default_7),
             child: ListView(
@@ -168,8 +176,8 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> {
                   color: Colors.white,
                   boxShadow:[BoxShadow(
                       color: Colors.grey.withOpacity(0.2),
-                      blurRadius:3,
-                      spreadRadius: 2
+                      blurRadius:1,
+                      spreadRadius: 1
                   )]
               ),
               child: Column(children: [
@@ -178,7 +186,7 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> {
                 Image.network(model.categoriesList[index].photo??'',height: D.default_70,errorBuilder:(ctx,object,_) {
                   return Image.asset(Res.IC_HOME_BLUE,height: D.default_70,);
                 },),
-                Expanded(child: Center(child: Text(model.categoriesList[index].name??"",textAlign: TextAlign.center,style: TextStyle(color: C.BASE_BLUE,fontFamily: fontPrimary,fontWeight: FontWeight.w800,fontSize: 11.sp),)))
+                Expanded(child: Center(child: Text(model.categoriesList[index].name??"",textAlign: TextAlign.center,style: TextStyle(color: C.BASE_BLUE,fontWeight: FontWeight.w600,fontSize: 10.sp),)))
               ],),
             ),
 
@@ -197,18 +205,16 @@ Widget offersList({required int id,required String title,required List<OfferElem
         children: [
           Row(children: [
             SizedBox(width: 8.w,),
-            Expanded(child: Text(title,style: TextStyle(fontSize: 14.sp,fontFamily: fontPrimary,fontWeight: FontWeight.w900),)),
+            Expanded(child: Text(title,style: TextStyle(fontSize: 15.sp,fontFamily: fontPrimary,fontWeight: FontWeight.w800),)),
             GestureDetector(
                 onTap: (){
                   MyUtils.navigate(context,HomeOffersAllList(title:title,listId: id,));
-
-                  /// navigate to all offers screen
                 },
                 child:Text(tr("home_offers_more"),style: TextStyle(color: Colors.grey,fontSize: 12.sp,fontFamily: fontPrimary,fontWeight: FontWeight.w800),))
           ],),
           SizedBox(height: 5.h,),
           SizedBox(
-            height: 200.h,
+            height: 180.h,
             width:double.infinity,
             child: data.isNotEmpty?ListView.builder(
                 padding: EdgeInsets.zero,
@@ -218,18 +224,18 @@ Widget offersList({required int id,required String title,required List<OfferElem
 
                   return InkWell(
                     onTap: (){
-                      MyUtils.navigate(context, ServiceProviderDetailsScreen(data[index].offer.shop));
+                      MyUtils.navigate(context, NewServiceProviderDetailsScreen(data[index].offer.shop));
                     },
                     child: Container(
                       margin: EdgeInsets.all(D.default_10),
-                      width: D.default_350,
+                      width: D.default_350*1.1,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(D.default_10),
                           color: Colors.white,
                           boxShadow:[BoxShadow(
                               color: Colors.grey.withOpacity(0.2),
-                              blurRadius:5,
-                              spreadRadius: 3
+                              blurRadius:1,
+                              spreadRadius: 1
                           )]
                       ),
                       child: Stack(children: [
@@ -237,23 +243,27 @@ Widget offersList({required int id,required String title,required List<OfferElem
                           crossAxisAlignment:CrossAxisAlignment.start,
                           children: [
                             Container(
-                              height: 130.h,
+                              height: 120.h,
                               padding: EdgeInsets.all(D.default_10),
                               decoration: BoxDecoration(
-                                image: DecorationImage(image: NetworkImage("",
+                                color:Colors.grey.withOpacity(0.3),
+                                image: DecorationImage(
+
+                                    image: NetworkImage(
+                                      (data[index].offer.shop.bannerPhoto??"").contains("https:")?(data[index].offer.shop.bannerPhoto??""):"${'https://alefak.com/uploads/'}"+((data[index].offer.shop.photos??[]).isNotEmpty?(data[index].offer.shop.photos![0].photo)??data[index].offer.shop.bannerPhoto??"":data[index].offer.shop.bannerPhoto??""),
                                 ),fit:BoxFit.cover),
                                 borderRadius: BorderRadius.only(topLeft: Radius.circular(D.default_10),topRight: Radius.circular(D.default_10)),
-                                color: Colors.white,
                               ),),
+                            SizedBox(height: 5.h,),
                             Padding(
-                              padding:  EdgeInsets.all(5.h),
+                              padding:  EdgeInsets.symmetric(horizontal:8.h,vertical: 2.h),
                               child: Text(data[index].offer.shop.name??'',style: TextStyle(fontWeight: FontWeight.w900,fontFamily:fontPrimary,fontSize: 11.sp )),
                             ),
                             Expanded(child: Padding(
-                              padding:  EdgeInsets.all(5.h),
+                              padding:  EdgeInsets.symmetric(horizontal:8.h),
                               child: Text(
                                   Constants.utilsProviderModel!.isArabic?data[index].offer.shop.offers![0].title??'':data[index].offer.shop.offers![0].titleEn??''
-                                  ,style: TextStyle(fontWeight: FontWeight.w500,fontFamily:fontPrimary,fontSize: 10.sp,color: Colors.grey )),
+                                  ,style: TextStyle(fontWeight: FontWeight.w500,fontSize: 11.sp,color: Colors.grey )),
                             ),),
 
                           ],),
@@ -266,14 +276,16 @@ Widget offersList({required int id,required String title,required List<OfferElem
                               borderRadius: BorderRadius.circular(D.default_10),
                               color: Colors.white,
                               boxShadow:[BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  offset:Offset(4,4),
-                                  blurRadius:4,
-                                  spreadRadius: 2
+                                  color: Colors.grey.withOpacity(0.2),
+                                  offset:Offset(0,0),
+                                  blurRadius:1,
+                                  spreadRadius: 1
                               )]
                           ),
                           child:TransitionImage(
-                            "",
+                            (data[index].offer.shop.offers!.where((element) => element.id==data[index].offer.id).first.photo??"").
+                            contains("https:")?(data[index].offer.shop.offers!.where((element) => element.id==data[index].offer.id).first.photo??"${'https://alefak.com/uploads/'}"+(data[index].offer.shop.photo??'')):
+                            (data[index].offer.shop.offers!.where((element) => element.id==data[index].offer.id).first.photo??("${'https://alefak.com/uploads/'}"+(data[index].offer.shop.photo??''))),
                             radius: D.default_10,
                             fit: BoxFit.cover,
                             width: double.infinity,
@@ -289,7 +301,15 @@ Widget offersList({required int id,required String title,required List<OfferElem
   void _onCategoryClick(int id,int index,BuildContext ctx){
     if(id==-1){
     }else{
-      MyUtils.navigate(ctx, ServiceProviderListScreen(ctx.read<CategoriesProviderModel>().categoriesList[index],ctx.read<CategoriesProviderModel>().categoriesList[index].name??''));
+      if(id==4){
+        MyUtils.navigate(ctx, ShopTabsScreen());
+        return;
+      }
+      if(id==5){
+        MyUtils.navigate(ctx, AdoptionScreen());
+        return;
+      }
+      MyUtils.navigate(ctx, ServiceProviderListScreen(ctx.read<CategoriesProviderModel>().categoriesList[index].id??0,ctx.read<CategoriesProviderModel>().categoriesList[index].name??''));
     }
   }
 }
