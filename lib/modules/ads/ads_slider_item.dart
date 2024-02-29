@@ -12,6 +12,7 @@ import 'package:alefakaltawinea_animals_app/views/cards/BuyCard/steps/StepOne.da
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../utils/my_utils/constants.dart';
@@ -35,9 +36,7 @@ class _AdsSliderItemState extends State<AdsSliderItem> {
         alignment:AlignmentDirectional.bottomCenter ,
         children: [
         Container(
-        margin: EdgeInsets.only(left: D.default_10,right: D.default_10),
         width: double.infinity,
-
         child:Column(children: [
           Expanded(child:
           InkWell(
@@ -87,25 +86,9 @@ class _AdsSliderItemState extends State<AdsSliderItem> {
             child: TransitionImage(
             widget.AdsItem.type_id=="0"?(widget.AdsItem.bannerPhoto??"").contains("https")?widget.AdsItem.bannerPhoto!:"https://alefak.com/uploads/${widget.AdsItem.bannerPhoto}":widget.AdsItem.bannerPhoto??"",
             fit: BoxFit.cover,
-            radius:D.default_15,
             width: double.infinity,
               backgroundColor: Colors.white,
           ),)),
-          Container(
-            height: D.default_40,
-            color: C.BASE_ORANGE,
-            width: double.infinity,
-            padding: EdgeInsets.only(top:D.default_10),
-
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(child: Text(
-                  widget.AdsItem.name??""
-                  ,style: S.h1(color:Colors.white),textAlign: TextAlign.center,),),
-              ],),
-          )
         ],),
 
         ),

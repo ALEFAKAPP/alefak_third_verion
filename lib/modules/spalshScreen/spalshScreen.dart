@@ -22,6 +22,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -89,32 +90,48 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     Constants.utilsProviderModel=utilsProviderModel;
 
 
-    return BaseScreen(
-        tag: "SplashScreen",
-        showSettings: false,
-        showBottomBar: false,
-        showWhatsIcon:false,
-        body: Stack(
-          alignment:AlignmentDirectional.center,
-          children: [
-            Container(width: double.infinity,height: double.infinity,color: C.BASE_BLUE,),
-            _logoTitleItem(),
-            Positioned(child:TransitionImage(
-              "assets/images/splash_animals.png",
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.fitHeight,
-            ),bottom: 0.0, )
+    return Scaffold(
+      backgroundColor: Color(0xfff9bf1d),
+      body: Stack(
+        alignment:AlignmentDirectional.topStart,
+        fit:StackFit.expand ,
+        children: [
+          Container(
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(height: 400.h,),
+                TransitionImage(
+                  "assets/images/splash_name_img.png",
+                  width:250.w ,
+                  height:90.h ,
+                )
+              ],),),
+          Container(
+            margin: EdgeInsets.only(bottom: 300.h),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25),bottomRight: Radius.circular(25)),
+              color: Color(0xfff9bf1d),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TransitionImage(
+                  "assets/images/splash_logo_img.png",
+                  width:250.w ,
+                  height:155.h ,
+                ),
+                SizedBox(height: 43.h,)
+              ],),
 
-          ],)
+          )
+        ],),
     );
   }
-  Widget _logoTitleItem(){
-    return TransitionImage(
-      "assets/images/logo_with_name.png",
-      width: D.default_300*0.9,
-      height: D.default_300*0.9,
-    );
-  }
+
 
 
   getAppInfo()async{

@@ -12,6 +12,7 @@ import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.da
 import 'package:alefakaltawinea_animals_app/utils/providers.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/my_utils/baseDimentions.dart';
@@ -44,130 +45,82 @@ class _ChoceLanguageScreenState extends State<ChoceLanguageScreen> {
   @override
   Widget build(BuildContext context) {
     utilsProviderModel = Provider.of<UtilsProviderModel>(context, listen: true);
-    return BaseScreen(
-        tag: "SplashScreen",
-        showSettings: false,
-        showBottomBar: false,
+    return Scaffold(
         body: Stack(
-          textDirection:TextDirection.rtl,
-          alignment: Alignment.center,
+          alignment:AlignmentDirectional.topStart,
+          fit:StackFit.expand ,
           children: [
-            _cartWithAnimalsImage(),
-            _blueCart(),
-            // SizedBox(height: 30,),
-            _textCart(),
-            _orangeCart(),
-            _dogImage(),
-            _bottons()
-          ],
-        ));
-  }
-  Widget _textCart(){
-    return Positioned(child: Container(
-        width: MediaQuery.of(context).size.width,
-        child:Padding(
-          padding: const EdgeInsets.only(top: 0.0),
-          child: Column(children: [
-            Text('أول بطاقة إلكترونية لخصومات العيادات البيطرية ومتاجر الحيوانات',style: S.h1(color: Colors.white,font: MyFonts.MYRIAD_ARABIC,fontSize: D.textSize(4)),textAlign: TextAlign.center),
-            Text('First digital discount card for veterinary clinics and pet shops',style: S.h3(color: Colors.white,font: MyFonts.MYRIAD_ARABIC,fontSize: D.textSize(4)),textAlign: TextAlign.center,)
+            Container(
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(height: 403.h,),
+                  TransitionImage(
+                    "assets/images/chose_lag_name_img.png",
+                    width:250.w ,
+                    height:90.h ,
+                  ),
+                  SizedBox(height: 30.h,),
+                  _button("عربي", () async {
+                    await utilsProviderModel!.setCurrentLocal(
+                        context, Locale("ar", "EG"));
+                    setState(() {
+                      getRegions();
+                      getAppInfo();
+                    });
+                    if(Constants.prefs!.getBool(Constants.IS_FIRST_TIME)??true){
+                      MyUtils.navigate(context, IntroWizardScreen());
+                    }else{
+                      print('tessss');
+                      MyUtils.navigate(context, LoginScreen());
+                    }
+                  },),
+                  SizedBox(
+                    height: 18.h,
+                  ),
+                  _button("English", () async {
 
-          ],),
-        )),bottom:MediaQuery.of(context).size.height * 0.53 ,);
-  }
+                    await utilsProviderModel!.setCurrentLocal(
+                        context, Locale("en", "US"));
+                    await getRegions();
+                    getAppInfo();
 
-  Widget _orangeCart() {
-    return Positioned(child: TransitionImage(
-      "assets/images/orange_splash_bg.png",
-      height: MediaQuery.of(context).size.height * 0.5,
-      width: MediaQuery.of(context).size.width,
-      fit: BoxFit.fill,
-    ),bottom: 0,);
-  }
+                    if(Constants.prefs!.getBool(Constants.IS_FIRST_TIME)??true){
+                      MyUtils.navigateReplaceCurrent(context, IntroWizardScreen());
+                    }else{
+                      MyUtils.navigate(context, LoginScreen());
+                    }        })
+                ],),),
+            Container(
+              margin: EdgeInsets.only(bottom: 300.h),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25),bottomRight: Radius.circular(25)),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                    image: AssetImage("assets/images/chage_lang_img.jpeg"))
+              ),
 
-  Widget _blueCart() {
-    return Positioned(child: TransitionImage(
-      "assets/images/blue_splash_bg.png",
-      height: MediaQuery.of(context).size.height * 0.65,
-      width: MediaQuery.of(context).size.width,
-      fit: BoxFit.fill,
-    ),bottom: 0,);
-  }
-  Widget _dogImage() {
-    return Positioned(child: TransitionImage(
-      "assets/images/spalsh_dog.png",
-      height: MediaQuery.of(context).size.height * 0.28,
-      fit: BoxFit.fitHeight,
-    ),bottom: 0,right: -D.default_40,);
-  }
-  Widget _cartWithAnimalsImage() {
-    return Positioned(child: TransitionImage(
-      "assets/images/cart_with_animals.png",
-      height: MediaQuery.of(context).size.height * 0.22,
-      fit: BoxFit.fitHeight,
-    ),top:D.default_10,);
-  }
 
-  Widget _bottons() {
-    return Positioned(child: Container(
+            ),
 
-      child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _button("عربي", () async {
-          await utilsProviderModel!.setCurrentLocal(
-              context, Locale("ar", "EG"));
-          setState(() {
-            getRegions();
-            getAppInfo();
-          });
-          if(Constants.prefs!.getBool(Constants.IS_FIRST_TIME)??true){
-            MyUtils.navigate(context, IntroWizardScreen());
-          }else{
-            print('tessss');
-            MyUtils.navigate(context, LoginScreen());
-          }
-        },
-
-        ),
-        SizedBox(
-          height: D.default_10,
-        ),
-        _button("English", () async {
-
-          await utilsProviderModel!.setCurrentLocal(
-              context, Locale("en", "US"));
-            await getRegions();
-            getAppInfo();
-
-          if(Constants.prefs!.getBool(Constants.IS_FIRST_TIME)??true){
-            MyUtils.navigateReplaceCurrent(context, IntroWizardScreen());
-          }else{
-            MyUtils.navigate(context, LoginScreen());
-          }        })
-      ],),),bottom: MediaQuery.of(context).size.height*0.30,);
+          ],));
   }
 
   Widget _button(String title, Function ontClick) {
     return InkWell(onTap: () {
       ontClick();
     }, child: Container(
-      padding: EdgeInsets.all(D.default_5),
-      height: D.height(7.5),
-      width: D.height(26),
+      padding: EdgeInsets.only(bottom:2.h),
+      height: 40.h,
+      width: 190.w,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(D.default_100),),
+        borderRadius: BorderRadius.all(Radius.circular(10),),
+        color: C.BASE_BLUE
       ),
-      child: Center(child: Container(
-        padding: EdgeInsets.all(D.default_5),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(D.default_100),),
-          color: Colors.white,
-        ),
-        child: Center(child: Text(title, style: S.h1Bold(fontSize:D.h2,color: C.BASE_BLUE,font: MyFonts.ArabicUiTextLight),
-          textAlign: TextAlign.center,),),
-
-      ),),
+      child: Center(child: Text(title, style: TextStyle(fontSize:25.sp,fontWeight: FontWeight.w500,color: Colors.white),
+        textAlign: TextAlign.center,),),
     ));
   }
 

@@ -12,7 +12,7 @@ import 'my_carts_model.dart';
 
 class CartApi{
   Future<MyResponse<String>> uploadCartImage(FormData body) async {
-    final url = "${Apis.UPLOAD_CART_IMAGE}";
+    final url = "${Apis.UPLOAD_CART_IMAGE_V2}";
     final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_POST, url,body: body);
     if (response != null && response.statusCode == 200) {
       return MyResponse<String>.fromJson(
@@ -22,7 +22,7 @@ class CartApi{
     }
   }
   Future<MyResponse<AddCartResponseModel>> addCart(Carts carts,String cobon) async {
-    final url = "${Apis.ADD_CART}";
+    final url = "${Apis.ADD_CART}?skip=0";
     carts.code=cobon;
     final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_POST, url,body: carts.toJson());
     if (response != null && response.statusCode == 200) {

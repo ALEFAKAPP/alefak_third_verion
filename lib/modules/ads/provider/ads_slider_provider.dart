@@ -36,5 +36,6 @@ class AdsSliderProviderModel with ChangeNotifier {
     adsSliderModelList.addAll(value);
     notifyListeners();
   }
+  autoSlide(){}
 
 }

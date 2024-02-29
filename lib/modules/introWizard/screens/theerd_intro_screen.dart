@@ -1,6 +1,7 @@
 import 'package:alefakaltawinea_animals_app/shared/constance/fonts.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/Material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/my_utils/baseDimentions.dart';
 import '../../../utils/my_utils/baseTextStyle.dart';
 import '../../../utils/my_utils/myColors.dart';
@@ -20,18 +21,39 @@ class _thirdIntroScreenState extends State<thirdIntroScreen> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      color: C.ADAPTION_COLOR,
+      color: C.BASE_ORANGE,
       child: Stack(
-        alignment:AlignmentDirectional.center,
+        fit: StackFit.expand,
         children: [
-          _title(),
-          Positioned(
-              child:TransitionImage(
-                "assets/images/intro_3_img.png",
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.fitWidth,
-              ) ,
-              bottom: D.height(7)),
+          Container(
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(height: 438.h,),
+                Text(tr("intro3_header"),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: C.BASE_BLUE,fontSize: 30.sp,fontWeight: FontWeight.w800),),
+                SizedBox(height: 15.h,),
+                Text(tr("intro3_title1"),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 19.sp,fontWeight: FontWeight.w400),),
+
+
+
+              ],),),
+          Container(
+            margin: EdgeInsets.only(bottom: 240.h),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25),bottomRight: Radius.circular(25)),
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage("assets/images/intro_third_img.jpeg"))
+            ),
+
+
+          ),
         ],
       ),
     );

@@ -81,9 +81,12 @@ class _HomeOffersAllListState extends State<HomeOffersAllList> {
                                 height: D.default_200,
                                 padding: EdgeInsets.all(D.default_10),
                                 decoration: BoxDecoration(
-                                  image: DecorationImage(image: NetworkImage((model.offers[index].offer.shop.bannerPhoto??"").contains("https:")?
-                                  (model.offers[index].offer.shop.bannerPhoto??""):
-                                  Apis.IMAGE_PATH1+(model.offers[index].offer.shop.bannerPhoto??"")),fit:BoxFit.cover),
+                                  image: DecorationImage(
+
+                                      image: NetworkImage(
+                                        ((model.offers[index].offer.shop.offers!.where((element) => element.id==model.offers[index].offer.id).first.photo)??"").isNotEmpty?
+                                        "${'https://alefak.com/uploads/'}"+((model.offers[index].offer.shop.offers!.where((element) => element.id==model.offers[index].offer.id).first.photo)??""):("${'https://alefak.com/uploads/'}"+model.offers[index].offer.shop.bannerPhoto.toString())??Res.IC_HOME_BLUE,
+                                      ),fit:BoxFit.cover),
                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(D.default_10),topRight: Radius.circular(D.default_10)),
                                   color: Colors.grey.withOpacity(0.2),
                                 ),),

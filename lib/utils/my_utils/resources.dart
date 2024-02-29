@@ -28,6 +28,9 @@ class Res{
   static String ONBOARDING_BG="assets/images/onboarding_bg.png";
   static String ADOPTION_NEW_IMAG="assets/images/adoption_new_img.png";
   static String PHONE_ICON="assets/images/phone.png";
+  static String IOS_BACK="assets/images/ios_back.png";
+
+
 
 
 

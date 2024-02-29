@@ -30,16 +30,16 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
         MyUtils.navigate(context, NewServiceProviderDetailsScreen(widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index]));
       },
     child: Container(
-      margin: EdgeInsets.all(D.default_10),
-      height: D.default_230,
+      margin: EdgeInsets.all(5.h),
+      height:195.h,
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(D.default_10),
           color: Colors.white,
           boxShadow:[BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              blurRadius:1,
-              spreadRadius:1
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius:5,
+              spreadRadius:5
           )]
       ),
       child: Stack(children: [
@@ -50,15 +50,15 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
           Container(
           padding: EdgeInsets.all(D.default_10),
       decoration: BoxDecoration(
-        image: DecorationImage(image: NetworkImage(widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].bannerPhoto!,
+        image: DecorationImage(image: NetworkImage(widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].bannerPhoto??"",
         ),fit:BoxFit.cover),
         borderRadius: BorderRadius.only(topLeft: Radius.circular(D.default_10),topRight: Radius.circular(D.default_10)),
         color: Colors.grey.withOpacity(0.2),
       ),)),
-          SizedBox(height: D.default_10,),
+          SizedBox(height:10.h,),
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal:D.default_10,vertical:D.default_2),
+            padding: EdgeInsets.only(left:10.w,right:10.w,),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(D.default_10),bottomRight: Radius.circular(D.default_10)),
               color: Colors.white,
@@ -68,7 +68,7 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
               children: [
                 Expanded(child: Text(
                   widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].name!
-                  ,style: TextStyle(fontWeight: FontWeight.w800,fontSize: 11.sp)),),
+                  ,style: TextStyle(fontWeight: FontWeight.w800,fontSize: 13.5.sp)),),
                 InkWell(
                   onTap: (){
                     widget.serviceProvidersProviderModel!.setFav(widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].id!);
@@ -85,20 +85,13 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
 
               ],),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: D.default_10),
-            child: (widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].offers??[]).isNotEmpty?Text(
-                  widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].offers![0].title??''
-                  ,style: TextStyle(color: Colors.grey[600],fontWeight: FontWeight.w500,fontSize: 11.sp)):SizedBox(),
-
-          ),
           SizedBox(height: 10.h,),
         ],),
         Positioned(child: Container(
           padding: EdgeInsets.all(D.default_5),
-          margin: EdgeInsets.all(D.default_10),
-          width: D.default_60,
-          height: D.default_60,
+          margin: EdgeInsets.all(10.h),
+          width: 50.h,
+          height: 50.h,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(D.default_10),
               color: Colors.white,

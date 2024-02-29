@@ -1,5 +1,8 @@
+import 'package:alefakaltawinea_animals_app/shared/constance/fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/Material.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -53,7 +56,7 @@ class _DeletAnimalPopupScreenState extends State<DeletAnimalPopupScreen> with In
                   },
                   child: Icon(Icons.cancel,color: Colors.red,size: D.default_30,),)],),
             SizedBox(height:D.default_10),
-            Text(widget.title,style: S.h4(),),
+            Text(widget.title,style: TextStyle(fontFamily:fontPrimary ,fontSize: 16.sp,fontWeight: FontWeight.w800)),
             SizedBox(height:D.default_10),
             Row(children: [
               Expanded(child: _acceptBtn(),),
@@ -87,7 +90,7 @@ class _DeletAnimalPopupScreenState extends State<DeletAnimalPopupScreen> with In
             ]),
         child: Text(
           tr("submit"),
-          style: S.h3(color: Colors.white),
+          style: TextStyle(color: Colors.white,fontFamily:fontPrimary ,fontSize: 16.sp,fontWeight: FontWeight.w800),
           textAlign: TextAlign.center,
         ),
       ),
@@ -117,7 +120,7 @@ class _DeletAnimalPopupScreenState extends State<DeletAnimalPopupScreen> with In
             ]),
         child: Text(
           tr("cancel"),
-          style: S.h3(color: Colors.white),
+          style: TextStyle(color: Colors.white,fontFamily:fontPrimary ,fontSize: 16.sp,fontWeight: FontWeight.w800),
           textAlign: TextAlign.center,
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:alefakaltawinea_animals_app/modules/offers/offers_list/service_p
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/elements/offer_widget.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
+import 'package:alefakaltawinea_animals_app/shared/constance/fonts.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseDimentions.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
@@ -19,10 +20,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
-
-
 import '../../../utils/my_utils/input _validation_mixing.dart';
-import '../../../utils/my_widgets/action_bar_widget.dart';
 import '../../cart/provider/cart_provider.dart';
 
 
@@ -39,6 +37,16 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
   final _controller = PageController();
   final _tabsController = PageController();
   bool isOnline=false;
+  double searchWidth=0;
+  TextEditingController _searchController=TextEditingController();
+  bool _isExpanded = false;
+  void _toggleWidth() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+      searchWidth = _isExpanded ? 225.w : 0; // Change width based on the toggle
+    });
+  }
+
 
   int _currentSliderPager=0;
   int _currentTab=0;
@@ -68,11 +76,16 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body:Stack(
+      resizeToAvoidBottomInset:false,
+      body: GestureDetector(
+        onTap: (){
+          FocusManager.instance.primaryFocus!.unfocus();
+        },
+        child: Stack(
           alignment: AlignmentDirectional.topEnd,
           children: [
             Container(
-              height: D.default_300,
+                height: 230.h,
                 color: Colors.grey[200],
                 child:PageView(
                   children: _sliderItem(),
@@ -85,118 +98,114 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                 )
             ),
             Container(
-              margin: EdgeInsets.only(top:D.default_250),
+              margin: EdgeInsets.only(top:195.h),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft:Radius.circular(D.default_20,),topRight:Radius.circular(D.default_20)),
+                borderRadius: BorderRadius.only(topLeft:Radius.circular(30,),topRight:Radius.circular(30)),
                 color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    spreadRadius: 3,
-                    blurRadius: 3,
-                    color: Colors.grey.withOpacity(0.2),
-                  )
-                ]
+
               ),
               child: Consumer<ServiceProviderDetailsProvider>(
-                builder: (context, provider,_) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    Padding(
-                      padding:  EdgeInsets.symmetric(vertical:D.default_20,horizontal: D.default_10),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                        Container(
-                          padding: EdgeInsets.all(D.default_5),
-                          margin: EdgeInsets.only(left:D.default_10,right: D.default_10),
-                          width: D.default_70,
-                          height: D.default_70,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(D.default_10),
-                              color: Colors.white,
-                              boxShadow:[BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  blurRadius:4,
-                                  spreadRadius: 2
-                              )]
-                          ),
-                          child:TransitionImage(
-                            (widget.serviceProviderData.photo??"").contains("https")?(widget.serviceProviderData.photo??""):"https://alefak.com/uploads/${(widget.serviceProviderData.photo??"")}",
-                            radius: D.default_10,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          ) ,
-                        ),
-                        Expanded(child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.serviceProviderData.name!
-                              ,style: TextStyle(fontSize: D.h2*1.2,fontWeight: FontWeight.w800),),
-                            links(),
-                          ],
-                        ))
-                      ],),
-                    ),
-                    Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: D.default_10),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: List.generate(isOnline?1:2, (index){
-                          return Expanded(
-                            child: Padding(
-                              padding:  EdgeInsets.symmetric(horizontal: D.default_20),
-                              child: InkWell(
-                                onTap: (){
-                                  setState(() {
-                                    _currentTab=index;
-                                    _tabsController.animateToPage(index,duration: Duration(milliseconds: 100), curve: Curves.ease);
-                                  });
-                                },
-                                child: Column(children: [
-                                  Text(index==0?tr("offers"):tr("address"),style: S.h1Bold(color: _currentTab==index?Colors.black:Colors.grey),),
-                                  SizedBox(height: D.default_8,),
-                                  Container(
-                                    width:D.default_180,
-                                    margin: EdgeInsets.symmetric(horizontal:D.default_20),
-                                    height: 2,color: _currentTab==index?C.BASE_BLUE:Colors.transparent,)
-                                ],),
+                  builder: (context, provider,_) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 20.h,),
+                        Padding(
+                          padding:  EdgeInsets.only(left:D.default_20,right: D.default_10),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(D.default_5),
+                                margin: EdgeInsets.only(left:D.default_10,right: D.default_10),
+                                width: 48.h,
+                                height: 48.h,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(D.default_10),
+                                    color: Colors.white,
+                                    boxShadow:[BoxShadow(
+                                        color: Colors.grey.withOpacity(0.1),
+                                        blurRadius:4,
+                                        spreadRadius: 2
+                                    )]
+                                ),
+                                child:TransitionImage(
+                                  (widget.serviceProviderData.photo??"").contains("https")?(widget.serviceProviderData.photo??""):"https://alefak.com/uploads/${(widget.serviceProviderData.photo??"")}",
+                                  radius: D.default_10,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ) ,
                               ),
-                            ),
-                          );
-                        }),),
-                    ),
-                      SizedBox(height: D.default_10,),
-                      Expanded(child: PageView(
-                      children:[
-                        (widget.serviceProviderData.offers??[]).isNotEmpty?
-                        ListView.separated(
-                          padding: EdgeInsets.zero,
-                            controller:provider.offersController ,
-                            itemBuilder: (ctx,index){
-                              return NewOfferWidget(
-                                  onSelect: (selectedOffer){
-                                    provider.onSelectOffer(selectedOffer,index);
-                                    provider.scrollToIndex();
-                                  },
-                                  offer: widget.serviceProviderData.offers![index],
-                                  isSelected: provider.selectedOfferIndex==index);
-                            },
-                            separatorBuilder: (ctx,index){
-                              return SizedBox(height: 5.h,);
-                            }, itemCount:(widget.serviceProviderData.offers??[]).length):Center(child: Text(tr("no_offers")),),
-                        isOnline?SizedBox():
-                        (widget.serviceProviderData.addresses??[]).isNotEmpty?
-                        ListView.separated(
-                            padding: EdgeInsets.zero,
-                            itemBuilder: (ctx,index){
-                              return addressItem(widget.serviceProviderData.addresses![index]);
-                            },
-                            separatorBuilder: (ctx,index){
-                              return SizedBox(height: 5.h,);
-                            },
-                            itemCount:(widget.serviceProviderData.addresses??[]).length):
+                              Expanded(child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.serviceProviderData.name!
+                                    ,style: TextStyle(fontSize: 17.sp,fontWeight: FontWeight.w800),),
+                                  links(),
+                                ],
+                              ))
+                            ],),
+                        ),
+                        SizedBox(height: 20.h,),
+                        Padding(
+                          padding:  EdgeInsets.symmetric(horizontal: D.default_10),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: List.generate(isOnline?1:2, (index){
+                              return Expanded(
+                                child: Padding(
+                                  padding:  EdgeInsets.symmetric(horizontal: 5.w),
+                                  child: InkWell(
+                                    onTap: (){
+                                      setState(() {
+                                        _currentTab=index;
+                                        _tabsController.animateToPage(index,duration: Duration(milliseconds: 100), curve: Curves.ease);
+                                      });
+                                    },
+                                    child: Column(children: [
+                                      Text(index==0?tr("offers"):tr("address"),style: TextStyle(color: _currentTab==index?Colors.black:Colors.grey,fontSize: 18.sp,fontWeight: FontWeight.w800),),
+                                      SizedBox(height: 3.h,),
+                                      Container(
+                                        width:isOnline?double.infinity:D.default_180,
+                                        margin: EdgeInsets.symmetric(horizontal:D.default_20),
+                                        height: 2.2,color: _currentTab==index?C.BASE_BLUE:Colors.transparent,)
+                                    ],),
+                                  ),
+                                ),
+                              );
+                            }),),
+                        ),
+                        SizedBox(height: 13.h,),
+                        Expanded(child: PageView(
+                          children:[
+                            (widget.serviceProviderData.offers??[]).where((element) => (element.title??"").contains(_searchController.text)).toList().isNotEmpty?
+                            ListView.separated(
+                                padding: EdgeInsets.zero,
+                                controller:provider.offersController ,
+                                itemBuilder: (ctx,index){
+                                  return NewOfferWidget(
+                                      onSelect: (selectedOffer){
+                                        provider.onSelectOffer(selectedOffer,index);
+                                        provider.scrollToIndex();
+                                      },
+                                      offer: (widget.serviceProviderData.offers??[]).where((element) => (element.title??"").contains(_searchController.text)).toList()[index],
+                                      isSelected: provider.selectedOfferIndex==index);
+                                },
+                                separatorBuilder: (ctx,index){
+                                  return SizedBox(height: 5.h,);
+                                }, itemCount:(widget.serviceProviderData.offers??[]).where((element) => (element.title??"").contains(_searchController.text)).toList().length):Center(child: Text(tr("no_offers")),),
+                            isOnline?SizedBox():
+                            (widget.serviceProviderData.addresses??[]).isNotEmpty?
+                            ListView.separated(
+                                padding: EdgeInsets.zero,
+                                itemBuilder: (ctx,index){
+                                  return addressItem(widget.serviceProviderData.addresses![index]);
+                                },
+                                separatorBuilder: (ctx,index){
+                                  return SizedBox(height: 5.h,);
+                                },
+                                itemCount:(widget.serviceProviderData.addresses??[]).length):
                             Column(children: [
                               addressItem(AddressModel(
                                 phone:widget.serviceProviderData.phone,
@@ -208,89 +217,137 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
 
                               ))
                             ],)
-                      ],
-                      physics: NeverScrollableScrollPhysics(),
-                      controller: _tabsController,
-                      onPageChanged: (currentpage) {
-                        setState(() {
-                          _currentTab=currentpage;
-                        });
-                      },
-                    ),),
-                    (provider.serviceProviderData.offers??[]).isNotEmpty
-                        ?Container(
-                      width: double.infinity,
-                        decoration:BoxDecoration(
-                          color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                spreadRadius: 3,
-                                blurRadius: 3,
-                                color: Colors.grey.withOpacity(0.2),
-                                //offset: Offset(0,5)
-                              )
-                            ]
-                        ),
-                      padding:  EdgeInsets.all(D.default_20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("${tr("offer_terms")}:",style: TextStyle(color: Color(0xFF565656),fontWeight:FontWeight.w800,fontSize:D.h2*1.2 ),),
-                          SizedBox(height: D.default_8,),
-                          Text((List.generate(provider.selectedOffer.features!.length, (index) =>UtilsProviderModel().isArabic?provider.selectedOffer.features![index].ar:provider.selectedOffer.features![index].en)).join(",").replaceAll("-",""),
-                            style: TextStyle(color: Color(0xFF686868),fontSize: D.h2),)
-                        ],),
-                    ):SizedBox(),
-
-
-                      (provider.serviceProviderData.offers??[]).isNotEmpty?
-                      Container(
-                      color:Colors.white,
-                      padding: EdgeInsets.symmetric(vertical:D.default_10),
-                      child: Column(children: [
-                      InkWell(
-                        onTap: (){
-                          provider.showBottomSheet(context);
-                        },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal:D.default_50),
-                          padding: EdgeInsets.all(D.default_10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(D.default_15),
-                              color: C.BASE_BLUE,
-                              boxShadow:[BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  offset:Offset(1,1),
-                                  blurRadius:1,
-                                  spreadRadius: 0.5
-                              )]
+                          ],
+                          physics: NeverScrollableScrollPhysics(),
+                          controller: _tabsController,
+                          onPageChanged: (currentpage) {
+                            setState(() {
+                              _currentTab=currentpage;
+                            });
+                          },
+                        ),),
+                        (provider.serviceProviderData.offers??[]).isNotEmpty
+                            ?Container(
+                          height: 77.h,
+                          width: double.infinity,
+                          decoration:BoxDecoration(
+                            color: Colors.white,
                           ),
-                          child: Center(child: Text(tr("use_offer"),style: S.h1Bold(color: Colors.white),),),
-                        ),
-                      ),SizedBox(height: D.default_50,)
-                    ],),):SizedBox()
+                          padding:  EdgeInsets.symmetric(horizontal:D.default_20,vertical: 2.h),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("${tr("offer_terms")}:",style: TextStyle(color: Color(0xFF565656),fontWeight:FontWeight.w800,fontSize:15.sp ),),
+                              Expanded(child: SingleChildScrollView(
+                                child: Text((List.generate(provider.selectedOffer.features!.length, (index) =>UtilsProviderModel().isArabic?provider.selectedOffer.features![index].ar:provider.selectedOffer.features![index].en)).join("\n"),
 
-                  ],);
-                }
+                                  style: TextStyle(color: Color(0xFF686868),fontSize: 14.sp,height: 1.4),),
+                              ),)
+                            ],),
+                        ):SizedBox(),
+
+
+                        (provider.serviceProviderData.offers??[]).isNotEmpty?
+                        Container(
+                          color:Colors.white,
+                          padding: EdgeInsets.symmetric(vertical:D.default_10),
+                          child: Column(children: [
+                            InkWell(
+                              onTap: (){
+                                provider.showBottomSheet(context);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top:1.h,left: 20.w,right: 20.w),
+                                padding: EdgeInsets.all(10.h),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: C.BASE_BLUE,
+                                    boxShadow:[BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        offset:Offset(1,1),
+                                        blurRadius:1,
+                                        spreadRadius: 0.5
+                                    )]
+                                ),
+                                child: Center(child: Text(tr("use_offer"),style: TextStyle(color: Colors.white,fontSize: 16.sp,fontWeight: FontWeight.w800),),),
+                              ),
+                            ),SizedBox(height:20.h,)
+                          ],),):SizedBox()
+
+                      ],);
+                  }
               ),
             ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical:40.h,horizontal: 10.w),
-              padding: EdgeInsets.all(2.h),
+            Row(
+              mainAxisAlignment:MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(vertical:40.h,horizontal: 10.w),
+                  padding: EdgeInsets.all(2.h),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: Colors.white.withOpacity(0.8),
 
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: Colors.white.withOpacity(0.5),
+                  ),
+                  child: Row(children: [
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: (){
+                        if(_isExpanded){
+                          FocusManager.instance.primaryFocus!.unfocus();
+                        }
+                        if(_searchController.text.isEmpty){
+                          _toggleWidth();
+                        }
+                      },
+                      icon: Icon(Icons.search,size: 25,),),
+                    AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
+                      width: searchWidth,
+                      child: TextField(
+                        controller: _searchController,
+                        style: TextStyle(color:Colors.black ,fontSize: 12.sp,fontFamily:fontPrimaryBold),
+                        decoration: InputDecoration(
+                          hintText: tr("search_for_offer"),
+                          hintStyle: TextStyle(color: Colors.grey,fontSize: 12.sp,fontFamily:fontPrimaryBold),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color:Colors.transparent),
+                          ),
+                          border: UnderlineInputBorder(
+                              borderSide: BorderSide(color:Colors.transparent)),
+                          errorStyle: S.h4(color: Colors.red),
+                          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        ),
+                        onChanged: (value){
+                          setState(() {
 
-              ),
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: (){
-                  Navigator.pop(context);
-                },
-                icon: Icon(Icons.arrow_forward_ios,size: 20,),),),
+                          });
+                        },
+
+                      ),
+                    )
+                  ],),),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical:40.h,horizontal: 10.w),
+                  padding: EdgeInsets.all(2.h),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: Colors.white.withOpacity(0.8),
+
+                  ),
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: (){
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_forward_ios,size: 20,),),)
+              ],),
           ],
-        )
+        ),
+      ),
     );
   }
   List<Widget >_sliderItem(){
@@ -372,7 +429,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                 Row(
                   children: [
                     SizedBox(width: D.default_8,),
-                    Expanded(child: Text(UtilsProviderModel().isArabic?address.title_ar??widget.serviceProviderData.name??"":address.title_en??widget.serviceProviderData.name??"",style: TextStyle(fontSize: D.h2,fontWeight: FontWeight.w800),)),
+                    Expanded(child: Text(UtilsProviderModel().isArabic?address.title_ar??widget.serviceProviderData.name??"":address.title_en??widget.serviceProviderData.name??"",style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w800,overflow:TextOverflow.ellipsis ),)),
                   ],
                 ),
                 SizedBox(height: D.default_8,),
@@ -384,7 +441,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                     children: [
                       Icon(Icons.location_on_outlined,color: C.BASE_BLUE,size: 18,),
                       SizedBox(width: D.default_8,),
-                      Expanded(child: Text(UtilsProviderModel().isArabic?address.address??"":address.addressEn??'',style: TextStyle(color: Color(0xFF565656),fontSize: D.h3,fontWeight: FontWeight.w800),)),
+                      Expanded(child: Text(UtilsProviderModel().isArabic?address.address??"":address.addressEn??'',style: TextStyle(color: Color(0xFF565656),fontSize: 12.sp,fontWeight: FontWeight.w800),)),
                     ],
                   ),
                 ),
@@ -397,7 +454,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                     children: [
                       Icon(Icons.phone,color: C.BASE_BLUE,size: 18,),
                       SizedBox(width: D.default_8,),
-                      Expanded(child: Text((address.contactPhone??"").isNotEmpty?address.contactPhone!:address.phone??"",style: TextStyle(color: Color(0xFF565656),fontSize: D.h3,fontWeight: FontWeight.w800),),)
+                      Expanded(child: Text((address.contactPhone??"").isNotEmpty?address.contactPhone!:address.phone??"",style: TextStyle(color: Color(0xFF565656),fontSize: 12.sp,fontWeight: FontWeight.w800),),)
                     ],
                   ),
                 ),

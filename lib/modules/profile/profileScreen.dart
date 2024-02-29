@@ -1,5 +1,6 @@
 import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
+import 'package:alefakaltawinea_animals_app/modules/fav/favourite_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/homeTabsScreen/provider/bottom_bar_provider_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/intro/intro_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/data/user_data.dart';
@@ -22,6 +23,7 @@ import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.da
 import 'package:alefakaltawinea_animals_app/views/cards/BuyCard/steps/StepOne.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -124,36 +126,48 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
   }
 
   Widget _ProfileScreen(){
-    return Column(
-      children:[
-        ActionBarWidget("",context,backgroundColor: Colors.white,textColor: C.BASE_BLUE,enableShadow: false,),
-        Expanded(child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _Logout(),
-            _tapsPart(),
-            selectedTap==0?Expanded(child: _profileDataScreen()):Expanded(child: cartProvider!.myCarts.isNotEmpty?_myCartsScreen():_noCarts())
-          ],
-        ))]
-      ,);
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children:[
+          ActionBarWidget("",context,backgroundColor: Colors.white,textColor: C.BASE_BLUE,enableShadow: false,),
+          Expanded(child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              _Logout(),
+              _tapsPart(),
+              selectedTap==0?Expanded(child: _profileDataScreen()):
+              selectedTap==1?
+              Expanded(child: cartProvider!.myCarts.isNotEmpty?_myCartsScreen():_noCarts()):
+              Expanded(child:FavScreen())
+            ],
+          ))]
+        ,),
+    );
   }
   Widget _tapsPart(){
     return Container(
       height: D.default_50,
-      margin: EdgeInsets.only(left: D.default_25,right: D.default_25),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-        _myInfoBtn((){
-        setState(() {
-          selectedTap=0;
-        });
+        Expanded(
+          child: _myInfoBtn((){
+          setState(() {
+            selectedTap=0;
+          });
       },tr("my_info")),
-        _myCartsBtn((){
-        setState(() {
-          selectedTap=1;
-        });
-      },tr("my_carts"))
+        ),
+        Expanded(child: _myCartsBtn((){
+          setState(() {
+            selectedTap=1;
+          });
+        },tr("my_carts")),),
+         Expanded(child:  _myFavBtn((){
+           setState(() {
+             selectedTap=2;
+           });
+         },tr("fav")))
     ],),);
   }
   Widget _profileDataScreen(){
@@ -244,10 +258,10 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
               return tr("enter_name");
             }
           },
-          style: S.h3(color: Colors.black87),
+          style: TextStyle(color: Colors.black87,fontSize: 14.sp,fontWeight: FontWeight.w500),
           decoration: InputDecoration(
             labelText: tr("full_name"),
-            labelStyle: S.h2(color: Colors.grey),
+            labelStyle: TextStyle(color: Colors.black45,fontSize: 18.sp,fontWeight:FontWeight.w700),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
@@ -278,10 +292,10 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
               return tr("enter_email");
             }
           },
-          style: S.h3(color: Colors.black87),
+          style: TextStyle(color: Colors.black87,fontSize: 14.sp,fontWeight: FontWeight.w500),
           decoration: InputDecoration(
             labelText: tr("email"),
-            labelStyle: S.h2(color: Colors.grey),
+            labelStyle: TextStyle(color: Colors.black45,fontSize: 18.sp,fontWeight:FontWeight.w700),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
@@ -319,7 +333,7 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
           style: S.h4(color: Colors.black),
           decoration: InputDecoration(
               labelText: tr("enter__new_password"),
-              labelStyle: S.h2(color: Colors.grey),
+              labelStyle: S.h1(color: Colors.grey),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
@@ -370,7 +384,7 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
           style: S.h4(color: Colors.black),
           decoration: InputDecoration(
               labelText: tr("enter_old_password"),
-              labelStyle: S.h2(color: Colors.grey),
+              labelStyle: S.h1(color: Colors.grey),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
@@ -419,10 +433,10 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
               return tr("confirm_password");
             }
           },
-          style: S.h4(color: Colors.black),
+          style: S.h2(color: Colors.black),
           decoration: InputDecoration(
               labelText: tr("confirm_password"),
-              labelStyle: S.h2(color: Colors.grey),
+              labelStyle: S.h1(color: Colors.grey),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
@@ -431,7 +445,7 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
               ),
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: C.BASE_BLUE)),
-              errorStyle: S.h4(color: Colors.red),
+              errorStyle: S.h2(color: Colors.red),
               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
               suffixIcon: IconButton(
                 onPressed: () {
@@ -471,10 +485,10 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
               return tr("enter_phone");
             }
           },
-          style: S.h3(color: Colors.black87),
+          style: TextStyle(color: Colors.black87,fontSize: 14.sp,fontWeight: FontWeight.w500),
           decoration: InputDecoration(
             labelText: tr("phone"),
-            labelStyle: S.h2(color: Colors.grey),
+            labelStyle: TextStyle(color: Colors.black45,fontSize: 18.sp,fontWeight:FontWeight.w700),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
@@ -483,7 +497,7 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
             ),
             border: UnderlineInputBorder(
                 borderSide: BorderSide(color: C.BASE_BLUE)),
-            errorStyle: S.h4(color: Colors.red),
+            errorStyle: S.h2(color: Colors.red),
             contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           ),
           keyboardType: TextInputType.phone,
@@ -562,9 +576,10 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
             },
             readOnly: true,
             enabled: false,
+            style: TextStyle(color: Colors.black87,fontSize: 14.sp,fontWeight: FontWeight.w500),
             decoration: InputDecoration(
               labelText: tr("select_city"),
-              labelStyle: S.h2(color: Colors.grey),
+              labelStyle: TextStyle(color: Colors.black45,fontSize: 18.sp,fontWeight:FontWeight.w700),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
@@ -573,7 +588,7 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
               ),
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: C.BASE_BLUE)),
-              errorStyle: S.h4(color: Colors.red),
+              errorStyle: S.h2(color: Colors.red),
               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
             ),
             keyboardType: TextInputType.text,
@@ -587,6 +602,7 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
   Widget _Logout(){
     return Container(
       height: D.default_80,
+
       margin: EdgeInsets.all(D.default_15),
       child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -598,14 +614,14 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
         InkWell(onTap: ()async{
           await userProviderModel!.logout(context);
        },child: Container(
-          padding: EdgeInsets.only(left:D.default_10,right:D.default_10,top:D.default_5,bottom:D.default_5),
+            padding: EdgeInsets.only(left:10.w,right:10.w,top:5.h,bottom:5.h),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(D.default_5),
-            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+            color: Color(0xfff9bf1d).withOpacity(0.3),
 
           ),
           child: Row(children: [
-            Text(tr("logout"),style: S.h4(color:Colors.black),),
+            Text(tr("logout"),style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w500,color:Colors.black),),
             Icon(Icons.logout,color: Colors.black,size: D.default_20,)
           ],),))
     ],),);
@@ -643,7 +659,7 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
               ]),
           child: Text(
             tr("edit"),
-            style: S.h2(color: Colors.white),
+            style: TextStyle(fontSize: 16.sp,color: Colors.white),
             textAlign: TextAlign.center,
           ),
         ),
@@ -689,67 +705,94 @@ class _ProfileScreenState extends State<ProfileScreen> with InputValidationMixin
     );
   }
   Widget _myCartsBtn(Function onTap,String title) {
-    return Center(
-      child: InkWell(
-        onTap: () {
-          onTap();
-        },
-        child: Container(
-          width: D.default_130,
-          margin: EdgeInsets.only(left:D.default_30,right: D.default_30),
-          padding: EdgeInsets.only(
-              left: D.default_10,
-              right: D.default_10,
-              top: D.default_10,
-              bottom: D.default_10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(D.default_10),
-              color: selectedTap==1?C.BASE_BLUE:Colors.grey[600],
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: Offset(1, 1),
-                    blurRadius: 1,
-                    spreadRadius: 1)
-              ]),
-          child: Text(
-            title,
-            style: S.h2(color: Colors.white),
-            textAlign: TextAlign.center,
-          ),
+    return InkWell(
+      onTap: () {
+        onTap();
+      },
+      child: Container(
+        width: D.default_130,
+        margin: EdgeInsets.only(left:D.default_30,right: D.default_30),
+        padding: EdgeInsets.only(
+            left: D.default_10,
+            right: D.default_10,
+            top: D.default_10,
+            bottom: D.default_10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(D.default_10),
+            color: selectedTap==1?C.BASE_BLUE:Colors.grey[600],
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  offset: Offset(1, 1),
+                  blurRadius: 1,
+                  spreadRadius: 1)
+            ]),
+        child: Text(
+          title,
+          style: TextStyle(fontSize: 14.sp,color: Colors.white),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+  Widget _myFavBtn(Function onTap,String title) {
+    return InkWell(
+      onTap: () {
+        onTap();
+      },
+      child: Container(
+        width: D.default_130,
+        margin: EdgeInsets.only(left:D.default_30,right: D.default_30),
+        padding: EdgeInsets.only(
+            left: D.default_10,
+            right: D.default_10,
+            top: D.default_10,
+            bottom: D.default_10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(D.default_10),
+            color: selectedTap==2?C.BASE_BLUE:Colors.grey[600],
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  offset: Offset(1, 1),
+                  blurRadius: 1,
+                  spreadRadius: 1)
+            ]),
+        child: Text(
+          title,
+          style: TextStyle(fontSize: 14.sp,color: Colors.white),
+          textAlign: TextAlign.center,
         ),
       ),
     );
   }
   Widget _myInfoBtn(Function onTap,String title) {
-    return Center(
-      child: InkWell(
-        onTap: () {
-          onTap();
-        },
-        child: Container(
-          width: D.default_130,
-          margin: EdgeInsets.only(left:D.default_30,right: D.default_30),
-          padding: EdgeInsets.only(
-              left: D.default_10,
-              right: D.default_10,
-              top: D.default_10,
-              bottom: D.default_10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(D.default_10),
-              color: selectedTap==0?C.BASE_BLUE:Colors.grey[600],
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: Offset(1, 1),
-                    blurRadius: 1,
-                    spreadRadius: 1)
-              ]),
-          child: Text(
-            title,
-            style: S.h2(color: Colors.white),
-            textAlign: TextAlign.center,
-          ),
+    return InkWell(
+      onTap: () {
+        onTap();
+      },
+      child: Container(
+        width: D.default_130,
+        margin: EdgeInsets.only(left:D.default_30,right: D.default_30),
+        padding: EdgeInsets.only(
+            left: D.default_10,
+            right: D.default_10,
+            top: D.default_10,
+            bottom: D.default_10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(D.default_10),
+            color: selectedTap==0?C.BASE_BLUE:Colors.grey[600],
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  offset: Offset(1, 1),
+                  blurRadius: 1,
+                  spreadRadius: 1)
+            ]),
+        child: Text(
+          title,
+          style: TextStyle(fontSize: 14.sp,color: Colors.white),
+          textAlign: TextAlign.center,
         ),
       ),
     );
@@ -825,7 +868,7 @@ Widget _noCarts(){
               ]),
           child: Text(
             tr("add_cart"),
-            style: S.h1(color: Colors.white),
+            style: TextStyle(fontSize: 14.sp,color: Colors.white),
             textAlign: TextAlign.center,
           ),
         ),
@@ -862,7 +905,7 @@ Widget _noCarts(){
             children: [
             Text(
               tr("delete_account"),
-              style: S.h2(color: Colors.white),
+              style: TextStyle(fontSize: 16.sp,color: Colors.white),
               textAlign: TextAlign.center,
             ),
             SizedBox(width: D.default_5,),

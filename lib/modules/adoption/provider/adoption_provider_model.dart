@@ -122,7 +122,7 @@ class AdoptionProviderModel with ChangeNotifier{
     MyResponse<dynamic> response =
     await adoptionApi.editAdoptionAnimal(body,animalId);
     if (response.status == Apis.CODE_SUCCESS){
-      getMyAnimals();
+      await getMyAnimals();
       setIsLoading(false);
       Navigator.of(ctx).pop();
       await Fluttertoast.showToast(msg: "${response.msg}");
@@ -140,7 +140,7 @@ class AdoptionProviderModel with ChangeNotifier{
     MyResponse<dynamic> response =
     await adoptionApi.deleteAdoptionAnimal(animalId);
     if (response.status == Apis.CODE_SUCCESS){
-      getMyAnimals();
+      await getMyAnimals();
       setIsLoading(false);
       Navigator.of(ctx).pop();
       await Fluttertoast.showToast(msg: "${response.msg}");

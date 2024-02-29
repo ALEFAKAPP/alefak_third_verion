@@ -46,6 +46,7 @@ class CategoriesProviderModel with ChangeNotifier {
     if (response.status == Apis.CODE_SUCCESS &&response.data!=null){
       homeOffersLists.clear();
       homeOffersLists.addAll((response.data as HomeOffersModel).data);
+
       setIsLoading(false);
     }else if(response.status == Apis.CODE_SUCCESS &&response.data==null){
       setIsLoading(false);

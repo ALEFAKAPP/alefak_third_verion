@@ -13,9 +13,11 @@ import 'package:alefakaltawinea_animals_app/utils/my_widgets/laoding_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/servies/firebase/analytics_helper.dart';
+import '../../shared/constance/fonts.dart';
 import '../../utils/my_widgets/action_bar_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -46,20 +48,21 @@ class _LoginScreenState extends State<LoginScreen> with  InputValidationMixin{
     return BaseScreen( showSettings: false, showBottomBar: false, tag: "LoginScreen",
       body: userProviderModel!.isLoading?LoadingProgress():
       Column(children: [
-        ActionBarWidget(
+        /*ActionBarWidget(
             "", context,
             enableShadow:false,
             showSetting:false,
             textColor:C.BASE_BLUE,
             backgroundColor:Colors.white
 
-        ),
+        ),*/
+        SizedBox(height: 80.h,),
         Expanded(child: SingleChildScrollView(child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
                 margin: EdgeInsets.only(top:D.default_50,bottom: D.default_30),
-                child: Center(child: Text(tr("welcome_back"),style: S.h1Bold(color: C.BASE_BLUE),textAlign: TextAlign.center,),)),
+                child: Center(child: Text(tr("welcome_back"),style: TextStyle(color: C.BASE_BLUE,fontSize: 20.sp,fontFamily: fontPrimary,fontWeight: FontWeight.w900),textAlign: TextAlign.center,),)),
             _header(),
             Container(
               padding: EdgeInsets.all(D.default_50),
@@ -73,7 +76,6 @@ class _LoginScreenState extends State<LoginScreen> with  InputValidationMixin{
                     SizedBox(height: D.default_10,),
                     _loginBtn(),
                     dont_have_account()
-
                   ],),),)
           ],),))
       ],),);
@@ -82,13 +84,13 @@ class _LoginScreenState extends State<LoginScreen> with  InputValidationMixin{
     return Container(child:Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(tr("login_guest"),style: S.h5(color: Colors.grey,fontSize: D.textSize(5)),),
+        Text(tr("login_guest"),style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 18.sp),),
         SizedBox(width: D.default_10,),
         InkWell(
           onTap: (){
             MyUtils.navigate(context, NewMainCategoriesScreen());
           },
-          child: Text(tr("guest"),style: S.h1(color: C.BASE_BLUE,fontSize: D.textSize(5)),),)
+          child: Text(tr("guest"),style: TextStyle(color: C.BASE_BLUE,fontWeight: FontWeight.w600,fontSize: 18.sp),),)
       ],));
   }
   Widget _loginBtn(){
@@ -110,56 +112,11 @@ class _LoginScreenState extends State<LoginScreen> with  InputValidationMixin{
                 spreadRadius: 2
             )]
         ),
-        child: Text(tr("login"),style: S.h1(color: Colors.white),textAlign:TextAlign.center ,),),),);
+        child: Text(tr("login"),style: TextStyle(color: Colors.white,fontWeight: FontWeight.w800,fontSize: 18.sp),textAlign:TextAlign.center ,),),),);
   }
   Widget _header(){
     return Container(
-      padding: EdgeInsets.all(D.default_10),
-      child: Center(child: Text(tr("login_header"),style: S.h1Bold(color: C.BASE_BLUE),textAlign: TextAlign.center,),),);
-  }
-  Widget _password(){
-    return Container(
-        width: double.infinity,
-        child: TextFormField(
-          controller: _passwordController,
-          validator:(password){
-            if(isFieldNotEmpty(password!)){
-              if(isPasswordValide(password)){
-                return null;
-              }else{
-                return tr("password_length");
-              }
-            }else{
-              return tr("enter_password");
-            }
-          } ,
-          style: S.h2(color: Colors.black),
-          decoration:  InputDecoration(
-            labelText: tr("enter_password"),
-            labelStyle:S.h2(color: Colors.grey) ,
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
-            ) ,
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: C.BASE_BLUE),
-            ) ,
-            border: UnderlineInputBorder(
-                borderSide: BorderSide(color: C.BASE_BLUE)
-            ),
-              suffixIcon: IconButton(onPressed: (){
-                setState(() {
-                  passwordobsecure?passwordobsecure=false:passwordobsecure=true;
-                });
-              },icon: Icon((passwordobsecure) ? Icons.visibility_off : Icons.visibility,color: Colors.grey,),),
-            errorStyle: S.h4(color: Colors.red),
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          ),
-          keyboardType: TextInputType.text,
-          obscureText: passwordobsecure,
-          cursorColor: C.BASE_BLUE,
-          autofocus: false,
-        )
-    );
+      child: Center(child: Text(tr("login_header"),style: TextStyle(color: C.BASE_BLUE,fontSize: 20.sp,fontFamily: fontPrimary,fontWeight: FontWeight.w900)),),);
   }
   Widget _phone(){
     return Container(
@@ -193,14 +150,6 @@ class _LoginScreenState extends State<LoginScreen> with  InputValidationMixin{
 
     );
  }
-  Widget _forgetPassword(){
-    return InkWell(onTap: (){
-      // MyUtils.navigate(context, PhoneScreen(tr("forget_password_title"),"ForgetPasswordScreen" ));
-    },child: Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(D.default_10),
-      child: Text(tr("forget_password"),style: S.h4(color: Colors.black),textAlign:TextAlign.end,),),);
-  }
   void _onLoginClicked(){
     if (_loginFormGlobalKey.currentState!.validate()) {
       _loginFormGlobalKey.currentState!.save();

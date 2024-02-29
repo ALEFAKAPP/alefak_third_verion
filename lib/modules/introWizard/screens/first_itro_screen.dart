@@ -6,6 +6,8 @@ import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.da
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/Material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../utils/my_utils/baseTextStyle.dart';
 
@@ -24,64 +26,41 @@ class _FirstIntroScreenState extends State<FirstIntroScreen> {
       height: MediaQuery.of(context).size.height,
       color: C.BASE_ORANGE,
       child: Stack(
+        fit: StackFit.expand,
         children: [
-          _mobileImg(),
-          _blueCircuil(),
-          _dogImg(),
-          _title()
+          Container(
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(height: 410.h,),
+                Text("بطاقة أليفك التعاونية",style: TextStyle(fontSize: 24.sp,fontWeight: FontWeight.w800),),
+                Text("أول بطاقة رقمية للرعاية البيطرية",style: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w500),),
+                SizedBox(height: 19.h,),
+                TransitionImage(
+                  "assets/images/intro_card_img.png",
+                  fit: BoxFit.cover,
+                  height: 168,
+                ),
+                SizedBox(height: 10.h,),
+
+              ],),),
+          Container(
+            margin: EdgeInsets.only(bottom: 240.h),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25),bottomRight: Radius.circular(25)),
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage("assets/images/intro_first_screen_img.jpeg"))
+            ),
+
+
+          ),
         ],
       ),
     );
   }
 
-  Widget _blueCircuil() {
-    return Positioned(
-      child: TransitionImage(
-        "assets/images/intro_1_blue_circuil.png",
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.3,
-        fit: BoxFit.fill,
-      ),
-      bottom: 0,
-    );
-  }
 
-  Widget _dogImg() {
-    return Positioned(
-      child: TransitionImage(
-        "assets/images/intro_1_dog_img.png",
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.15,
-        fit: BoxFit.fitHeight,
-      ),
-      bottom: MediaQuery.of(context).size.height * 0.26,
-    );
-  }
-  Widget _mobileImg() {
-    return Positioned(
-      child: TransitionImage(
-        "assets/images/intro_1_mobile_img.png",
-        width:D.width(100),
-        fit: BoxFit.fitWidth,
-      ),
-      bottom: D.height(43),
-    );
-  }
-  Widget _title(){
-
-    return Positioned(child:Container(
-      width:MediaQuery.of(context).size.width ,
-      child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-      Text(tr("intro1_title"),style:S.h1Bold(color:Colors.white,fontSize: D.textSize(6),font: MyFonts.VEXA),textAlign: TextAlign.center,),
-      SizedBox(height: D.default_15,),
-      Text(tr("intro1_description"),style:S.h3(color:Colors.white,font: MyFonts.ALMARIA,fontSize: D.textSize(3)),textAlign:TextAlign.center),
-        SizedBox(height: D.default_10,),
-        Text(tr("intro1_description2"),style:S.h4(color:Colors.white,font:MyFonts.ALMARIA,fontSize: D.textSize(2.5)),textAlign:TextAlign.center),
-        SizedBox(height: D.default_10,),
-
-      ],),),bottom: MediaQuery.of(context).size.height * 0.09,);
-  }
 }

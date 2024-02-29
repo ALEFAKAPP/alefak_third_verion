@@ -9,7 +9,10 @@ import 'package:alefakaltawinea_animals_app/utils/my_widgets/action_bar_widget.d
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/my_widgets/adoption_alert.dart';
 import 'data/animal_pager_list_model.dart';
@@ -36,135 +39,144 @@ class _AnimalDetailsScreenState extends State<AnimalDetailsScreen> {
     adoptionProviderModel=Provider.of<AdoptionProviderModel>(context,listen: true);
     return BaseScreen(
       showSettings: false,
-      showBottomBar: true,
+      showBottomBar: false,
+      showWhatsIcon: false,
+      padding: EdgeInsets.zero,
+
       tag: "AdoptionScreen",
-      body: Column(
+      body: Stack(
+        alignment:AlignmentDirectional.topEnd ,
         children: [
-          ActionBarWidget("", context,backgroundColor: C.ADAPTION_COLOR,),
-          Expanded(
-              child: Container(
-                color: C.ADAPTION_COLOR,
-                  child: Stack(
+          Container(
+            height: 220.h,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                  image:NetworkImage(adoptionProviderModel!.animalPagerListModel!.data![widget.index].photo??""))
+            ),
+          ),
+          _whiteContainer(),
+          Container(
+            margin: EdgeInsets.symmetric(vertical:40.h,horizontal: 10.w),
+            padding: EdgeInsets.all(2.h),
 
-                    alignment: AlignmentDirectional.topCenter,
-                    children: [
-                     _whiteContainer(),
-                      Positioned(child:
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(D.default_200)),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  offset: Offset(1, 1),
-                                  blurRadius: 1,
-                                  spreadRadius: 0.5)
-                            ]),
-                        child: TransitionImage(
-                        adoptionProviderModel!.animalPagerListModel!.data![widget.index].photo!,
-                        radius: D.default_200,
-                        fit: BoxFit.cover,
-                        width: D.default_120,
-                        height: D.default_120,
-                        strokeColor: Colors.white,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color: Colors.white.withOpacity(0.5),
 
-                      ),),top:D.default_120)
-                    ],
-                  )))
+            ),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: (){
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_forward_ios,size: 20,),),)
         ],
       ),
     );
   }
-  Widget _greenCOntainer() {
-    return Container(
-      margin: EdgeInsets.only(top: D.default_90),
-      height: double.infinity,
-      width: double.infinity,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(D.default_80),
-              topRight: Radius.circular(D.default_80)),
-          color: C.BASE_BLUE,
-          ),
-      child: Column(
-        children: [],
-      ),
-    );
-  }
+
 
   Widget _whiteContainer() {
     return Container(
-      margin: EdgeInsets.only(top: D.default_180),
+      margin: EdgeInsets.only(top: 200.h),
       height: double.infinity,
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(D.default_30),
-              topRight: Radius.circular(D.default_30)),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                offset: Offset(1, 1),
-                blurRadius: 1,
-                spreadRadius: 0.5)
-          ]),
-      child: detailsCrd(),
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30)),
+          color: Color(0xffF0F0F0),
+          ),
+      child: Column(
+        children: [
+          detailsCrd(),
+          Container(
+            width: double.infinity,
+            padding:  EdgeInsets.symmetric(horizontal: 15.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 15.h,),
+              Text(tr("alert"),style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w800),),
+                SizedBox(height: 2.h,),
+                Text(tr("adoption_alert_body"),style: TextStyle(height: 1.7,color: Color(0xff4d4d4d),fontSize: 13.sp,fontWeight: FontWeight.w400),)
+
+              ],),
+          ),
+          SizedBox(height:13.h,),
+          InkWell(
+            onTap: (){
+              AnimalData data=adoptionProviderModel!.animalPagerListModel!.data![widget.index];
+            _callPhone(data.phone??"");
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical:11.5.h),
+              margin: EdgeInsets.only(left: 25.w,right:25.w),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(15),),
+                color: C.BASE_BLUE,
+              ),
+              child: Center(child: Text(tr("contact_pet_owner"),style: TextStyle(color: Colors.white,fontSize: 14.sp,fontWeight: FontWeight.w800),),),),),
+        ],
+      ),
     );
   }
   Widget detailsCrd(){
     AnimalData data=adoptionProviderModel!.animalPagerListModel!.data![widget.index];
-    return SingleChildScrollView(child: Container(
-      margin: EdgeInsets.only(top:D.default_80,bottom: D.default_20,left: D.default_20,right: D.default_20),
-      padding: EdgeInsets.all(D.default_2),
+    return Container(
+      height: 305.h,
+      padding: EdgeInsets.only(top:5.h,bottom: 22.h,right: 20.w,left: 20.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(30),),
+        color: Colors.white,
+      ),
 
-      child: SingleChildScrollView(child: Column(
+      child: ListView(
+        padding: EdgeInsets.zero,
         children: [
-          _infoItem(tr("name"),data.name??".........."),
-          Container(color: Colors.grey[400],height: D.default_1,width: double.infinity,),
+          Text(data.name??"..........",textAlign: TextAlign.center,style: TextStyle(fontSize: 24.sp,fontWeight: FontWeight.w800),),
+          SizedBox(height: 15.h,),
           _infoItem(tr("age"),data.age!),
-          Container(color: Colors.grey[400],height: D.default_1,width: double.infinity,),
           _infoItem(tr("gendar"),data.gender!),
-          Container(color: Colors.grey[400],height: D.default_1,width: double.infinity,),
           _infoItem(tr("type"),data.type!),
-          Container(color: Colors.grey[400],height: D.default_1,width: double.infinity,),
           _infoItem(tr("vaccation"),data.vaccination!),
-          Container(color: Colors.grey[400],height: D.default_1,width: double.infinity,),
           _infoItem(tr("city"),data.city!),
-          Container(color: Colors.grey[400],height: D.default_1,width: double.infinity,),
           _infoItem(tr("reason"),data.reasonToGiveUp!),
-          Container(color: Colors.grey[400],height: D.default_1,width: double.infinity,),
           _infoItem(tr("status"),data.healthStatus!),
-          Container(color: Colors.grey[400],height: D.default_1,width: double.infinity,),
           _infoItem(tr("condition"),data.conditions!),
-          Container(color: Colors.grey[400],height: D.default_1,width: double.infinity,),
           _infoItem(tr("add_date"),data.createdAt!=null?data.createdAt!.split("T")[0]:"......."),
-          Container(color: Colors.grey[400],height: D.default_1,width: double.infinity,),
-          InkWell(
-            onTap: (){
-              MyUtils.basePopup(context, body: AdoptionAlert(onOkPressed: (){
-                setState(() {
-                  showPhone=true;
-                });
-              }, content: tr("adoption_alert"),));
-            },
-            child: _infoItem(tr("contact_phone"),showPhone?(data.phone??".........."):tr("show_phone")),),
         ],
-      ),),
-    ),);
+      ),
+    );
   }
   Widget _infoItem(String title,String content){
     return Container(
-      padding: EdgeInsets.only(left: D.default_10,right: D.default_10,top:D.default_5,bottom: D.default_5),
+      padding: EdgeInsets.only(left: 5.w,right: 5.w,top:2.h,bottom: 2.h),
+      margin: EdgeInsets.only(bottom: 3.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5),),
+        color: Color(0xffF0F0F0),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
 
         children: [
-          Text("${title}:  ",style: S.h2(color: Colors.black54),),
-          Expanded(child: Text("${content}",style: S.h2(color: Colors.black54),)),
+          Text("${title}:  ",style: TextStyle(fontSize: 13.sp,fontWeight: FontWeight.w800),),
+          Expanded(child: Text("${content}",style: TextStyle(fontSize: 13.sp,fontWeight: FontWeight.w500),)),
         ],),);
+  }
+  _callPhone(String phone)async{
+
+    final Uri phoneCallUri = Uri(scheme: 'tel', path:phone);
+    if (await canLaunch(phoneCallUri.toString())) {
+      await launch(phoneCallUri.toString());
+    } else {
+      Fluttertoast.showToast(msg: tr("cant_call_number")+"\n$phone",backgroundColor: Colors.red,textColor: Colors.white,);
+
+    }
   }
 
 }

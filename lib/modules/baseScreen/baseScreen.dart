@@ -11,6 +11,7 @@ import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.da
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,7 +25,8 @@ class BaseScreen extends StatefulWidget {
   bool showSettings;
   bool showBottomBar;
   bool showIntro;
-   BaseScreen({this.showWhatsIcon=true,required this.body,required this.showSettings,required this.showBottomBar,this.showIntro=false,required this.tag});
+  EdgeInsets? padding;
+   BaseScreen({this.padding,this.showWhatsIcon=true,required this.body,required this.showSettings,required this.showBottomBar,this.showIntro=false,required this.tag});
 
 
   @override
@@ -67,7 +69,7 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin{
 
     utilsProviderModel=Provider.of<UtilsProviderModel>(context,listen: true);
     introProviderModel =Provider.of<IntroProviderModel>(context, listen: true);
-    return SafeArea(child: Scaffold(
+    return Scaffold(
         key: _scaffoldKey,
         body: Column(children: [
           widget.showSettings?_actionBar():Container(height: 0,),
@@ -75,8 +77,13 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin{
             Stack(
               alignment:AlignmentDirectional.center,
               children: [
-              widget.body,
-                widget.showWhatsIcon?Positioned(child: InkWell(
+              Padding(
+                padding: widget.padding??((widget.showBottomBar??false)? EdgeInsets.only(top: 30.h,bottom: 80.h):EdgeInsets.only(top: 30.h )),
+                child: widget.body,
+              ),
+                widget.showWhatsIcon?Positioned(
+
+                    child: InkWell(
                 onTap: (){
                   MyUtils.openwhatsapp(context);
                 },
@@ -89,13 +96,16 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin{
 
                 ),
                 child: Center(child: TransitionImage("assets/images/whatsapp.png",width: D.default_50,height: D.default_50,fit: BoxFit.fitWidth,),),
-              ),),bottom: 0,left: utilsProviderModel!.isArabic?0:null,right: utilsProviderModel!.isEnglish?0:null):Container()
+              ),),bottom:widget.showBottomBar? 80.h: 20.h,left: utilsProviderModel!.isArabic?0:null,right: utilsProviderModel!.isEnglish?0:null):Container(),
+                Positioned(
+                  bottom: 0,
+                  child: widget.showBottomBar?HomeTabsScreen(introProviderModel,introProviderModel!=null&&widget.tag=="MainCategoriesScreen"):Container(),)
             ],),),
-          widget.showBottomBar?HomeTabsScreen(introProviderModel,introProviderModel!=null&&widget.tag=="MainCategoriesScreen"):Container()
+
         ],),
       resizeToAvoidBottomInset: true,
 
-    ),);
+    );
   }
   Widget _actionBar(){
     return Container(

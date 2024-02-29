@@ -82,10 +82,11 @@ class MyUtils{
         title: 'تطبيق أليفك ',
         linkUrl: Constants.APP_LINK);
   }
-  static openwhatsapp(BuildContext context) async{
+  static openwhatsapp(BuildContext context,{String? message}) async{
     var whatsapp ="${Constants.APP_INFO!.whatsapp}";
-    var whatsappURl_android = "whatsapp://send?phone="+whatsapp+"&text=";
-    var whatappURL_ios ="https://wa.me/$whatsapp?text=${Uri.parse("")}";
+    var whatsappURl_android = "https://wa.me/$whatsapp?text=${Uri.encodeFull("مرحبا بك")}";
+       // "whatsapp://send?phone="+whatsapp+"&text=${message??"tttt"}";
+    var whatappURL_ios ="https://wa.me/$whatsapp?text=${Uri.parse(message??"")}";
     if(Platform.isIOS){
       // for iOS phone only
       if( await canLaunch(whatappURL_ios)){

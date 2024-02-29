@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>we need this to get the nearest services to the user </string>
 	<key>NSHumanReadableCopyright</key>
@@ -69,5 +70,12 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+    <array>
+        <string>https://alefak.page.link</string>
+        <string>https://alefak.com</string>
+        <string>https://alefakaltawineaanimalsapp.page.link</string>
+
+    </array>
 </dict>
 </plist>

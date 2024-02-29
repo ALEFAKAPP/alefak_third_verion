@@ -2,6 +2,7 @@ import 'package:alefakaltawinea_animals_app/shared/components/text.dart';
 import 'package:alefakaltawinea_animals_app/shared/constance/colors.dart';
 import 'package:alefakaltawinea_animals_app/shared/constance/fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constance/constance.dart';
 
@@ -91,7 +92,7 @@ Widget formField(context, hint,
 
       ),
       style: TextStyle(
-          fontSize: 16,
+          fontSize: 14.sp,
           color: isDummy ? Colors.transparent : textSecondaryColor),
     ),
   );

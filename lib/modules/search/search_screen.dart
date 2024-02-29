@@ -42,7 +42,7 @@ class _SearchScreenState extends State<SearchScreen>  {
     AnalyticsHelper().setScreen(screenName: "شاشة-البحث");
     ///service providers data
     serviceProvidersProviderModel=Provider.of<ServiceProvidersProviderModel>(context,listen: false);
-    serviceProvidersProviderModel!.getSearchList(int.parse(serviceProvidersProviderModel!.serviceProviderModel!.data![0].categoryId!), _currentLoadedPage,keyword: _searchController.text);
+    serviceProvidersProviderModel!.getSearchList(1, _currentLoadedPage,keyword: _searchController.text);
   }
   @override
   void dispose() {
@@ -54,7 +54,7 @@ class _SearchScreenState extends State<SearchScreen>  {
     serviceProvidersProviderModel=Provider.of<ServiceProvidersProviderModel>(context,listen: true);
     return BaseScreen(
         tag: "SearchScreen",
-        showBottomBar: true,
+        showBottomBar: false,
         showSettings: false,
         body: Column(children: [
           ActionBarWidget(widget.title, context),

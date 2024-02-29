@@ -1,4 +1,5 @@
 import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
+import 'package:alefakaltawinea_animals_app/modules/adoption/animal_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/adoption/data/animal_pager_list_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/adoption/provider/adoption_provider_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
@@ -17,6 +18,7 @@ import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.da
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../shared/components/dialog.dart';
 import 'add_adoption_screen.dart';
@@ -48,7 +50,8 @@ class _MyAdoptionScreenState extends State<MyAdoptionScreen> {
     adoptionProviderModel=Provider.of<AdoptionProviderModel>(context,listen: true);
     return BaseScreen(
       showSettings: false,
-      showBottomBar: true,
+      showBottomBar: false,
+      showWhatsIcon: false,
       tag: "MyAdoptionScreen",
       body: Column(
         children: [
@@ -59,6 +62,7 @@ class _MyAdoptionScreenState extends State<MyAdoptionScreen> {
                 child: Column(
                   children: [
                     _categoryList(),
+                    SizedBox(height: 10.h,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -156,9 +160,9 @@ class _MyAdoptionScreenState extends State<MyAdoptionScreen> {
         SliverGrid(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              crossAxisSpacing: D.default_5,
-              mainAxisSpacing: D.default_5,
-              childAspectRatio: 1.18,
+              crossAxisSpacing: 4.w,
+              mainAxisSpacing: 4.w,
+              childAspectRatio: 1,
             ),
             delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
@@ -184,57 +188,49 @@ class _MyAdoptionScreenState extends State<MyAdoptionScreen> {
   Widget _animalsListItem(int index) {
     return InkWell(
         onTap: () {
-          if(Constants.currentUser!=null){
-            MyUtils.navigate(context, AddAdoptionScreen(data:adoptionProviderModel!.myAnimalsFilteredList[index]));
-          }else{
-             msgreguser(context);
-            // MyUtils.navigate(context, LoginScreen());
+          if (Constants.currentUser != null) {
+            MyUtils.navigate(context, AddAdoptionScreen(data: adoptionProviderModel!.myAnimalsFilteredList[index],));
+          } else {
+            msgreguser(context);
+            // adoptionProviderModel!.setShowRegister(true);
           }
         },
-        child:Container(
-          margin: EdgeInsets.all(D.default_5),
-          padding: EdgeInsets.all(D.default_2),
-
-          child: Column(
-            children: [
-              Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(D.default_150),
-                        color: Colors.white,
-                        boxShadow:[BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            offset:Offset(1,1),
-                            blurRadius:2,
-                            spreadRadius: 2
-                        )]
+        child: Container(
+          margin: EdgeInsets.all(0),
+          padding: EdgeInsets.all(10.h),
+          child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Colors.white, boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.2), offset: Offset(0, 0), blurRadius: 5, spreadRadius: 2)]),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(topLeft:Radius.circular(15),topRight:Radius.circular(15)),
+                          color: Colors.grey[200],
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(adoptionProviderModel!.myAnimalsFilteredList[index].photo!.isNotEmpty ? adoptionProviderModel!.myAnimalsFilteredList[index].photo! : Res.DEFAULT_IMAGE))
+                      ),
+                      width: double.infinity,
+                      height: 60.h,
                     ),
-                    child: TransitionImage(
-                      adoptionProviderModel!.myAnimalsFilteredList[index].photo!.isNotEmpty?adoptionProviderModel!.myAnimalsFilteredList[index].photo!:Res.DEFAULT_IMAGE,
-                      radius: D.default_150,
-                      fit: BoxFit.cover,
-                      width: D.default_110,
-                      height: D.default_110,
-
-                    ),)),
-              Container(
-                child: Center(
-                  child: Text(
-                    adoptionProviderModel!.myAnimalsFilteredList[index].type!,
-                    style: S.h1(color: C.BASE_BLUE),
                   ),
-                ),
-              ),
-              Text(
-                tr("more"),
-                style: S.h4(color: Colors.grey),
-              )
-
-            ],
-          ),
+                  SizedBox(height: 5.h,),
+                  Text(
+                    adoptionProviderModel!.myAnimalsFilteredList[index].name!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w800),
+                  ),
+                  Text(
+                    tr("more"),
+                    style: TextStyle(color: Colors.grey, fontSize: 10.sp, fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(height: 10.h,),
+                ],
+              )),
         ));
   }
-
 
   List<adoptionCategory> categories = [
     adoptionCategory(),

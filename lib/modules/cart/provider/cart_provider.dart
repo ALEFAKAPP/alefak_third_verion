@@ -56,12 +56,13 @@ class CartProvider with ChangeNotifier{
       MyCartsModel data=response.data;
       if(deleteExpires??false){
         for(int i=0;i<data.data!.length;i++){
-          if(!DateTime.parse(data.data![i].expiration_at??'2028-03-01').isBefore(DateTime.now())){
+          if(DateTime.parse(data.data![i].expiration_at??'2000-03-01').isAfter(DateTime.now())){
             myCarts.add(data.data![i]);
           }
         }
       }else{
         myCarts.addAll(data.data!);
+        myCarts.removeWhere((element) => (element.expiration_at??"").isEmpty);
       }
 
 

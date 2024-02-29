@@ -50,33 +50,28 @@ class _FavScreenState extends State<FavScreen>  {
   @override
   Widget build(BuildContext context) {
     serviceProvidersProviderModel=Provider.of<ServiceProvidersProviderModel>(context,listen: true);
-    return BaseScreen(
-        tag: "FavScreen",
-        showBottomBar: true,
-        showSettings: false,
-        body: Column(children: [
-          _header(context),
-          Expanded(child:serviceProvidersProviderModel!.isLoading?LoadingProgress():SmartRefresher(
-            key: _refresherKey,
-            controller: _refreshController,
-            enablePullUp: true,
-            child: _listitem(),
-            physics: BouncingScrollPhysics(),
-            footer: ClassicFooter(
-              loadStyle: LoadStyle.ShowWhenLoading,
-              completeDuration: Duration(milliseconds: 500),
-            ),
-            onRefresh: () async {
-              serviceProvidersProviderModel!.getFavsList();
-            },
-            onLoading: () async {
-              serviceProvidersProviderModel!.getFavsList();
+    return Column(children: [
+      Expanded(child:serviceProvidersProviderModel!.isLoading?LoadingProgress():SmartRefresher(
+        key: _refresherKey,
+        controller: _refreshController,
+        enablePullUp: true,
+        child: _listitem(),
+        physics: BouncingScrollPhysics(),
+        footer: ClassicFooter(
+          loadStyle: LoadStyle.ShowWhenLoading,
+          completeDuration: Duration(milliseconds: 500),
+        ),
+        onRefresh: () async {
+          serviceProvidersProviderModel!.getFavsList();
+        },
+        onLoading: () async {
+          serviceProvidersProviderModel!.getFavsList();
 
-              //_refreshController.loadFailed();
-            },
-          )
-            ,)
-        ],));
+          //_refreshController.loadFailed();
+        },
+      )
+        ,)
+    ],);
   }
   Widget _listitem(){
     return serviceProvidersProviderModel!.favList.isNotEmpty?Container(
@@ -84,7 +79,7 @@ class _FavScreenState extends State<FavScreen>  {
         itemCount: serviceProvidersProviderModel!.favList.length,
         padding: EdgeInsets.all(D.default_10),
         itemBuilder: (context,index){
-          return  ServiceProviderListItem(index,serviceProvidersProviderModel);
+          return  serviceProvidersProviderModel!.serviceProviderModel!=null?ServiceProviderListItem(index,serviceProvidersProviderModel):SizedBox();
         }),):_noData();
   }
 Widget _noData(){

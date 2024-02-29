@@ -1,9 +1,11 @@
 import 'package:alefakaltawinea_animals_app/shared/constance/fonts.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseDimentions.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
+import 'package:alefakaltawinea_animals_app/utils/my_widgets/edite_card_popup.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/Material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/my_utils/myColors.dart';
 import '../../../utils/my_utils/my_fonts.dart';
 import '../../../utils/my_widgets/transition_image.dart';
@@ -23,66 +25,50 @@ class _SecondIntroScreenState extends State<SecondIntroScreen> {
       height: MediaQuery.of(context).size.height,
       color: C.BASE_ORANGE,
       child: Stack(
-          alignment:AlignmentDirectional.center,
+        fit: StackFit.expand,
         children: [
-          _title(),
-          Positioned(
-              child: _cart("assets/images/intro_2_img1.png", tr("clinic")),
-              bottom: MediaQuery.of(context).size.height * 0.46),
-          Positioned(
-              child: _cart("assets/images/intro_2_img2.png", tr("intro_2_title2")),
-              bottom: MediaQuery.of(context).size.height * 0.26),
-          Positioned(
-              child: _cart("assets/images/intro_2_img3.png", tr("noti_screen_title")),
-              bottom: MediaQuery.of(context).size.height * 0.06)
+          Container(
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(height: 422.h,),
+                Text(tr("second_itro_title"),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: C.BASE_BLUE,fontSize: 20.sp,fontWeight: FontWeight.w500),),
+                SizedBox(height: 35.h,),
+                item(tr("intro2_title1")),
+                item(tr("intro2_title2")),
+                item(tr("intro2_title3")),
+                item(tr("intro2_title4")),
+              ],),),
+          Container(
+            margin: EdgeInsets.only(bottom: 240.h),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25),bottomRight: Radius.circular(25)),
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage("assets/images/intro_second_img.jpeg"))
+            ),
+
+
+          ),
         ],
       ),
     );
   }
-
-  Widget _cart(String img, String title) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Container(
-        height: D.height(18),
-        width: D.width(90),
-        margin: EdgeInsets.all(D.default_20),
-        child: Stack(
-          alignment:AlignmentDirectional.center,
-          children: [
-            TransitionImage(
-              img,
-              width: MediaQuery.of(context).size.width-D.default_40,
-              fit: BoxFit.fitWidth,
-              radius: D.default_10,
-            ),
-            Positioned(
-              child: Container(
-                margin: EdgeInsets.all(D.default_20),
-                child: Text(
-                  title,
-                  style: S.h1(color: Colors.white),
-                ),
-              ),
-              right: 0,
-            )
-          ],
-        ),
-      ),
-    );
+  Widget item(String title){
+    return Padding(
+      padding: EdgeInsets.only(left: 30.w,right:30.w,bottom: 6.h),
+      child:
+      Row(children: [
+        Icon(Icons.check_circle_outline,size: 16.h,),
+        SizedBox(width: 5.w,),
+        Expanded(child: Text(title,style: TextStyle(fontSize: 17.sp,fontWeight: FontWeight.w500),))
+      ],),);
   }
-  Widget _title(){
 
-    return Positioned(child:Container(
-      width:MediaQuery.of(context).size.width ,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(tr("intro2_title"),style:S.h1Bold(color:Colors.black,fontSize: D.textSize(9),font: MyFonts.VEXA),textAlign: TextAlign.center,),
-          SizedBox(height: D.default_10,),
-          Text(tr("intro2_description"),style:TextStyle(color:Colors.black,fontFamily: fontPrimary,fontSize:D.size(7),height:D.textSize(0.45)),textAlign:TextAlign.center)
-        ],),),top: MediaQuery.of(context).size.height * 0.05);
-  }
+
 
 }

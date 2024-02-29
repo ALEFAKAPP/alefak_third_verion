@@ -49,7 +49,7 @@ class _ShopTabsScreenState extends State<ShopTabsScreen>  {
 
       ///service providers data
       serviceProvidersProviderModel=Provider.of<ServiceProvidersProviderModel>(context,listen: false);
-      serviceProvidersProviderModel!.getServiceProvidersList(4, _currentLoadedPage);
+      serviceProvidersProviderModel!.getServiceProvidersList(4, _currentLoadedPage,isOnline: false);
     });
 
   }
@@ -60,12 +60,16 @@ class _ShopTabsScreenState extends State<ShopTabsScreen>  {
         tag: "ShopTabsScreen",
         showBottomBar: false,
         showSettings: false,
-        body:Column(children: [
-          _header(context),
-          SizedBox(height: D.default_10,),
-          tabs(),
-          pager()
-        ],) );
+        body:Container(
+          color: Colors.white,
+          child: Column(children: [
+            _header(context),
+            SizedBox(height: 2.h,),
+            tabs(),
+            SizedBox(height: 19.h,),
+            pager()
+          ],),
+        ) );
   }
   Widget list(){
     return Container(
@@ -94,11 +98,13 @@ class _ShopTabsScreenState extends State<ShopTabsScreen>  {
         list(),
       ],
       controller: _tabsController,
+        physics: NeverScrollableScrollPhysics(),
       onPageChanged: (currentpage) {
         setState(() {
           _currentTab=currentpage;
           _currentLoadedPage=1;
-          serviceProvidersProviderModel!.getServiceProvidersList(4, _currentLoadedPage,isOnline:_currentTab==1 );
+         /*
+          serviceProvidersProviderModel!.getServiceProvidersList(4, _currentLoadedPage,isOnline:_currentTab==1 );*/
         });
       },
     ),);
@@ -120,11 +126,11 @@ class _ShopTabsScreenState extends State<ShopTabsScreen>  {
           Text(tr("no_offers"),style: S.h3(color:Colors.white,))
         ],),);
   }
-  void _scrollListener() {
+  void _scrollListener() async{
     print(controller!.position.extentAfter);
     if ((!serviceProvidersProviderModel!.isLoading)&&(controller!.position.extentAfter < serviceProvidersProviderModel!.serviceProviderModel!.data!.length-1)) {
       _currentLoadedPage=_currentLoadedPage+1;
-      serviceProvidersProviderModel!.getServiceProvidersList(4, _currentLoadedPage);
+      await serviceProvidersProviderModel!.getServiceProvidersList(4, _currentLoadedPage,isOnline: _currentTab==1);
     }
   }
   Widget tabs(){
@@ -138,16 +144,17 @@ class _ShopTabsScreenState extends State<ShopTabsScreen>  {
               onTap: (){
                 setState(() {
                   _currentTab=index;
+                  _currentLoadedPage=1;
                    _tabsController.animateToPage(_currentTab, duration: Duration(milliseconds: 500), curve: Curves.ease);
-                  //serviceProvidersProviderModel!.getServiceProvidersList(4, _currentLoadedPage,isOnline:_currentTab==1 );
+                  serviceProvidersProviderModel!.getServiceProvidersList(4, _currentLoadedPage,isOnline:_currentTab==1 );
                 });
               },
               child: Column(children: [
-                Text(index==0?tr("shops"):tr("online_shops"),style: S.h1Bold(color: _currentTab==index?Colors.black:Colors.grey),),
-                SizedBox(height: D.default_8,),
+                Text(index==0?tr("Shops"):tr("online_shops"),style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.w800,color: _currentTab==index?Colors.black:Colors.grey),),
+                SizedBox(height: 2.h,),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal:D.default_20),
-                  height: 2,color: _currentTab==index?C.BASE_BLUE:Colors.transparent,width: double.infinity,)
+                  height: 2.5,color: _currentTab==index?C.BASE_BLUE:Colors.transparent,width: double.infinity,)
               ],),
             ),
           ),
@@ -158,20 +165,43 @@ class _ShopTabsScreenState extends State<ShopTabsScreen>  {
     return   Column(
       children: [
         SizedBox(height: 2.h,),
-        Padding(
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(D.default_10),
+              color: Colors.white,
+              boxShadow:[BoxShadow(
+                  color: Colors.grey.withOpacity(0.05),
+                  offset: Offset(0,5),
+                  blurRadius:5,
+                  spreadRadius:5
+              )]
+          ),
           padding:  EdgeInsets.symmetric(vertical: 2.h,horizontal: 3.w),
-          child: Row(children: [
-            SizedBox(width: 15.h,),
-            Text(tr("Shops"),style: TextStyle(color: C.BASE_BLUE,fontSize: 14.sp,fontWeight: FontWeight.w700),),
-            Expanded(child:TransitionImage(Res.IC_HOME_BLUE,width: D.default_80,height: D.default_80,),),
-            SizedBox(width: 25.h,),
-            IconButton(onPressed: () {
-              Navigator.of(ctx).pop();
-            }, icon: Icon(Icons.arrow_forward_ios,color: Colors.black,size: D.default_30,),) ,
-          ],),
+          child: Row(
+            children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width:10.w),
+                    Text(tr("Shops"),style: TextStyle(color: C.BASE_BLUE,fontSize: 17.sp,fontWeight: FontWeight.w800),),
+                  ],
+                ),
+              ),
+              TransitionImage(Res.IC_HOME_BLUE,width: 55.h,height: 55.h,),
+              Expanded(child:
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+
+                  IconButton(onPressed: () {
+                    Navigator.of(ctx).pop();
+                  }, icon: Image.asset(Res.IOS_BACK,height: 19.h,width: 19.h,fit: BoxFit.cover,),),
+                ],
+              )) ,
+            ],),
         ),
         SizedBox(height: 3.h,),
-        Container(height: 1,color: Colors.grey[200],width: double.infinity,)
       ],
     );
   }

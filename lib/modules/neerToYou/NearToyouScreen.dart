@@ -62,10 +62,12 @@ class _NearToYouScreenState extends State<NearToYouScreen> {
     return BaseScreen(
         showSettings: false,
         showBottomBar: true,
+        padding: EdgeInsets.zero,
         tag: "",
         body: Stack(
           children: [
             Container(
+              color: Colors.black,
               child: Center(
                 child: _position != null
                     ? Column(
@@ -86,7 +88,8 @@ class _NearToYouScreenState extends State<NearToYouScreen> {
             Positioned(child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-              _newTabsContainer()
+              _newTabsContainer(),
+                SizedBox(height: 80.h,),
             ],)),
             serviceProvidersProviderModel!.isLoading?LoadingProgress():SizedBox()
           ],
@@ -148,13 +151,15 @@ class _NearToYouScreenState extends State<NearToYouScreen> {
         MyUtils.navigate(context, NewServiceProviderDetailsScreen(serviceProvidersProviderModel!.currentSelectedShop!));
       },
       child: Container(
-          margin: EdgeInsets.all(D.default_10),
-          padding: EdgeInsets.all(D.default_10),
+          margin: EdgeInsets.only(left:5.w,right: 5.w,top: 30.h),
+          padding: EdgeInsets.all(5.w),
           height: D.default_100,
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(D.default_10)),
-              border: Border.all(color: Color(serviceProvidersProviderModel!.selectedCategory!=null?int.parse(serviceProvidersProviderModel!.selectedCategory!.color!.replaceAll("#", "0xff")):serviceProvidersProviderModel!.selectedMarkerColor!)),
+              border: Border.all(
+                width: 2,
+                  color: Color(serviceProvidersProviderModel!.selectedCategory!=null?serviceProvidersProviderModel!.selectedCategory!.id==1?int.parse("0xff126590"):int.parse("0xff393B3D"):int.parse("0xff393B3D"))),
               color: Colors.white,
               boxShadow:[BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
@@ -169,7 +174,9 @@ class _NearToYouScreenState extends State<NearToYouScreen> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(D.default_10)),
                   color: Colors.white,
-                  border: Border.all(color: Color(serviceProvidersProviderModel!.selectedCategory!=null?int.parse(serviceProvidersProviderModel!.selectedCategory!.color!.replaceAll("#", "0xff")):serviceProvidersProviderModel!.selectedMarkerColor!))
+                  border: Border.all(
+                    width: 2,
+                      color: Color(serviceProvidersProviderModel!.selectedCategory!=null?serviceProvidersProviderModel!.selectedCategory!.id==1?int.parse("0xff126590"):int.parse("0xff393B3D"):int.parse("0xff2E3E3A")))
                 ),
                 margin: EdgeInsets.all(D.default_10),
                 child: TransitionImage(
@@ -181,8 +188,11 @@ class _NearToYouScreenState extends State<NearToYouScreen> {
               Expanded(
                   child: Text(
                 "${serviceProvidersProviderModel!.currentSelectedShop!.name}",
-                style: S.h4(color: Color(serviceProvidersProviderModel!.selectedCategory!=null?int.parse(serviceProvidersProviderModel!.selectedCategory!.color!.replaceAll("#", "0xff")):serviceProvidersProviderModel!.selectedMarkerColor!))),
-              )
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w800
+                ),
+              ))
             ],
           )),
     ):Container();

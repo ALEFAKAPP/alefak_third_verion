@@ -12,7 +12,7 @@ class Apis{
   static const REQ_FAILED = "failed";
   static const ExCEPTION = "Exception";
 
-  static String Baselink="https://sehakhanah.topbits-tech.com/";
+  static String Baselink="https://alefak.com/";
   static String BASE_URL="${Baselink}api/v1";
   static String BASE_URL2="${Baselink}api/v2";
   static String IMAGE_PATH1="${Baselink}uploads/";

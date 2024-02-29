@@ -165,7 +165,7 @@ class ServiceProvidersProviderModel with ChangeNotifier {
             },
             markerId: MarkerId("${value[i].id}"),
             position: latlng,
-            icon: BitmapDescriptor.defaultMarkerWithHue(HSLColor.fromColor(Color(int.parse(category.color!.replaceAll("#", "0xff")))).hue),
+            icon: await BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 1.2), category.id==1?'assets/images/clinic_map_pin.png':"assets/images/shop_map_pin.png",mipmaps: false),
 
           ));
         }

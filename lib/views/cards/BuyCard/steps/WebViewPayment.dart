@@ -74,7 +74,7 @@ class _WebViewPaymentState extends State<WebViewPayment> {
                 "status":"تم الدفع بنجاح"
               });
               ShowSnackBar(context,message:  tr("تمت عملية الدفع بنجاح"),type: 'info');
-              _buyCardViewModel.changeStateAfterPayment();
+              //_buyCardViewModel.changeStateAfterPayment();
             }
             if(value.toString().contains("error-callback")){
               AnalyticsHelper().setEvent(eventName: "الدفع",parameters: {

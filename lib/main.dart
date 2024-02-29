@@ -3,12 +3,14 @@ import 'package:alefakaltawinea_animals_app/firebase_options.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/provider/home_offers_provider.dart';
+import 'package:alefakaltawinea_animals_app/modules/settings/terms_screen.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/providers.dart';
 import 'package:alefakaltawinea_animals_app/utils/notification/fcm.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -159,6 +161,7 @@ class _MyAppState extends State<MyApp> {
                   debugShowCheckedModeBanner: false,
                   home: BaseScreen(
                       tag: "SplashScreen",
+                      padding:EdgeInsets.zero,
                       showBottomBar: false,
                       showSettings: false,
                       body: SplashScreen()));

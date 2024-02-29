@@ -6,6 +6,7 @@ import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myUtils.dart';
 import 'package:easy_localization/easy_localization.dart'hide TextDirection;
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../modules/settings/settings_screen.dart';
 
 class ActionBarWidget extends StatelessWidget {
@@ -51,7 +52,7 @@ class ActionBarWidget extends StatelessWidget {
           _backBtn(),
           showSearch?_searchBtn(context):Container(),
           showShare?_shareBtn(context):Container(),
-          Expanded(child: Center(child: Directionality(textDirection: EasyLocalization.of(context)!.currentLocale==Locale('ar', 'EG')?TextDirection.rtl:TextDirection.ltr,child: Text(title,style: S.h1(color:textColor),),),)),
+          Expanded(child: Center(child: Directionality(textDirection: EasyLocalization.of(context)!.currentLocale==Locale('ar', 'EG')?TextDirection.rtl:TextDirection.ltr,child: Text(title,style: TextStyle(color:textColor,fontSize: 16.sp,fontWeight: FontWeight.w800),),),)),
           settingsBtn()
         ],),
     ));

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:alefakaltawinea_animals_app/modules/cart/add_cart_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/cart/provider/cart_provider.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
+import 'package:alefakaltawinea_animals_app/utils/my_widgets/laoding_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class EditeCartScreen extends StatefulWidget {
 }
 
 class _EditeCartScreenState extends State<EditeCartScreen> {
+  bool isLoading=false;
   bool imageValid = true;
   List<Widget> items = [];
   TextEditingController _bitNameControllers = TextEditingController();
@@ -95,77 +97,83 @@ class _EditeCartScreenState extends State<EditeCartScreen> {
   }
 
   Widget _dataItem() {
-    return Container(
-        padding: EdgeInsets.all(D.default_20),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(D.default_10)),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  offset: Offset(1, 1),
-                  blurRadius: 1,
-                  spreadRadius: 0.5)
-            ]),
-        child: Column(
-          children: [
-            _addImagePart(),
-            Row(
+    return Stack(
+      alignment:AlignmentDirectional.center ,
+      children: [
+        Container(
+            padding: EdgeInsets.all(D.default_20),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(D.default_10)),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      offset: Offset(1, 1),
+                      blurRadius: 1,
+                      spreadRadius: 0.5)
+                ]),
+            child: Column(
               children: [
-                Expanded(child: _bitName()),
-                SizedBox(
-                  width: D.default_10,
+                _addImagePart(),
+                Row(
+                  children: [
+                    Expanded(child: _bitName()),
+                    SizedBox(
+                      width: D.default_10,
+                    ),
+                    //Expanded(child: _bitDate()),
+                  ],
                 ),
-                //Expanded(child: _bitDate()),
-              ],
-            ),
-            Row(
-              children: [
+                Row(
+                  children: [
 
-                Expanded(child: _bitCity()),
-                SizedBox(
-                  width: D.default_20,
+                    Expanded(child: _bitCity()),
+                    SizedBox(
+                      width: D.default_20,
+                    ),
+                    Expanded(child: _bitFamily()),
+                  ],
                 ),
-                Expanded(child: _bitFamily()),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                    child: Container(
-                  child: Row(
-                    children: [
-                      Text(
-                        tr("gendar") + ":",
-                        style: S.h2(color: Colors.grey),
-                      ),
-                      _genderSpinner()
-                    ],
-                  ),
-                )),
-                SizedBox(
-                  width: D.default_20,
-                ),
-                Expanded(
-                    child: Container(
+                Row(
+                  children: [
+                    Expanded(
+                        child: Container(
                       child: Row(
                         children: [
                           Text(
-                            tr("type") + ":",
+                            tr("gendar") + ":",
                             style: S.h2(color: Colors.grey),
                           ),
-                          _typeSpinner()
+                          _genderSpinner()
                         ],
                       ),
                     )),
+                    SizedBox(
+                      width: D.default_20,
+                    ),
+                    Expanded(
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Text(
+                                tr("type") + ":",
+                                style: S.h2(color: Colors.grey),
+                              ),
+                              _typeSpinner()
+                            ],
+                          ),
+                        )),
+
+                  ],
+                ),
+                SizedBox(height: D.default_10,),
+                _addCartBtn(),
 
               ],
-            ),
-            SizedBox(height: D.default_10,),
-            _addCartBtn(),
-
-          ],
-        ));
+            )),
+        isLoading?LoadingProgress():SizedBox()
+      ],
+    );
   }
 
   Widget _addCartBtn() {
@@ -179,7 +187,9 @@ class _EditeCartScreenState extends State<EditeCartScreen> {
   Widget _acceptBtn() {
     return InkWell(
       onTap: () async{
-        _addCard();
+        if(!isLoading){
+          _addCard();
+        }
       },
       child: Container(
         margin: EdgeInsets.all(D.default_10),
@@ -199,7 +209,7 @@ class _EditeCartScreenState extends State<EditeCartScreen> {
                   spreadRadius: 1)
             ]),
         child: Text(
-          tr("submit"),
+          tr(isLoading?"loading":"submit"),
           style: S.h3(color: Colors.white),
           textAlign: TextAlign.center,
         ),
@@ -289,7 +299,7 @@ class _EditeCartScreenState extends State<EditeCartScreen> {
 
   _imgFromGallery() async {
     ImagePicker? imagePicker = ImagePicker();
-    PickedFile? compressedImage = await imagePicker.getImage(
+    XFile? compressedImage = await imagePicker.pickImage(
       source: ImageSource.gallery,
       imageQuality: 50,
     );
@@ -300,6 +310,9 @@ class _EditeCartScreenState extends State<EditeCartScreen> {
   }
 
   void _uploadCartImage() async {
+    setState(() {
+      isLoading=true;
+    });
     File image = _imagesFiles as File;
     MultipartFile mFile = await MultipartFile.fromFile(
       image.path,
@@ -312,6 +325,7 @@ class _EditeCartScreenState extends State<EditeCartScreen> {
     });
     await cartApi.uploadCartImage(formData).then((value) {
       setState(() {
+        isLoading=false;
         _uploadedImages = value.data.toString();
       });
     });

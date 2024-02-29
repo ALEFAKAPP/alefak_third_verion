@@ -5,6 +5,7 @@ import 'package:alefakaltawinea_animals_app/modules/cart/add_cart_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/cart/add_cart_respose_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/cart/cart_api.dart';
 import 'package:alefakaltawinea_animals_app/modules/cart/cobon_model.dart';
+import 'package:alefakaltawinea_animals_app/modules/cart/my_carts_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/my_cards/my_cards_screen.dart';
 import 'package:alefakaltawinea_animals_app/shared/components/CircularProgressDialog.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/apis.dart';
@@ -228,7 +229,7 @@ class BuyCardViewModel extends GetxController {
           imageQuality: 70);
 
     // _imagesFiles[index] = File(images[index]!.path);
-    _uploadCartImage(index);
+    await _uploadCartImage(index);
     update();
     Get.back();
   }
@@ -238,11 +239,18 @@ class BuyCardViewModel extends GetxController {
   Future saveDataCard() async {
     try {
       showDialogProgress(Get.context);
-      Carts cartsDatas=Carts();
+      MyResponse<MyCartsModel> cardsResponse = await cartApi.getMyCarts();
+      MyCartsModel myCardsData=cardsResponse.data;
+
+      for(int i=0;i<(myCardsData.data??[]).length;i++){
+        if((myCardsData.data![i].expiration_at??"").isEmpty){
+          await cartApi.deleteCarts(myCardsData.data![i].id??0);
+        }
+
+      }
       for (int index = 0; index < numCard.value; index++)
       {
         print('test1 ${listImage[index]}');
-
         AddCartModel addCartModel=AddCartModel();
         addCartModel.name=name_alefk[index].text;
         addCartModel.kind=type_alefk[index].text;
@@ -250,26 +258,12 @@ class BuyCardViewModel extends GetxController {
         addCartModel.gender=sex[index];
         addCartModel.photo= listImage[index];
         addCartModel.country='';
-        addCardList.add(addCartModel);
+        await cartApi.editeCart(id:myCardsData.data![index].id??0,model: addCartModel);
       }
-      cartsDatas.cards= addCardList;
-      cartsDatas.version="v2";
-      cartsDatas.code=coupon.value;
-
-      var data = await BuyCardRemote().saveDataCards(cards :cartsDatas);
-
-
-      if (data == true) {
-        hideDialogProgress(Get.context);
-        step.value = 3;
-        await Get.off(StepThree());
-        refreshData();
-        // otpWidgetSingIn(Get.context);
-      } else {
-        hideDialogProgress(Get.context);
-        ShowSnackBar(Get.context,message:  tr("خطا في عملية حفظ بيانات البطاقة"),type: 'error');
-
-      }
+      hideDialogProgress(Get.context);
+      step.value = 3;
+      await Get.off(StepThree());
+      refreshData();
     } catch (e) {
       hideDialogProgress(Get.context);
       print("catch in stepSeven: $e");
@@ -281,7 +275,7 @@ class BuyCardViewModel extends GetxController {
     Get.delete<BuyCardViewModel>();
   }
 
-  void _uploadCartImage(int index) async{
+   _uploadCartImage(int index) async{
     // File image= _image[index] as File;
     showDialogProgress(Get.context);
     MyResponse res = await BuyCardRemote().uploadImage(file: images[index]);

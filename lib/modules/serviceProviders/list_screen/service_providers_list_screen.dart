@@ -14,6 +14,7 @@ import 'package:alefakaltawinea_animals_app/utils/my_widgets/laoding_view.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -73,7 +74,10 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen>  
       Expanded(child: Stack(
         fit: StackFit.expand,
         children: [
-          serviceProvidersProviderModel!.isLoading&&((serviceProvidersProviderModel!.serviceProviderModel)!=null?serviceProvidersProviderModel!.serviceProviderModel!.data!.isEmpty:true)?LoadingProgress():_listitem(),
+          serviceProvidersProviderModel!.isLoading&&((serviceProvidersProviderModel!.serviceProviderModel)!=null?serviceProvidersProviderModel!.serviceProviderModel!.data!.isEmpty:true)?LoadingProgress():
+          serviceProvidersProviderModel!.serviceProviderModel!.data!.isEmpty?
+          Center(child:Text(tr("no_offers"),style:TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w700),),)
+              :_listitem(),
           serviceProvidersProviderModel!.serviceProviderModel!=null?serviceProvidersProviderModel!.isLoading&&serviceProvidersProviderModel!.serviceProviderModel!.data!.isNotEmpty?
           Container():Container():Container(),
           serviceProvidersProviderModel!.isLoading?Container(color: Colors.white.withOpacity(0.3),height: MediaQuery.of(context).size.height,width: MediaQuery.of(context).size.width,):Container()
@@ -94,7 +98,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen>  
       child: ListView.builder(
           controller: controller,
           itemCount: serviceProvidersProviderModel!.serviceProviderModel!.data!.length,
-        padding: EdgeInsets.all(D.default_10),
+        padding: EdgeInsets.symmetric(horizontal:10.w,vertical: 20.h),
         itemBuilder: (context,index){
           return  ServiceProviderListItem(index,serviceProvidersProviderModel);
         }),):Center(child: Column(
@@ -114,20 +118,43 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen>  
     return   Column(
       children: [
         SizedBox(height: 2.h,),
-        Padding(
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(D.default_10),
+              color: Colors.white,
+              boxShadow:[BoxShadow(
+                  color: Colors.grey.withOpacity(0.05),
+                  offset: Offset(0,5),
+                  blurRadius:5,
+                  spreadRadius:5
+              )]
+          ),
           padding:  EdgeInsets.symmetric(vertical: 2.h,horizontal: 3.w),
-          child: Row(children: [
-            SizedBox(width: 15.h,),
-            Text(widget.title,style: TextStyle(color: C.BASE_BLUE,fontSize: 14.sp,fontWeight: FontWeight.w700),),
-            Expanded(child:TransitionImage(Res.IC_HOME_BLUE,width: D.default_80,height: D.default_80,),),
-            SizedBox(width: 25.h,),
-            IconButton(onPressed: () {
-              Navigator.of(ctx).pop();
-            }, icon: Icon(Icons.arrow_forward_ios,color: Colors.black,size: D.default_30,),) ,
+          child: Row(
+            children: [
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width:10.w),
+                  Text(widget.title,style: TextStyle(color: C.BASE_BLUE,fontSize: 17.sp,fontWeight: FontWeight.w800),),
+                ],
+              ),
+            ),
+            TransitionImage(Res.IC_HOME_BLUE,width: 55.h,height: 55.h,),
+            Expanded(child:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+
+                IconButton(onPressed: () {
+                  Navigator.of(ctx).pop();
+                }, icon: Image.asset(Res.IOS_BACK,height: 19.h,width: 19.h,fit: BoxFit.cover,),),
+              ],
+            )) ,
           ],),
         ),
         SizedBox(height: 3.h,),
-        Container(height: 1,color: Colors.grey[200],width: double.infinity,)
       ],
     );
   }

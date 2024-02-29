@@ -7,6 +7,7 @@ import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myUtils.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ServiceProviderDetailsProvider with ChangeNotifier{
 int selectedOfferIndex=0;
@@ -36,7 +37,7 @@ showBottomSheet(BuildContext context){
 
 void scrollToIndex() {
    Future.delayed(const Duration(milliseconds: 500)).then((value) {
-      offersController.animateTo((selectedOfferIndex.toDouble()) * D.default_80*0.75, duration: const Duration(milliseconds: 10), curve: Curves.easeInOut);
+      offersController.animateTo((selectedOfferIndex.toDouble()) * 53.h, duration: const Duration(milliseconds: 10), curve: Curves.easeInOut);
 
    });
 }

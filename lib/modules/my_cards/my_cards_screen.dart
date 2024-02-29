@@ -7,6 +7,7 @@ import 'package:alefakaltawinea_animals_app/views/cards/BuyCard/steps/StepOne.da
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/Material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../../utils/my_utils/baseDimentions.dart';
@@ -100,11 +101,11 @@ class _MyCardsScreenState extends State<MyCardsScreen> {
         children: [
           Text(
             tr("dont_have_cart_title"),
-            style: S.h1(color: C.BASE_BLUE),
+            style: TextStyle(fontSize: 20.sp,fontWeight: FontWeight.w800,color: C.BASE_BLUE),
           ),
           Text(
             tr("dont_have_cart_subtitle"),
-            style: S.h2(color: Colors.grey),
+            style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w500,color: Colors.grey),
           ),
           SizedBox(
             height: D.default_40,
@@ -146,7 +147,7 @@ class _MyCardsScreenState extends State<MyCardsScreen> {
               ]),
           child: Text(
             tr("add_cart"),
-            style: S.h1(color: Colors.white),
+            style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.w500,color: Colors.white),
             textAlign: TextAlign.center,
           ),
         ),

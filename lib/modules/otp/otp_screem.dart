@@ -4,6 +4,7 @@ import 'package:alefakaltawinea_animals_app/modules/login/data/returnSuccessMode
 import 'package:alefakaltawinea_animals_app/modules/login/forget_password/forget_password_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/provider/user_provider_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/otp/provider/otp_provider_model.dart';
+import 'package:alefakaltawinea_animals_app/modules/otp/sample_stratigy.dart';
 import 'package:alefakaltawinea_animals_app/shared/components/text.dart';
 import 'package:alefakaltawinea_animals_app/shared/constance/colors.dart';
 import 'package:alefakaltawinea_animals_app/shared/constance/fonts.dart';
@@ -12,13 +13,15 @@ import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myUtils.dart';
+import 'package:alefakaltawinea_animals_app/utils/my_widgets/laoding_view.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:otp_text_field/otp_text_field.dart';
-import 'package:otp_text_field/style.dart';
+import 'package:otp_autofill/otp_autofill.dart';
 import 'package:provider/provider.dart';
+
 
 
 class OtpScreen extends StatefulWidget {
@@ -34,16 +37,45 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  String _userCode="";
+  late OTPTextEditController controller;
+  final scaffoldKey = GlobalKey();
+  late OTPInteractor _otpInteractor ;
+
   OtpProviderModel? otpProviderModel;
   UserProviderModel? userProviderModel;
   late Timer  timer ;
   int secondsRemaining = 50;
   bool enableResend = false;
   int  numtry = 1;
+  String appSignature="";
+  String _userPin="";
+  TextEditingController otpController=TextEditingController();
+  bool isLoading=false;
+
   @override
   void initState() {
     super.initState();
+    _otpInteractor = OTPInteractor();
+    _otpInteractor.getAppSignature()
+        .then((value) => print('signature - $value'));
+    controller = OTPTextEditController(
+      codeLength: 4,
+      onCodeReceive: (code)async{
+        //await Fluttertoast.showToast(msg:tr("Your code is:$code") );
+        otpController.text=code;
+        setState(() {
+          _userPin=code;
+        });
+      },
+    )..startListenUserConsent(
+          (code) {
+        final exp = RegExp(r'(\d{4})');
+        return exp.stringMatch(code ?? '') ?? '';
+      },
+      strategies: [
+        //SampleStrategy(),
+      ],
+    );
     otpProviderModel=Provider.of<OtpProviderModel>(context,listen: false);
     userProviderModel=Provider.of<UserProviderModel>(context,listen: false);
     // _getCode();
@@ -59,10 +91,28 @@ class _OtpScreenState extends State<OtpScreen> {
         });
       }
     });
+    /*SmsAutoFill().getAppSignature.then((signature) {
+      setState(() {
+        appSignature = signature;
+        print("app signature:$appSignature");
+      });
+    });*/
+    //SmsAutoFill().listenForCode();
+    /*SmsAutoFill().code.listen((event) async{
+      if(event.isNotEmpty){
+        setState(() {
+          _userPin=event;
+          otpController.text=event;
+        });
+      }
+    });*/
+
+
   }
   @override
   void dispose() {
     // TODO: implement dispose
+    //SmsAutoFill().unregisterListener();
     super.dispose();
     timer.cancel();
   }
@@ -75,7 +125,7 @@ class _OtpScreenState extends State<OtpScreen> {
       showSettings: false,
       showBottomBar: false,
       tag: "OtpScreen",
-      body:  SingleChildScrollView(child: Container(
+      body:  isLoading?Center(child: LoadingProgress(),):SingleChildScrollView(child: Container(
           child:Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -100,10 +150,14 @@ class _OtpScreenState extends State<OtpScreen> {
         child: Center(child: Text(tr("otp_phon"),style: S.h2(color: Colors.grey),textAlign: TextAlign.center,),));
   }
   Widget _useCodeBtn(BuildContext context){
-    return InkWell(onTap: (){
-
-     var result = userProviderModel!.checkOtp(widget.phone!,_userCode,context,false);
-
+    return InkWell(onTap: ()async{
+      setState(() {
+        isLoading=true;
+      });
+     var result = await userProviderModel!.checkOtp(widget.phone!,_userPin,context,false);
+      setState(() {
+        isLoading=false;
+      });
 
       if (result.status == false) {
         ReturnSuccessModel errorModel = result;
@@ -112,12 +166,12 @@ class _OtpScreenState extends State<OtpScreen> {
       } else if (result.status == true) {
 
 
-      if(otpProviderModel!.activation_code.toString()==_userCode||widget.code==_userCode){
+      if(otpProviderModel!.activation_code.toString()==_userPin||widget.code==_userPin){
         if(widget.otpFalge=="ForgetPasswordScreen"){
-          MyUtils.navigate(context, ForgetPasswordScreen(widget.phone!, _userCode));
+          MyUtils.navigate(context, ForgetPasswordScreen(widget.phone!, _userPin));
         }else{
           bool fromaddcard=widget.fromaddcard??false;
-          otpProviderModel!.activeAccount(Constants.currentUser!=null?Constants.currentUser!.phone!:widget.phone!, _userCode, context,fromaddcard: widget.fromaddcard??false);
+          otpProviderModel!.activeAccount(Constants.currentUser!=null?Constants.currentUser!.phone!:widget.phone!, _userPin, context,fromaddcard: widget.fromaddcard??false);
         }
         //MyUtils.navigateAsFirstScreen(context, MainCategoriesScreen());
         ///call api here
@@ -191,22 +245,32 @@ class _OtpScreenState extends State<OtpScreen> {
   Widget _otpField(){
     return Directionality(textDirection: TextDirection.ltr, child: Container(
       padding: EdgeInsets.all(D.default_30),
-      child: OTPTextField(
-        length: Constants.OTP_LENGTH,
-        width: double.infinity,
-        fieldWidth: 50,
-        otpFieldStyle:OtpFieldStyle(
-            borderColor:C.BASE_BLUE
+      child:/*TextFormField(
+        controller: otpController,
+      )*/
+      TextFormField(
+        controller: otpController,
+        maxLength: Constants.OTP_LENGTH,
+        keyboardType: TextInputType.number,
+        autofocus: true,
+        decoration: InputDecoration(
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: C.BASE_BLUE),
+          ),
+          border: UnderlineInputBorder(
+              borderSide: BorderSide(color: C.BASE_BLUE)),
+          errorStyle: S.h4(color: Colors.red),
         ),
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        textAlign:TextAlign.center ,
         style: TextStyle(
             fontSize: D.default_20
         ),
-        textFieldAlignment: MainAxisAlignment.spaceAround,
-        fieldStyle: FieldStyle.box,
-        onCompleted: (pin) {
-          setState(() {
-            _userCode=pin;
-          });
+        onChanged: (pin) {
+          _userPin=pin;
         },
       ),));
 }

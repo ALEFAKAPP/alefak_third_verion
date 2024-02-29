@@ -97,15 +97,19 @@ class UserProviderModel with ChangeNotifier{
     //bool isLoged= await getSavedUser(ctx);
     if(true){
 
-      ReturnSuccessModel response =  await loginApi.sendOtp(phone);
-
-      if (response.status == true){
-        MyUtils.navigateAsFirstScreen(ctx, OtpScreen('ksa', 'title',phone));
-      }else if(response.status == Apis.CODE_SHOW_MESSAGE ){
-        print("login error: ${response.msg}");
+      try{
+        ReturnSuccessModel response =  await loginApi.sendOtp(phone);
         setIsLoading(false);
-        await Fluttertoast.showToast(msg: "${response.msg}");
 
+        if (response.status == true){
+          MyUtils.navigateAsFirstScreen(ctx, OtpScreen('ksa', 'title',phone));
+          setIsLoading(false);
+        }else if(response.status == Apis.CODE_SHOW_MESSAGE ){
+          print("login error: ${response.msg}");
+          await Fluttertoast.showToast(msg: "${response.msg}");
+        }
+      }catch(e){
+        setIsLoading(true);
       }
       notifyListeners();
     }
@@ -157,7 +161,24 @@ class UserProviderModel with ChangeNotifier{
         MyUtils.navigateAsFirstScreen(ctx, IntroScreen());
       }else{
         await FCM().openClosedAppFromNotification();
-        MyUtils.navigateAsFirstScreen(ctx, NewMainCategoriesScreen());
+        MyUtils.navigateAsFirstScreen(ctx, NewMainCategoriesScreen(navigateTo: (){
+          String message = '''حياك الله ${Constants.currentUser!.name}
+شكراً على تسجيلك معنا واهتمامك
+في منصة أليفك التعاونية 😻
+
+متحمسين تاخد جولة في التطبيق ولمعرفة المزيد عن التطبيق:
+https://alefak.com?type=about
+
+وفريقنا بيكون معك على تواصل 
+للإجابة على جميع الاستفسارات:
+https://wa.link/6p2g3l
+
+ وهديتنا كود خصم على سعر اصدار بطاقة أليفك التعاونية لمدة 48 ساعة
+كود الخصم: AT25
+بالإضافة لفرشاة البخار الكهربائية 3في1 للتدليك والتصفيف ولإزالة الشعر 😻
+شامل التوصيل 🚚''';
+          MyUtils.openwhatsapp(ctx,message:message );
+        },));
       }
 
     }else if(response.status == Apis.CODE_ACTIVE_USER &&response.data!=null){

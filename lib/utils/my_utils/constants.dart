@@ -36,7 +36,7 @@ class Constants extends Object{
   static double DEVICE_WIDTH=0.0;
   static bool IS_FORCE_UPDATE=false;
   static String TOKEN_KEY="TOKEN_KEY";
-  static double APP_VERSIONs=1.92;
+  static double APP_VERSIONs=2.96;
 
 
 
