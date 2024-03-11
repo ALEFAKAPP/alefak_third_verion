@@ -113,27 +113,10 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> with
         isloading=false;
       });
     });
-    String message = '''حياك الله ${Constants.currentUser!.name}
-شكراً على تسجيلك معنا واهتمامك
-في منصة أليفك التعاونية 😻
-
-متحمسين تاخد جولة في التطبيق ولمعرفة المزيد عن التطبيق:
-https://alefak.com?type=about
-
-وفريقنا بيكون معك على تواصل 
-للإجابة على جميع الاستفسارات:
-https://wa.link/6p2g3l
-
- وهديتنا كود خصم على سعر اصدار بطاقة أليفك التعاونية لمدة 48 ساعة
-كود الخصم: AT25
-بالإضافة لفرشاة البخار الكهربائية 3في1 للتدليك والتصفيف ولإزالة الشعر 😻
-شامل التوصيل 🚚''';
-    MyUtils.openwhatsapp(context,message:message );
 
   }
   notificationNavigation(){
     widget.navigateTo!=null?widget.navigateTo!():(){};
-
   }
   @override
   Widget build(BuildContext context) {

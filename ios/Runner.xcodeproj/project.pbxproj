@@ -14,6 +14,7 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		A0DE38362B9F16E100B4DF82 /* SessionHandeler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE38352B9F16E100B4DF82 /* SessionHandeler.swift */; };
 		A6657D7F298D2DD0000B31FF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A6657D7E298D2DCF000B31FF /* GoogleService-Info.plist */; };
 		F915179BD73B3A92C2EAD3C0 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A70BA24FB5EF3A638286743 /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
@@ -50,6 +51,7 @@
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A70BA24FB5EF3A638286743 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0C6DF312B7D616200E3F7C9 /* RunnerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerRelease.entitlements; sourceTree = "<group>"; };
+		A0DE38352B9F16E100B4DF82 /* SessionHandeler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHandeler.swift; sourceTree = "<group>"; };
 		A6657D7E298D2DCF000B31FF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D46AEAB7E9945E5232D8FC25 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		DBDC3035286B65BA00386AD5 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */,
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
+				A0DE38352B9F16E100B4DF82 /* SessionHandeler.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 			);
 			path = Runner;
@@ -302,6 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
+				A0DE38362B9F16E100B4DF82 /* SessionHandeler.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -396,7 +400,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.99.0;
+				MARKETING_VERSION = 2.991.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alefakeltawinea.alefakaltawineaAnimalsApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -535,7 +539,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.99.0;
+				MARKETING_VERSION = 2.991.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alefakeltawinea.alefakaltawineaAnimalsApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -568,7 +572,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.99.0;
+				MARKETING_VERSION = 2.991.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alefakeltawinea.alefakaltawineaAnimalsApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
