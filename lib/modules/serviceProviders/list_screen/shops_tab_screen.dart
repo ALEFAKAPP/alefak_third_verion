@@ -12,7 +12,7 @@ import 'package:alefakaltawinea_animals_app/utils/my_utils/resources.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/action_bar_widget.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/laoding_view.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -178,27 +178,18 @@ class _ShopTabsScreenState extends State<ShopTabsScreen>  {
           ),
           padding:  EdgeInsets.symmetric(vertical: 2.h,horizontal: 3.w),
           child: Row(
+            textDirection: TextDirection.rtl,
             children: [
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(width:10.w),
-                    Text(tr("Shops"),style: TextStyle(color: C.BASE_BLUE,fontSize: 17.sp,fontWeight: FontWeight.w800),),
-                  ],
-                ),
-              ),
+              SizedBox(width:10.w),
+              Text(tr("Shops"),style: TextStyle(color: C.BASE_BLUE,fontSize: 17.sp,fontWeight: FontWeight.w800),),
+              Expanded(child: SizedBox(),),
               TransitionImage(Res.IC_HOME_BLUE,width: 55.h,height: 55.h,),
-              Expanded(child:
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
+              Expanded(child: SizedBox()) ,
+              IconButton(onPressed: () {
+                Navigator.of(ctx).pop();
+              }, icon: Image.asset(Res.IOS_BACK,height: 19.h,width: 19.h,fit: BoxFit.cover,),),
+              SizedBox(width:10.w),
 
-                  IconButton(onPressed: () {
-                    Navigator.of(ctx).pop();
-                  }, icon: Image.asset(Res.IOS_BACK,height: 19.h,width: 19.h,fit: BoxFit.cover,),),
-                ],
-              )) ,
             ],),
         ),
         SizedBox(height: 3.h,),

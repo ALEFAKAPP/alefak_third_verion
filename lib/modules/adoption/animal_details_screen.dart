@@ -100,8 +100,10 @@ class _AnimalDetailsScreenState extends State<AnimalDetailsScreen> {
                 SizedBox(height: 15.h,),
               Text(tr("alert"),style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w800),),
                 SizedBox(height: 2.h,),
-                Text(tr("adoption_alert_body"),style: TextStyle(height: 1.7,color: Color(0xff4d4d4d),fontSize: 13.sp,fontWeight: FontWeight.w400),)
-
+                SizedBox(
+                  width: double.infinity,
+                    height: 80.h,
+                    child: SingleChildScrollView(child: Text(tr("adoption_alert_body"),style: TextStyle(height: 1.7,color: Color(0xff4d4d4d),fontSize: 13.sp,fontWeight: FontWeight.w400),)))
               ],),
           ),
           SizedBox(height:13.h,),
