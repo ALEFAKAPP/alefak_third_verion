@@ -5,24 +5,17 @@ import 'package:alefakaltawinea_animals_app/modules/ads/provider/ads_slider_prov
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/home_offers_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/homeTabsScreen/homeTabsScreen.dart';
-import 'package:alefakaltawinea_animals_app/modules/notifications/data/notification_model.dart';
-import 'package:alefakaltawinea_animals_app/modules/notifications/provider/notification_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/new_service_provider_details_screen.dart';
-import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/getServiceProvidersApi.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/hom_offers_all_list.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/service_providers_list_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/settings/contact_us_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/settings/settings_screen.dart';
-import 'package:alefakaltawinea_animals_app/modules/spalshScreen/PageMaintenanceScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/spalshScreen/data/regions_api.dart';
-import 'package:alefakaltawinea_animals_app/utils/my_utils/apis.dart';
-import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myUtils.dart';
-import 'package:alefakaltawinea_animals_app/utils/my_utils/my_fonts.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/providers.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/resources.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/laoding_view.dart';
@@ -38,10 +31,9 @@ import 'package:provider/provider.dart';
 import '../../shared/constance/fonts.dart';
 import '../../utils/my_utils/baseDimentions.dart';
 import '../homeTabsScreen/provider/intro_provider_model.dart';
-import '../search/search_screen.dart';
 import '../serviceProviders/list_screen/shops_tab_screen.dart';
 import '../settings/about_screen.dart';
-import 'data/home_singl_offer_model.dart';
+import 'items/home_title_bar.dart';
 import 'provider/categories_provider_model.dart';
 
 class NewMainCategoriesScreen extends StatefulWidget {
@@ -132,17 +124,16 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> with
         showSettings: false,
         showIntro: false,
         body:Scaffold(
-          backgroundColor: Color(0xffFFFFFF),
+          backgroundColor: Color(0xffF6F7FB),
           body: SafeArea(
             child: Column(children: [
-              _header(),
+              HomeTitleBar(),
              Expanded(child: isloading?LoadingProgress():ListView(
                padding: EdgeInsets.only(bottom: 70.h),
                children: [
                  AdsSlider(),
                  SizedBox(height: 10.h),
-                 Text("${Constants.currentUser!=null?(Constants.currentUser!.name):''} ${tr("what_alifak_want")}",style:TextStyle(fontSize: 15.sp,fontWeight: FontWeight.w800),textAlign: TextAlign.center,),
-                 SizedBox(height: 3.h,),
+                 searchButton(),
                  gatigoriesList(),
                  SizedBox(height: 5.h,),
                  Consumer<CategoriesProviderModel>(
@@ -164,50 +155,33 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> with
     );
 
   }
-  Widget _header(){
-    return   Container(
+
+  Widget searchButton(){
+    return Container(
+      margin: EdgeInsets.only(top: 5.h,bottom: 8.h,left: 27.w,right: 27.w),
+      padding: EdgeInsets.symmetric(vertical:5.w,horizontal: 10.w),
+
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(bottomRight:Radius.circular(D.default_10),bottomLeft:Radius.circular(D.default_10) ),
+          borderRadius: BorderRadius.circular(12),
           color: Colors.white,
           boxShadow:[BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              offset: Offset(0,5),
-              blurRadius:8,
-              spreadRadius: 3
+              color: Colors.grey.withOpacity(0.5),
+              offset:Offset(0,0),
+              blurRadius:1,
+              spreadRadius: 1
           )]
       ),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(height: 2.h,),
-          Padding(
-            padding:  EdgeInsets.symmetric(vertical: 2.h,horizontal: 3.w),
-            child: Row(children: [
-              IconButton(onPressed: () {
-                MyUtils.navigate(context, SettingScreen());
-              }, icon: Icon(Icons.segment,color: C.BASE_BLUE,size: D.default_35,),) ,
-              Expanded(child:InkWell(
-                onTap: (){MyUtils.navigate(context, AboutAppScreen());},
-                child: Container(
-                  margin:  EdgeInsets.symmetric(horizontal: 20.w),
-                  padding:  EdgeInsets.symmetric(vertical: 3.h,horizontal: 2.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: C.BASE_BLUE,
-                  ),
-                  child: Text(tr("know_about_alifak"),style:
-                  TextStyle(color: Colors.white,fontSize: 13.sp,fontWeight: FontWeight.w700),textAlign:TextAlign.center ,),
-                ),
-              ),),
-              SizedBox(width: 30.w,) ,
-            ],),
-          ),
-          SizedBox(height: 3.h,),
-          Container(height: 1,color: Colors.grey[200],width: double.infinity,)
-        ],
-      ),
+        Text('ايش يحتاج اليفك',style:TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w800)),
+        Image.asset('assets/images/search_ic.png',width: 20.w,height: 20.w,),
+
+      ],),
+
     );
   }
-  
+
   Widget gatigoriesList(){
     return Consumer<CategoriesProviderModel>(
       builder: (context,model,_) {

@@ -17,7 +17,7 @@ class AdsSlider extends StatefulWidget {
 
 class _AdsSliderState extends State<AdsSlider> {
   AdsSliderProviderModel?adsSliderProviderModel;
-  final _controller = PageController();
+  final _controller = PageController(viewportFraction:0.85);
   int _currentSliderPager=0;
   @override
   void initState() {
@@ -43,7 +43,6 @@ class _AdsSliderState extends State<AdsSlider> {
         },
 
       ),
-      AdsSliderDots(adsSliderProviderModel!.adsSliderModelList.length,_currentSliderPager)
     ],),);
   }
   List<Widget> sliderItems(){

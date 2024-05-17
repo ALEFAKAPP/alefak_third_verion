@@ -37,6 +37,7 @@ class _AdsSliderItemState extends State<AdsSliderItem> {
         children: [
         Container(
         width: double.infinity,
+
         child:Column(children: [
           Expanded(child:
           InkWell(
@@ -86,6 +87,7 @@ class _AdsSliderItemState extends State<AdsSliderItem> {
             child: TransitionImage(
             widget.AdsItem.type_id=="0"?(widget.AdsItem.bannerPhoto??"").contains("https")?widget.AdsItem.bannerPhoto!:"https://alefak.com/uploads/${widget.AdsItem.bannerPhoto}":widget.AdsItem.bannerPhoto??"",
             fit: BoxFit.cover,
+            radius: 15,
             width: double.infinity,
               backgroundColor: Colors.white,
           ),)),
