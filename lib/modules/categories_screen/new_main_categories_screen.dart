@@ -124,32 +124,38 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> with
         showSettings: false,
         showIntro: false,
         body:Scaffold(
-          backgroundColor: Color(0xffF6F7FB),
+          backgroundColor: Colors.white,
           body: SafeArea(
-            child: Column(children: [
-              HomeTitleBar(),
-             Expanded(child: isloading?LoadingProgress():ListView(
-               padding: EdgeInsets.only(bottom: 70.h),
-               children: [
-                 AdsSlider(),
-                 SizedBox(height: 10.h),
-                 searchButton(),
-                 gatigoriesList(),
-                 SizedBox(height: 5.h,),
-                 Consumer<CategoriesProviderModel>(
-                     builder: (context,model,_) {
-                       return Column(children: List.generate(model.homeOffersLists.length, (index){
-                         return  offersList(
-                           id: model.homeOffersLists[index].id,
-                             title: Constants.utilsProviderModel!.isArabic?
-                         model.homeOffersLists[index].nameAr:model.homeOffersLists[index].nameEn,
-                         data: model.homeOffersLists[index].offers);
-                       }));
-                   }
-                 ),
-               ],
-             ))
-            ],),
+            child: Container(
+              color: Color(0xffF6F7FB),
+              child: Column(children: [
+                HomeTitleBar(),
+                SizedBox(height: 8.h),
+                Expanded(child: isloading?LoadingProgress():ListView(
+                 padding: EdgeInsets.only(bottom: 70.h),
+                 children: [
+                   AdsSlider(),
+                   SizedBox(height: 3.h),
+                   searchButton(),
+                   SizedBox(height: 2.h),
+                   aboutAlifakWidget(),
+                   gatigoriesList(),
+                   SizedBox(height: 5.h,),
+                   Consumer<CategoriesProviderModel>(
+                       builder: (context,model,_) {
+                         return Column(children: List.generate(model.homeOffersLists.length, (index){
+                           return  offersList(
+                             id: model.homeOffersLists[index].id,
+                               title: Constants.utilsProviderModel!.isArabic?
+                           model.homeOffersLists[index].nameAr:model.homeOffersLists[index].nameEn,
+                           data: model.homeOffersLists[index].offers);
+                         }));
+                     }
+                   ),
+                 ],
+               ))
+              ],),
+            ),
           ),
         )
     );
@@ -159,26 +165,108 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> with
   Widget searchButton(){
     return Container(
       margin: EdgeInsets.only(top: 5.h,bottom: 8.h,left: 27.w,right: 27.w),
-      padding: EdgeInsets.symmetric(vertical:5.w,horizontal: 10.w),
+      padding: EdgeInsets.symmetric(vertical:5.h,horizontal: 10.w),
 
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(15),
           color: Colors.white,
           boxShadow:[BoxShadow(
               color: Colors.grey.withOpacity(0.5),
               offset:Offset(0,0),
-              blurRadius:1,
+              blurRadius:3,
               spreadRadius: 1
           )]
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-        Text('ايش يحتاج اليفك',style:TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w800)),
-        Image.asset('assets/images/search_ic.png',width: 20.w,height: 20.w,),
+        Text(tr('home_search_btn_title'),style:TextStyle(color: Color(0xff888888),fontSize: 14.sp,fontWeight: FontWeight.w400)),
+        Image.asset('assets/images/search_ic.png',width: 17.w,height: 17.w,),
 
       ],),
 
+    );
+  }
+  Widget aboutAlifakWidget(){
+    return Container(
+      width: double.infinity,
+      height: 255.h,
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          margin: EdgeInsets.symmetric(horizontal:13.w),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal:13.w,vertical: 12.h),
+              padding: EdgeInsets.symmetric(vertical: 5.h),
+
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Color(0xffFB5659),
+              ),
+              child: Center(child:Text("اشترك الان",style: TextStyle(color: Colors.white,fontSize: 14.sp,fontWeight: FontWeight.w800),)),
+            )
+          ],),
+        ),
+          SizedBox(
+            width:double.infinity,
+            child: Row(
+              children: [
+                SizedBox(width: 25.w,),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10.h,),
+                      Text(tr('about_alefak_home_title'),style: TextStyle(color:Color(0xffFB5659),fontSize: 14.sp,fontWeight: FontWeight.w700),),
+                      SizedBox(height: 10.h,),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 165.h,
+                        child: ListView.separated(
+                          itemCount: 5,
+                            scrollDirection: Axis.horizontal,
+                            separatorBuilder: (_,index){
+                            return SizedBox(width: 8.w,);
+                            },
+                            itemBuilder: (_,index){
+                          return Container(
+                            width: 180.w,
+                            padding: EdgeInsets.symmetric(vertical:13.h,horizontal: 15.w),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Color(0xffF6F7FB),
+                            ),
+                            child:Column(children: [
+                              Image.asset('assets/images/about_home_default_ic.png',
+                              width: 50.w,
+                                height: 50.w
+                                ,),
+                              SizedBox(height: 8.h,),
+                              Text("تطبيق أليفك التعاونية",textAlign: TextAlign.center,style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w800),),
+                              SizedBox(height: 3.h,),
+                              Text("وفر لكم شبكة واسعة من العغيادات البيطرية ومتاجر الحيوانات حول المملكة بالاضافة لعرض خدماتهم وبخصومات حصرية ",textAlign: TextAlign.center,style: TextStyle(fontSize: 11.sp,fontWeight: FontWeight.w500),),
+
+
+                            ],)
+                          );
+                        }),
+                      ),
+                    ],),
+                ),
+              ],
+            ),
+          )
+      ],),
     );
   }
 
@@ -198,17 +286,11 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> with
                 onTap: (){_onCategoryClick(model.categoriesList[index].id??-1,context);},
             child:Container(
               width: 100.w,
-              margin: EdgeInsets.symmetric(horizontal: 3.h,vertical:3.h),
+              margin: EdgeInsets.symmetric(horizontal: 5.w,vertical:3.h),
               padding: EdgeInsets.symmetric(horizontal: 3.w,vertical: 3.w),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
-                  boxShadow:[BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
-                      blurRadius:8,
-                      spreadRadius: 1
-                  )]
-
               ),
               child: Column(children: [
                 (model.categoriesList[index].photo??'').isEmpty?

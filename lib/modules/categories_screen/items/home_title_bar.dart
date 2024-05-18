@@ -11,7 +11,7 @@ class HomeTitleBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 4.w),
+      padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
     child: Row(children: [
        Expanded(
          flex: 1,
@@ -19,19 +19,19 @@ class HomeTitleBar extends StatelessWidget {
          Text('جدة',style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w800),),
          SizedBox(width: 2.w,),
          Image.asset('assets/images/home_dropdowen_icon.png',
-           width: 4.w,
-           height: 4.w,
+           width: 3.5.w,
+           height: 3.5.w,
          ),
        ],)),
       Expanded(
         flex: 2,
-          child: Center(child:Text("${tr("welcome_back")} ${Constants.currentUser!=null?(Constants.currentUser!.name):''}",style: TextStyle(fontSize: 17.sp,fontWeight: FontWeight.w800),),)),
+          child: Center(child:Text("${tr("welcome_back")} ${Constants.currentUser!=null?(Constants.currentUser!.name):''}",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w800),),)),
       Expanded(child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
         Image.asset('assets/images/notification_ic.png',
-          width: 7.w,
-          height: 7.w,
+          width: 6.w,
+          height: 6.w,
         )
       ],))
       
