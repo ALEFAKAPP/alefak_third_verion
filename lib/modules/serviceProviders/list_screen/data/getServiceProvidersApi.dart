@@ -5,6 +5,8 @@ import 'package:alefakaltawinea_animals_app/data/dio/my_rasponce.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/home_offers_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/apis.dart';
+import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
+import 'package:dio/dio.dart';
 
 class GetServiceProvidersApi{
 
@@ -16,6 +18,31 @@ class GetServiceProvidersApi{
       url=url+"&&is_online=0";
     }
     final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_GET, url);
+    if (response != null && response.statusCode == 200) {
+      return MyResponse<ServiceProviderModel>.fromJson(
+          json.decode(jsonEncode(response.data)));
+    } else {
+      return MyResponse<ServiceProviderModel>.init(Apis.CODE_ERROR, "", null);
+    }
+  }
+  Future<MyResponse<ServiceProviderModel>> getServiceProvidersNew(int categoryId,int page,{String lat="",String long="",String keyword="",String state_id="",bool? isOnline,bool? isDistanceActive}) async {
+    String url = "${Apis.GET_SERVICE_PROVIDERS_LIST}?page=${page}";
+
+    Map<String,dynamic>body={
+      "category_id":categoryId,
+    };
+    if(isOnline??false){
+      body["is_online"]="1";
+    }
+    if((isDistanceActive??false)&&Constants.currentUser!=null){
+      body["is_nearest"]="1";
+      body["latitude"]=Constants.currentUser!.latitude??"";
+      body["longitude"]=Constants.currentUser!.longitude??'';
+
+    }
+
+    FormData formData =  FormData.fromMap(body);
+    final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_POST, url,body: formData);
     if (response != null && response.statusCode == 200) {
       return MyResponse<ServiceProviderModel>.fromJson(
           json.decode(jsonEncode(response.data)));
@@ -61,6 +88,16 @@ class GetServiceProvidersApi{
           json.decode(jsonEncode(response.data)));
     } else {
       return MyResponse<HomeListOfOffersModel>.init(Apis.CODE_ERROR, "", null);
+    }
+  }
+  Future<MyResponse<Data>> getShop(int shopId) async {
+    String url = "${Apis.GET_SHOP}/${shopId}";
+    final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_GET, url);
+    if (response != null && response.statusCode == 200) {
+      return MyResponse<Data>.fromJson(
+          json.decode(jsonEncode(response.data)));
+    } else {
+      return MyResponse<Data>.init(Apis.CODE_ERROR, "", null);
     }
   }
 

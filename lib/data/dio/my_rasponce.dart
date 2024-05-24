@@ -1,11 +1,17 @@
 
 import 'package:alefakaltawinea_animals_app/modules/adoption/data/adoption_categories_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/adoption/data/animal_pager_list_model.dart';
+import 'package:alefakaltawinea_animals_app/modules/cart/model/subscribe_in_plan_model.dart';
+import 'package:alefakaltawinea_animals_app/modules/cart/model/subscriptionn_plan_model.dart';
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/alefak_in_lies_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/categories_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/home_offers_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/data/user_data.dart';
+import 'package:alefakaltawinea_animals_app/modules/search/model/animal_type_model.dart';
+import 'package:alefakaltawinea_animals_app/modules/search/model/clinic_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
 import 'package:alefakaltawinea_animals_app/modules/spalshScreen/data/regions_model.dart';
+import 'package:alefakaltawinea_animals_app/utils/notification/user_notification_model.dart';
 
 import '../../modules/cart/add_cart_respose_model.dart';
 import '../../modules/cart/cobon_model.dart';
@@ -129,6 +135,10 @@ class MyResponse<T> extends Object {
       case HomeListOfOffersModel:
         _data = HomeListOfOffersModel.fromJson(json) as T;
         break;
+      case SubscribeInPlanModel:
+        _data = SubscribeInPlanModel.fromJson(json) as T;
+        break;
+
 
 
 
@@ -162,6 +172,37 @@ class MyResponse<T> extends Object {
           .map((item) => NotificationModel.fromJson(item))
           .toList() as T;
     }
+    else if("$T".contains("List<AlefakInLinesData>")){
+      _data = (json as List)
+          .map((item) => AlefakInLinesData.fromJson(item))
+          .toList() as T;
+    }
+    else if("$T".contains("List<AimalTypeModel>")){
+      _data = (json as List)
+          .map((item) => AimalTypeModel.fromJson(item))
+          .toList() as T;
+    }
+    else if("$T".contains("List<SubscriptionPlanModel>")){
+      _data = (json as List)
+          .map((item) => SubscriptionPlanModel.fromJson(item))
+          .toList() as T;
+    }
+    else if("$T".contains("List<ClinicModel>")){
+      _data = (json as List)
+          .map((item) => ClinicModel.fromJson(item))
+          .toList() as T;
+    }
+    else if("$T".contains("List<UserNotificationModel>")){
+      _data = (json as List)
+          .map((item) => UserNotificationModel.fromJson(item))
+          .toList() as T;
+    }
+
+
+
+
+
+
     else {
       _data = null;
       return false;

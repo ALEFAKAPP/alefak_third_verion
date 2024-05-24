@@ -3,22 +3,17 @@ import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/categ
 import 'package:alefakaltawinea_animals_app/modules/homeTabsScreen/provider/bottom_bar_provider_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/items/service_provider_list_item.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/provider/sevice_providers_provicer_model.dart';
-import 'package:alefakaltawinea_animals_app/modules/settings/settings_screen.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseDimentions.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
-import 'package:alefakaltawinea_animals_app/utils/my_utils/myUtils.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/resources.dart';
-import 'package:alefakaltawinea_animals_app/utils/my_widgets/action_bar_widget.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/laoding_view.dart';
-import 'package:alefakaltawinea_animals_app/utils/my_widgets/transition_image.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 
 class ServiceProviderListScreen extends StatefulWidget {
@@ -37,10 +32,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen>  
   int _currentLoadedPage=1;
   ScrollController? controller;
 
-  RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
-  GlobalKey _contentKey = GlobalKey();
-  GlobalKey _refresherKey = GlobalKey();
+
 
   @override
   void initState() {
@@ -136,9 +128,17 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen>  
             children: [
               SizedBox(width:10.w),
               Text(widget.title,style: TextStyle(color: C.BASE_BLUE,fontSize: 17.sp,fontWeight: FontWeight.w800),),
-              Expanded(child: SizedBox(),),
-            TransitionImage(Res.IC_HOME_BLUE,width: 55.h,height: 55.h,),
             Expanded(child: SizedBox()) ,
+              SvgPicture.asset('assets/images/distance_arrange_ic.svg',width: 15.w,height: 15.w,color:context.read<ServiceProvidersProviderModel>().isDistanceFilterActive? C.BASE_BLUE:null),
+              SizedBox(width: 5.w,),
+              InkWell(
+                onTap: (){
+                  context.read<ServiceProvidersProviderModel>().isDistanceFilterActive=
+                      !context.read<ServiceProvidersProviderModel>().isDistanceFilterActive;
+                  context.read<ServiceProvidersProviderModel>().isDistanceActive=context.read<ServiceProvidersProviderModel>().isDistanceFilterActive;
+                  serviceProvidersProviderModel!.getServiceProvidersList(widget.categoryId, _currentLoadedPage);
+                },
+                  child: Text(tr("distance_filter"),style:TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w700,color:context.read<ServiceProvidersProviderModel>().isDistanceFilterActive? C.BASE_BLUE:null),)),
               IconButton(onPressed: () {
                 Navigator.of(ctx).pop();
               }, icon: Image.asset(Res.IOS_BACK,height: 19.h,width: 19.h,fit: BoxFit.cover,),),

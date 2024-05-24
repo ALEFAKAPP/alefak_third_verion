@@ -43,6 +43,7 @@ class Constants extends Object{
 
   ///888888888888888888888888888888888888888888888888888888
   static UtilsProviderModel? utilsProviderModel;
+  static bool HAS_SUBSCRIPTION=false;
 
 
 

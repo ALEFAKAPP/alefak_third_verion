@@ -99,7 +99,6 @@ class BuyCardViewModel extends GetxController {
   }
 
   Future BuyCard() async {
-    showDialogProgress(Get.context);
     Carts cartsDatas= Carts();
     List<AddCartModel>cartsList=[];
     for(int i=0;i< numCard.value ;i++){
@@ -114,19 +113,7 @@ class BuyCardViewModel extends GetxController {
     }
     cartsDatas.cards=cartsList;
     cartsDatas.version="v2";
-
-    MyResponse<AddCartResponseModel> response =  await cartApi.addCart(cartsDatas,coupon.value);
-    if (response.status == Apis.CODE_SUCCESS){
-      hideDialogProgress(Get.context);
-      linkPayment.value = response.data.url;
-      await Get.to(WebViewPayment());
-      //changeStateAfterPayment();
-    }else if(response.status == Apis.CODE_SUCCESS &&response.data==null){
-      hideDialogProgress(Get.context);
-    }else{
-      hideDialogProgress(Get.context);
-    }
-    hideDialogProgress(Get.context);
+    changeStateAfterPayment();
     return true;
   }
 
@@ -239,15 +226,7 @@ class BuyCardViewModel extends GetxController {
   Future saveDataCard() async {
     try {
       showDialogProgress(Get.context);
-      MyResponse<MyCartsModel> cardsResponse = await cartApi.getMyCarts();
-      MyCartsModel myCardsData=cardsResponse.data;
 
-      for(int i=0;i<(myCardsData.data??[]).length;i++){
-        if((myCardsData.data![i].expiration_at??"").isEmpty){
-          await cartApi.deleteCarts(myCardsData.data![i].id??0);
-        }
-
-      }
       for (int index = 0; index < numCard.value; index++)
       {
         print('test1 ${listImage[index]}');
@@ -258,7 +237,7 @@ class BuyCardViewModel extends GetxController {
         addCartModel.gender=sex[index];
         addCartModel.photo= listImage[index];
         addCartModel.country='';
-        await cartApi.editeCart(id:myCardsData.data![index].id??0,model: addCartModel);
+        await cartApi.addCardBySubscription(model: addCartModel);
       }
       hideDialogProgress(Get.context);
       step.value = 3;

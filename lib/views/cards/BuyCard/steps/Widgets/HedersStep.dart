@@ -38,7 +38,7 @@ class HeadersStep extends StatelessWidget {
                       child: Text('1', style: TextStyle(color: whiteColor, fontSize: textSizeMedium)),
                     ),
                   ),
-                  text(tr('اتمام_الدفع'), fontSize: textSizeSSmall.sp,textColor: _buyCardViewModel.step.value == 1 ? primaryColor : kTextLightColor),
+                  text(tr('step_one'), fontSize: textSizeSSmall.sp,textColor: _buyCardViewModel.step.value == 1 ? primaryColor : kTextLightColor),
                 ],
               ),
 
@@ -67,7 +67,7 @@ class HeadersStep extends StatelessWidget {
                       child: Text('2', style: TextStyle(color: whiteColor, fontSize: textSizeMedium)),
                     ),
                   ),
-                  text(tr('بيانات_هوية_اليفك'), fontSize: textSizeSSmall.sp,textColor: _buyCardViewModel.step.value == 2 ? primaryColor : kTextLightColor),
+                  text(tr('step_tow'), fontSize: textSizeSSmall.sp,textColor: _buyCardViewModel.step.value == 2 ? primaryColor : kTextLightColor),
                 ],
               ),
 
@@ -95,7 +95,7 @@ class HeadersStep extends StatelessWidget {
                       child: Text('3', style: TextStyle(color: whiteColor, fontSize: textSizeMedium)),
                     ),
                   ),
-                  text(tr('مبروك_تم_الاشتراك'), fontSize: textSizeSSmall.sp,textColor: _buyCardViewModel.step.value == 3 ? primaryColor : kTextLightColor),
+                  text(tr('step_three'), fontSize: textSizeSSmall.sp,textColor: _buyCardViewModel.step.value == 3 ? primaryColor : kTextLightColor),
                 ],
               ),
 

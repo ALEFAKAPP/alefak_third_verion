@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:alefakaltawinea_animals_app/modules/cart/model/subscribe_in_plan_model.dart';
+import 'package:alefakaltawinea_animals_app/modules/cart/model/subscriptionn_plan_model.dart';
 import 'package:dio/dio.dart';
 
 import '../../data/dio/dio_utils.dart';
@@ -104,6 +106,53 @@ class CartApi{
           json.decode(jsonEncode(response.data)));
     } else {
       return MyResponse<CobonModel>.init(Apis.CODE_ERROR, "", null);
+    }
+  }
+  Future<MyResponse<List<SubscriptionPlanModel>>> getSubscriptionPlan() async {
+    final url = "${Apis.GET_SUBSCRIPTIO_PLANE}";
+    final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_GET, url);
+    if (response != null && response.statusCode == 200) {
+      return MyResponse<List<SubscriptionPlanModel>>.fromJson(
+          json.decode(jsonEncode(response.data)));
+    } else {
+      return MyResponse<List<SubscriptionPlanModel>>.init(Apis.CODE_ERROR, "", null);
+    }
+  }
+  Future<MyResponse<SubscribeInPlanModel>> subscribeInPlan(int id) async {
+    final url = "${Apis.SUBSCRIBE_IN_PLAN}";
+    FormData formData =  FormData.fromMap({
+      "plan_id": id,
+      "skip":0
+    });
+    final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_POST, url,body: formData);
+    if (response != null && response.statusCode == 200) {
+      return MyResponse<SubscribeInPlanModel>.fromJson(
+          json.decode(jsonEncode(response.data)));
+    } else {
+      return MyResponse<SubscribeInPlanModel>.init(Apis.CODE_ERROR, "", null);
+    }
+  }
+
+  Future<MyResponse<dynamic>> addCardBySubscription(
+      {
+        required AddCartModel model
+      }) async {
+    Map<String,dynamic>body={};
+    body["name"]=model.name??"";
+    body["kind"]=model.kind??"";
+    body["family"]=model.family??"";
+    body["gender"]=model.gender??"";
+    body["country"]=model.country??"";
+    body["photo"]=model.photo??"";
+    FormData formData =  FormData.fromMap(body);
+
+    final url = "${Apis.ADD_CARD_BY_SUBSCRIPTION}";
+    final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_POST, url,body: formData);
+    if (response != null && response.statusCode == 200) {
+      return MyResponse<dynamic>.fromJson(
+          json.decode(jsonEncode(response.data)));
+    } else {
+      return MyResponse<dynamic>.init(Apis.CODE_ERROR, "", null);
     }
   }
 

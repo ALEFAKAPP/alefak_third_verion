@@ -102,6 +102,10 @@ class Data {
   String?contact_phone;
   List<Socials>?links;
   List<AddressModel>?addresses;
+  bool?isSelected;
+  bool?isExpanded;
+   List<Classification>? classifications;
+
 
   Data(
       {this.id,
@@ -127,7 +131,10 @@ class Data {
         this.url,
         this.contact_phone,
         this.links,
-        this.addresses
+        this.addresses,
+        this.isSelected,
+        this.isExpanded,
+        this.classifications,
       });
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -150,6 +157,7 @@ class Data {
     is_fav=json['is_fav'];
     type_id=json['type_id'];
     url=json['url'];
+    classifications=json["classifications"]==null?[]:List<Classification>.from(json["classifications"].map((x) => Classification.fromJson(x)));
     contact_phone=json['contact_phone']??"";
     if (json['offers'] != null) {
       offers = <OfferModel>[];
@@ -200,6 +208,7 @@ class Data {
     data['is_fav'] = this.is_fav;
     data['type_id']=this.type_id;
     data['url']=this.url;
+
     data['contact_phone']=this.contact_phone;
     if (this.offers != null) {
       data['offers'] = this.offers!.map((v) => v.toJson()).toList();
@@ -299,3 +308,44 @@ class SocialLinksModel {
     "active": active,
   };
 }
+
+
+class Classification {
+  final int id;
+  final String name;
+  final String description;
+  final String color;
+  final List<OfferModel> offers;
+  bool?isExpanded;
+
+  Classification({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.color,
+    required this.offers,
+    this.isExpanded
+  });
+
+  factory Classification.fromJson(Map<String, dynamic> json) => Classification(
+    id: json["id"],
+    name: json["name"],
+    description: json["description"],
+    color: json["color"],
+    offers: List<OfferModel>.from(json["offers"].map((x) => OfferModel.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "description": description,
+    "color": color,
+    "offers": List<dynamic>.from(offers.map((x) => x.toJson())),
+  };
+}
+
+
+
+
+
+

@@ -1,5 +1,6 @@
 import 'package:alefakaltawinea_animals_app/modules/offers/offer_details/offer_code_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/elements/use_offer_bottom_sheet.dart';
+import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/getServiceProvidersApi.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/offer_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseDimentions.dart';
@@ -13,6 +14,11 @@ class ServiceProviderDetailsProvider with ChangeNotifier{
 int selectedOfferIndex=0;
 late OfferModel selectedOffer;
 late Data serviceProviderData;
+bool isLoading=false;
+setIsLoading(bool value){
+   isLoading=value;
+   notifyListeners();
+}
 
 ScrollController offersController=ScrollController();
 onSelectOffer(OfferModel value,int index){
@@ -40,5 +46,12 @@ void scrollToIndex() {
       offersController.animateTo((selectedOfferIndex.toDouble()) * 53.h, duration: const Duration(milliseconds: 10), curve: Curves.easeInOut);
 
    });
+}
+getShop(int shopId)async{
+   setIsLoading(true);
+   final respons=await GetServiceProvidersApi().getShop(shopId);
+   serviceProviderData=respons.data;
+   setIsLoading(false);
+
 }
 }

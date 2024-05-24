@@ -26,35 +26,24 @@ class TypeCard extends StatelessWidget {
                 width: 1.0,
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: Get.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(topRight:Radius.circular(10),topLeft:Radius.circular(10)),
-                    color: _buyCardViewModel.typeCard.value == 1 ? primaryColor : whiteColor,
-                  ),
-                  child: Obx(() => Padding(
-                    padding: const EdgeInsets.only(top: 5.0,left: 10,bottom: 0,right: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        text(tr('Multiple')),
-                        _buyCardViewModel.typeCard.value == 1
-                            ?Icon(Icons.check_circle,color: whiteColor)
-                            :Icon(Icons.circle_outlined,color: fifthColor),
-                      ],
-                    ),
-                  )),
+            child: Container(
+              width: Get.width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                color: _buyCardViewModel.typeCard.value == 1 ? primaryColor : whiteColor,
+              ),
+              child: Obx(() => Padding(
+                padding: const EdgeInsets.only(top: 5.0,left: 10,bottom: 5.0,right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    text(tr('Multiple')),
+                    _buyCardViewModel.typeCard.value == 1
+                        ?Icon(Icons.check_circle,color: whiteColor)
+                        :Icon(Icons.circle_outlined,color: fifthColor),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                  child: Divider(color: fifthColor, height: 0.5),
-                ),
-                text('${tr('desc_multiple')} ${_buyCardViewModel.priceAdditionalCard.value} ${tr('curncy')}',fontSize: textSizeSmall.sp,maxLine: 2,isBold: true),
-
-              ],
+              )),
             ),
           ),
         ),
@@ -71,35 +60,24 @@ class TypeCard extends StatelessWidget {
                 width: 1.0,
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: Get.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(topRight:Radius.circular(10),topLeft:Radius.circular(10)),
-                    color: _buyCardViewModel.typeCard.value == 2 ? primaryColor : whiteColor,
-                  ),
-                  child: Obx(() => Padding(
-                    padding: const EdgeInsets.only(top: 5.0,left: 10,bottom: 0,right: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        text(tr('Individual')),
-                        _buyCardViewModel.typeCard.value == 2
-                            ?Icon(Icons.check_circle,color: whiteColor)
-                            :Icon(Icons.circle_outlined,color: fifthColor),
-                      ],
-                    ),
-                  )),
+            child: Container(
+              width: Get.width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                color: _buyCardViewModel.typeCard.value == 2 ? primaryColor : whiteColor,
+              ),
+              child: Obx(() => Padding(
+                padding: const EdgeInsets.only(top: 5.0,left: 10,bottom: 5.0,right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    text(tr('Individual')),
+                    _buyCardViewModel.typeCard.value == 2
+                        ?Icon(Icons.check_circle,color: whiteColor)
+                        :Icon(Icons.circle_outlined,color: fifthColor),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                  child: Divider(color: fifthColor, height: 0.5),
-                ),
-                text(tr('desc_individual'),fontSize: textSizeSmall.sp,maxLine: 2,isBold: true),
-
-              ],
+              )),
             ),
           ),
         ),

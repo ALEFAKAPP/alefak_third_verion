@@ -2,6 +2,7 @@ import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_help
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/offers/offers_list/service_provider_offers_list_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/elements/offer_widget.dart';
+import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/new_offer_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
 import 'package:alefakaltawinea_animals_app/shared/constance/fonts.dart';
@@ -18,9 +19,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import '../../../utils/my_utils/input _validation_mixing.dart';
+import '../../../utils/my_widgets/laoding_view.dart';
 import '../../cart/provider/cart_provider.dart';
 
 
@@ -53,300 +56,306 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
   @override
   void initState() {
     super.initState();
-    if(Constants.currentUser!=null){
-
-      if(context.read<CartProvider>().myCarts.isEmpty){
-        context.read<CartProvider>().getMyCart();
-      }
-    }
     AnalyticsHelper().setScreen(screenName: "شاشة-مزود الخدمة");
     AnalyticsHelper().setEvent(eventName: "شاشة-مزود الخدمة",parameters: {
       "name":"${widget.serviceProviderData.name}",
       "phone":"${widget.serviceProviderData.phone}"
     });
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      context.read<ServiceProviderDetailsProvider>().getShop(widget.serviceProviderData.id??0);
+
+      if(Constants.currentUser!=null){
+        if(context.read<CartProvider>().myCarts.isEmpty){
+          await context.read<CartProvider>().getMyCart();
+        }
+      }
+
+    });
+
+
+
     isOnline=(widget.serviceProviderData.isOnline??"0")=="1";
-    context.read<ServiceProviderDetailsProvider>().serviceProviderData=widget.serviceProviderData;
-    if((widget.serviceProviderData.offers??[]).isNotEmpty){
+    //context.read<ServiceProviderDetailsProvider>().serviceProviderData=widget.serviceProviderData;
+    /*if((widget.serviceProviderData.offers??[]).isNotEmpty){
       context.read<ServiceProviderDetailsProvider>().selectedOfferIndex=widget.offerIndex??0;
       context.read<ServiceProviderDetailsProvider>().selectedOffer=widget.serviceProviderData.offers![context.read<ServiceProviderDetailsProvider>().selectedOfferIndex];
       context.read<ServiceProviderDetailsProvider>().scrollToIndex();
-    }
+    }*/
 
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset:false,
-      body: GestureDetector(
-        onTap: (){
-          FocusManager.instance.primaryFocus!.unfocus();
-        },
-        child: Stack(
-          alignment: AlignmentDirectional.topEnd,
-          children: [
-            Container(
-                height: 230.h,
-                color: Colors.grey[200],
-                child:PageView(
-                  children: _sliderItem(),
-                  controller: _controller,
-                  onPageChanged: (currentpage) {
-                    setState(() {
-                      _currentSliderPager=currentpage;
-                    });
-                  },
-                )
-            ),
-            Container(
-              margin: EdgeInsets.only(top:195.h),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft:Radius.circular(30,),topRight:Radius.circular(30)),
-                color: Colors.white,
-
-              ),
-              child: Consumer<ServiceProviderDetailsProvider>(
-                  builder: (context, provider,_) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 20.h,),
-                        Padding(
-                          padding:  EdgeInsets.only(left:D.default_20,right: D.default_10),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(D.default_5),
-                                margin: EdgeInsets.only(left:D.default_10,right: D.default_10),
-                                width: 48.h,
-                                height: 48.h,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(D.default_10),
-                                    color: Colors.white,
-                                    boxShadow:[BoxShadow(
-                                        color: Colors.grey.withOpacity(0.1),
-                                        blurRadius:4,
-                                        spreadRadius: 2
-                                    )]
-                                ),
-                                child:TransitionImage(
-                                  (widget.serviceProviderData.photo??"").contains("https")?(widget.serviceProviderData.photo??""):"https://alefak.com/uploads/${(widget.serviceProviderData.photo??"")}",
-                                  radius: D.default_10,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                ) ,
-                              ),
-                              Expanded(child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.serviceProviderData.name!
-                                    ,style: TextStyle(fontSize: 17.sp,fontWeight: FontWeight.w800),),
-                                  links(),
-                                ],
-                              ))
-                            ],),
-                        ),
-                        SizedBox(height: 20.h,),
-                        Padding(
-                          padding:  EdgeInsets.symmetric(horizontal: D.default_10),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(isOnline?1:2, (index){
-                              return Expanded(
-                                child: Padding(
-                                  padding:  EdgeInsets.symmetric(horizontal: 5.w),
-                                  child: InkWell(
-                                    onTap: (){
-                                      setState(() {
-                                        _currentTab=index;
-                                        _tabsController.animateToPage(index,duration: Duration(milliseconds: 100), curve: Curves.ease);
-                                      });
-                                    },
-                                    child: Column(children: [
-                                      Text(index==0?tr("offers"):tr("address"),style: TextStyle(color: _currentTab==index?Colors.black:Colors.grey,fontSize: 18.sp,fontWeight: FontWeight.w800),),
-                                      SizedBox(height: 3.h,),
-                                      Container(
-                                        width:isOnline?double.infinity:D.default_180,
-                                        margin: EdgeInsets.symmetric(horizontal:D.default_20),
-                                        height: 2.2,color: _currentTab==index?C.BASE_BLUE:Colors.transparent,)
-                                    ],),
-                                  ),
-                                ),
-                              );
-                            }),),
-                        ),
-                        SizedBox(height: 13.h,),
-                        Expanded(child: PageView(
-                          children:[
-                            (widget.serviceProviderData.offers??[]).where((element) => (element.title??"").contains(_searchController.text)).toList().isNotEmpty?
-                            ListView.separated(
-                                padding: EdgeInsets.zero,
-                                controller:provider.offersController ,
-                                itemBuilder: (ctx,index){
-                                  return NewOfferWidget(
-                                      onSelect: (selectedOffer){
-                                        provider.onSelectOffer(selectedOffer,index);
-                                        provider.scrollToIndex();
-                                      },
-                                      offer: (widget.serviceProviderData.offers??[]).where((element) => (element.title??"").contains(_searchController.text)).toList()[index],
-                                      isSelected: provider.selectedOfferIndex==index);
-                                },
-                                separatorBuilder: (ctx,index){
-                                  return SizedBox(height: 5.h,);
-                                }, itemCount:(widget.serviceProviderData.offers??[]).where((element) => (element.title??"").contains(_searchController.text)).toList().length):Center(child: Text(tr("no_offers")),),
-                            isOnline?SizedBox():
-                            (widget.serviceProviderData.addresses??[]).isNotEmpty?
-                            ListView.separated(
-                                padding: EdgeInsets.zero,
-                                itemBuilder: (ctx,index){
-                                  return addressItem(widget.serviceProviderData.addresses![index]);
-                                },
-                                separatorBuilder: (ctx,index){
-                                  return SizedBox(height: 5.h,);
-                                },
-                                itemCount:(widget.serviceProviderData.addresses??[]).length):
-                            Column(children: [
-                              addressItem(AddressModel(
-                                phone:widget.serviceProviderData.phone,
-                                contactPhone: widget.serviceProviderData.contact_phone,
-                                latitude: widget.serviceProviderData.latitude,
-                                longitude: widget.serviceProviderData.longitude,
-                                address: widget.serviceProviderData.address,
-                                addressEn: widget.serviceProviderData.address,
-
-                              ))
-                            ],)
-                          ],
-                          physics: NeverScrollableScrollPhysics(),
-                          controller: _tabsController,
-                          onPageChanged: (currentpage) {
-                            setState(() {
-                              _currentTab=currentpage;
-                            });
-                          },
-                        ),),
-                        (provider.serviceProviderData.offers??[]).isNotEmpty
-                            ?Container(
-                          height: 77.h,
-                          width: double.infinity,
-                          decoration:BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          padding:  EdgeInsets.symmetric(horizontal:D.default_20,vertical: 2.h),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("${tr("offer_terms")}:",style: TextStyle(color: Color(0xFF565656),fontWeight:FontWeight.w800,fontSize:15.sp ),),
-                              Expanded(child: SingleChildScrollView(
-                                child: Text((List.generate(provider.selectedOffer.features!.length, (index) =>UtilsProviderModel().isArabic?provider.selectedOffer.features![index].ar:provider.selectedOffer.features![index].en)).join("\n"),
-
-                                  style: TextStyle(color: Color(0xFF686868),fontSize: 14.sp,height: 1.4),),
-                              ),)
-                            ],),
-                        ):SizedBox(),
-
-
-                        (provider.serviceProviderData.offers??[]).isNotEmpty?
-                        Container(
-                          color:Colors.white,
-                          padding: EdgeInsets.symmetric(vertical:D.default_10),
-                          child: Column(children: [
-                            InkWell(
-                              onTap: (){
-                                provider.showBottomSheet(context);
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(top:1.h,left: 20.w,right: 20.w),
-                                padding: EdgeInsets.all(10.h),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: C.BASE_BLUE,
-                                    boxShadow:[BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        offset:Offset(1,1),
-                                        blurRadius:1,
-                                        spreadRadius: 0.5
-                                    )]
-                                ),
-                                child: Center(child: Text(tr("use_offer"),style: TextStyle(color: Colors.white,fontSize: 16.sp,fontWeight: FontWeight.w800),),),
-                              ),
-                            ),SizedBox(height:20.h,)
-                          ],),):SizedBox()
-
-                      ],);
-                  }
-              ),
-            ),
-            Row(
-              mainAxisAlignment:MainAxisAlignment.spaceBetween,
+      body: Consumer<ServiceProviderDetailsProvider>(
+        builder: (_,data,___) {
+          return data.isLoading?LoadingProgress():data.serviceProviderData==null?SizedBox():GestureDetector(
+            onTap: (){
+              FocusManager.instance.primaryFocus!.unfocus();
+            },
+            child: Stack(
+              alignment: AlignmentDirectional.topEnd,
               children: [
                 Container(
-                  margin: EdgeInsets.symmetric(vertical:40.h,horizontal: 10.w),
-                  padding: EdgeInsets.all(2.h),
+                    height: 230.h,
+                    color: Colors.grey[200],
+                    child:PageView(
+                      children: _sliderItem(),
+                      controller: _controller,
+                      onPageChanged: (currentpage) {
+                        setState(() {
+                          _currentSliderPager=currentpage;
+                        });
+                      },
+                    )
+                ),
+                Container(
+                  margin: EdgeInsets.only(top:195.h),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Colors.white.withOpacity(0.8),
+                    borderRadius: BorderRadius.only(topLeft:Radius.circular(30,),topRight:Radius.circular(30)),
+                    color: Colors.white,
 
                   ),
-                  child: Row(children: [
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: (){
-                        if(_isExpanded){
-                          FocusManager.instance.primaryFocus!.unfocus();
-                        }
-                        if(_searchController.text.isEmpty){
-                          _toggleWidth();
-                        }
-                      },
-                      icon: Icon(Icons.search,size: 25,),),
-                    AnimatedContainer(
-                      duration: Duration(milliseconds: 200),
-                      width: searchWidth,
-                      child: TextField(
-                        controller: _searchController,
-                        style: TextStyle(color:Colors.black ,fontSize: 12.sp,fontFamily:fontPrimaryBold),
-                        decoration: InputDecoration(
-                          hintText: tr("search_for_offer"),
-                          hintStyle: TextStyle(color: Colors.grey,fontSize: 12.sp,fontFamily:fontPrimaryBold),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color:Colors.transparent),
-                          ),
-                          border: UnderlineInputBorder(
-                              borderSide: BorderSide(color:Colors.transparent)),
-                          errorStyle: S.h4(color: Colors.red),
-                          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                        ),
-                        onChanged: (value){
-                          setState(() {
+                  child: Consumer<ServiceProviderDetailsProvider>(
+                      builder: (context, provider,_) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 20.h,),
+                            Padding(
+                              padding:  EdgeInsets.only(left:D.default_20,right: D.default_10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(D.default_5),
+                                    margin: EdgeInsets.only(left:D.default_10,right: D.default_10),
+                                    width: 48.h,
+                                    height: 48.h,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(D.default_10),
+                                        color: Colors.white,
+                                        boxShadow:[BoxShadow(
+                                            color: Colors.grey.withOpacity(0.1),
+                                            blurRadius:4,
+                                            spreadRadius: 2
+                                        )]
+                                    ),
+                                    child:TransitionImage(
+                                      (data.serviceProviderData.photo??"").contains("https")?(data.serviceProviderData.photo??""):"https://alefak.com/uploads/${(data.serviceProviderData.photo??"")}",
+                                      radius: D.default_10,
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                    ) ,
+                                  ),
+                                  Expanded(child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        data.serviceProviderData.name!
+                                        ,style: TextStyle(fontSize: 17.sp,fontWeight: FontWeight.w800),),
+                                      links(),
+                                    ],
+                                  ))
+                                ],),
+                            ),
+                            SizedBox(height: 20.h,),
+                            Padding(
+                              padding:  EdgeInsets.symmetric(horizontal: D.default_10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: List.generate(isOnline?1:2, (index){
+                                  return Expanded(
+                                    child: Padding(
+                                      padding:  EdgeInsets.symmetric(horizontal: 5.w),
+                                      child: InkWell(
+                                        onTap: (){
+                                          setState(() {
+                                            _currentTab=index;
+                                            _tabsController.animateToPage(index,duration: Duration(milliseconds: 100), curve: Curves.ease);
+                                          });
+                                        },
+                                        child: Column(children: [
+                                          Text(index==0?tr("offers"):tr("address"),style: TextStyle(color: _currentTab==index?Colors.black:Colors.grey,fontSize: 18.sp,fontWeight: FontWeight.w800),),
+                                          SizedBox(height: 3.h,),
+                                          Container(
+                                            width:isOnline?double.infinity:D.default_180,
+                                            margin: EdgeInsets.symmetric(horizontal:D.default_20),
+                                            height: 2.2,color: _currentTab==index?C.BASE_BLUE:Colors.transparent,)
+                                        ],),
+                                      ),
+                                    ),
+                                  );
+                                }),),
+                            ),
+                            SizedBox(height: 13.h,),
+                            Expanded(child: PageView(
+                              children:[
+                                data.serviceProviderData.classifications!.isNotEmpty?
+                                ListView.separated(
+                                    padding: EdgeInsets.zero,
+                                    controller:provider.offersController ,
+                                    itemBuilder: (ctx,index){
+                                      return classificationItem(index);
+                                    },
+                                    separatorBuilder: (ctx,index){
+                                      return SizedBox(height: 5.h,);
+                                    }, itemCount:(data.serviceProviderData.classifications??[]).length):Center(child: Text(tr("no_offers")),),
+                                isOnline?SizedBox():
+                                (data.serviceProviderData.addresses??[]).isNotEmpty?
+                                ListView.separated(
+                                    padding: EdgeInsets.zero,
+                                    itemBuilder: (ctx,index){
+                                      return addressItem(data.serviceProviderData.addresses![index]);
+                                    },
+                                    separatorBuilder: (ctx,index){
+                                      return SizedBox(height: 5.h,);
+                                    },
+                                    itemCount:(data.serviceProviderData.addresses??[]).length):
+                                Column(children: [
+                                  addressItem(AddressModel(
+                                    phone:data.serviceProviderData.phone,
+                                    contactPhone: data.serviceProviderData.contact_phone,
+                                    latitude: data.serviceProviderData.latitude,
+                                    longitude: data.serviceProviderData.longitude,
+                                    address: data.serviceProviderData.address,
+                                    addressEn: data.serviceProviderData.address,
 
-                          });
-                        },
+                                  ))
+                                ],)
+                              ],
+                              physics: NeverScrollableScrollPhysics(),
+                              controller: _tabsController,
+                              onPageChanged: (currentpage) {
+                                setState(() {
+                                  _currentTab=currentpage;
+                                });
+                              },
+                            ),),
+                            (provider.serviceProviderData.offers??[]).isNotEmpty
+                                ?Container(
+                              height: 77.h,
+                              width: double.infinity,
+                              decoration:BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              padding:  EdgeInsets.symmetric(horizontal:D.default_20,vertical: 2.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${tr("offer_terms")}:",style: TextStyle(color: Color(0xFF565656),fontWeight:FontWeight.w800,fontSize:15.sp ),),
+                                  Expanded(child: SingleChildScrollView(
+                                    child: Text((List.generate(provider.selectedOffer.features!.length, (index) =>UtilsProviderModel().isArabic?provider.selectedOffer.features![index].ar:provider.selectedOffer.features![index].en)).join("\n"),
+
+                                      style: TextStyle(color: Color(0xFF686868),fontSize: 14.sp,height: 1.4),),
+                                  ),)
+                                ],),
+                            ):SizedBox(),
+
+
+                            (provider.serviceProviderData.offers??[]).isNotEmpty?
+                            Container(
+                              color:Colors.white,
+                              padding: EdgeInsets.symmetric(vertical:D.default_10),
+                              child: Column(children: [
+                                InkWell(
+                                  onTap: (){
+                                    provider.showBottomSheet(context);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(top:1.h,left: 20.w,right: 20.w),
+                                    padding: EdgeInsets.all(10.h),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: C.BASE_BLUE,
+                                        boxShadow:[BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            offset:Offset(1,1),
+                                            blurRadius:1,
+                                            spreadRadius: 0.5
+                                        )]
+                                    ),
+                                    child: Center(child: Text(tr("use_offer"),style: TextStyle(color: Colors.white,fontSize: 16.sp,fontWeight: FontWeight.w800),),),
+                                  ),
+                                ),SizedBox(height:20.h,)
+                              ],),):SizedBox()
+
+                          ],);
+                      }
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(child: SizedBox()),
+                   /* Container(
+                      margin: EdgeInsets.symmetric(vertical:40.h,horizontal: 10.w),
+                      padding: EdgeInsets.all(2.h),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.white.withOpacity(0.8),
 
                       ),
-                    )
-                  ],),),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical:40.h,horizontal: 10.w),
-                  padding: EdgeInsets.all(2.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Colors.white.withOpacity(0.8),
+                      child: Row(children: [
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: (){
+                            if(_isExpanded){
+                              FocusManager.instance.primaryFocus!.unfocus();
+                            }
+                            if(_searchController.text.isEmpty){
+                              _toggleWidth();
+                            }
+                          },
+                          icon: Icon(Icons.search,size: 25,),),
+                        AnimatedContainer(
+                          duration: Duration(milliseconds: 200),
+                          width: searchWidth,
+                          child: TextField(
+                            controller: _searchController,
+                            style: TextStyle(color:Colors.black ,fontSize: 12.sp,fontFamily:fontPrimaryBold),
+                            decoration: InputDecoration(
+                              hintText: tr("search_for_offer"),
+                              hintStyle: TextStyle(color: Colors.grey,fontSize: 12.sp,fontFamily:fontPrimaryBold),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.transparent),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color:Colors.transparent),
+                              ),
+                              border: UnderlineInputBorder(
+                                  borderSide: BorderSide(color:Colors.transparent)),
+                              errorStyle: S.h4(color: Colors.red),
+                              contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                            ),
+                            onChanged: (value){
+                              setState(() {
 
-                  ),
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: (){
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.arrow_forward_ios,size: 20,),),)
-              ],),
-          ],
-        ),
+                              });
+                            },
+
+                          ),
+                        )
+                      ],),),*/
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical:40.h,horizontal: 10.w),
+                      padding: EdgeInsets.all(2.h),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.white.withOpacity(0.8),
+
+                      ),
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(Icons.arrow_forward_ios,size: 20,),),)
+                  ],),
+              ],
+            ),
+          );
+        }
       ),
     );
   }
@@ -357,7 +366,8 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
           child:
           Column(children: [
             Expanded(child: TransitionImage(
-              (widget.serviceProviderData.bannerPhoto??"").contains("https")?(widget.serviceProviderData.bannerPhoto??""):"https://alefak.com/uploads/${(widget.serviceProviderData.bannerPhoto??"")}",
+              (context.read<ServiceProviderDetailsProvider>()
+                  .serviceProviderData.bannerPhoto??"").contains("https")?(context.read<ServiceProviderDetailsProvider>().serviceProviderData.bannerPhoto??""):"https://alefak.com/uploads/${(context.read<ServiceProviderDetailsProvider>().serviceProviderData.bannerPhoto??"")}",
               fit: BoxFit.cover,
               width: double.infinity,
               radius: D.default_10,
@@ -365,12 +375,12 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
 
           ],),)
     );
-    for(int i=0;i<widget.serviceProviderData.photos!.length;i++){
+    for(int i=0;i<context.read<ServiceProviderDetailsProvider>().serviceProviderData.photos!.length;i++){
       items.add(
           Container(child:
           Column(children: [
             Expanded(child: TransitionImage(
-              widget.serviceProviderData.photos![i].photo!,
+              context.read<ServiceProviderDetailsProvider>().serviceProviderData.photos![i].photo!,
               fit: BoxFit.cover,
               width: double.infinity,
               radius: D.default_10,
@@ -384,11 +394,11 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
   Widget links(){
     return SizedBox(height: D.default_50,child: ListView(
       scrollDirection: Axis.horizontal,
-      children: List.generate((widget.serviceProviderData.links??[]).length, (index){
+      children: List.generate((context.read<ServiceProviderDetailsProvider>().serviceProviderData.links??[]).length, (index){
           return linkItem(
-              link: widget.serviceProviderData.links![index].icon,
+              link: context.read<ServiceProviderDetailsProvider>().serviceProviderData.links![index].icon,
               onClick: (){
-                _launchURLBrowser(widget.serviceProviderData.links![index].link??'');
+                _launchURLBrowser(context.read<ServiceProviderDetailsProvider>().serviceProviderData.links![index].link??'');
               });
         }),));
 
@@ -429,7 +439,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                 Row(
                   children: [
                     SizedBox(width: D.default_8,),
-                    Expanded(child: Text(UtilsProviderModel().isArabic?address.title_ar??widget.serviceProviderData.name??"":address.title_en??widget.serviceProviderData.name??"",style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w800,overflow:TextOverflow.ellipsis ),)),
+                    Expanded(child: Text(UtilsProviderModel().isArabic?address.title_ar??context.read<ServiceProviderDetailsProvider>().serviceProviderData.name??"":address.title_en??context.read<ServiceProviderDetailsProvider>().serviceProviderData.name??"",style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w800,overflow:TextOverflow.ellipsis ),)),
                   ],
                 ),
                 SizedBox(height: D.default_8,),
@@ -498,6 +508,135 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
       Fluttertoast.showToast(msg: tr("cant_opn_url"),backgroundColor: Colors.red,textColor: Colors.white,);
 
     }
+  }
+  Widget classificationItem(int index){
+    return Column(children: [
+      SizedBox(height: 2.h,),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: (){
+                setState(() {
+                  context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded=!(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded??false);
+                });
+              },
+              child:Row(
+                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+
+                    width: 50.h,
+                    height: 40.h,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                          image: NetworkImage(context.read<ServiceProviderDetailsProvider>().serviceProviderData.bannerPhoto??'')),
+                        borderRadius: BorderRadius.only(topRight:Radius.circular(10),bottomRight:Radius.circular(15)),
+                        color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(width:4.w,),
+                  Expanded(
+                    child: Container(
+                      height: 40.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(topLeft:Radius.circular(15),bottomLeft:Radius.circular(15)),
+                        color: C.BASE_BLUE,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child:Text(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].name??'',textAlign:
+                              TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 18.sp,fontWeight: FontWeight.w800),),
+
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(8.w),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(50)),
+                              color: Colors.white,
+                            ),
+                            child: Image.asset((context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded??false)?"assets/images/dropdown_up.png":'assets/images/dropdown_arrow_down.png',
+                              width: 15.w,
+                              height:15.w ,
+                            ),
+                          ),
+                          SizedBox(width:8.w,)
+                        ],
+                      ),
+                    ),
+                  ),
+
+                ],),
+            ),
+            SizedBox(height: 8.h,),
+            Visibility(
+              visible: context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded??false,
+              child: Column(children: List.generate((context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].offers??[]).length, (offerIndex){
+                return Container(
+                  padding: EdgeInsets.symmetric(vertical: 8.h,horizontal: 10.w),
+                  margin: EdgeInsets.symmetric(vertical: 5.h,),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Color(0xffF6F6F6),
+                  ),
+                  child: GestureDetector(
+                    onTap: (){
+                      Get.to(NewOfferDetailsScreen(serviceProvider: context.read<ServiceProviderDetailsProvider>().serviceProviderData, offer: (context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].offers??[])[offerIndex],));
+                    },
+                    child: Row(
+                      crossAxisAlignment:  CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Image.asset("assets/images/offer_search_radio.png",width: 20.w,height: 20.w,),
+
+                          ],),
+                        SizedBox(width: 13.w,),
+                        Expanded(child: Column(
+                          crossAxisAlignment:CrossAxisAlignment.start,
+                          children: [
+                            Text(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].offers![offerIndex].title??'',style: TextStyle(fontWeight:FontWeight.w800,fontSize: 14.sp),),
+                            SizedBox(height: 3.h,),
+                            Row(
+                              children: [
+                                Expanded(child: Text(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].offers![offerIndex].description_ar??'',style: TextStyle(fontWeight:FontWeight.w500,fontSize: 12.sp),)),
+                                SizedBox(width:3.w),
+                                Container(
+                                  padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 8.w),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Color(0xff1BB1CC),
+                                  ),
+                                  child: Row(children: [
+                                    Text(tr("details"),style: TextStyle(color: Colors.white,fontSize: 12.sp,),),
+                                    SizedBox(width: 10.w,),
+                                    Icon(Icons.arrow_forward_ios,size: 12.w,color: Colors.white,)
+                                  ],),)
+                              ],
+                            ),
+
+                          ],
+                        )),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+
+                          ],),
+                      ],),
+                  ),);
+              }),),
+            )
+          ],
+        ),
+      ),
+      SizedBox(height: 2.h,),
+    ],);
   }
 
 }

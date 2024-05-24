@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:alefakaltawinea_animals_app/data/dio/dio_utils.dart';
 import 'package:alefakaltawinea_animals_app/data/dio/my_rasponce.dart';
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/alefak_in_lies_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/login/data/user_data.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/apis.dart';
 
@@ -47,6 +48,16 @@ class SettingsApi{
           json.decode(jsonEncode(response.data)));
     } else {
       return MyResponse<UserData>.init(response!.statusCode.toString(),response.statusMessage!, null);
+    }
+  }
+  Future<MyResponse<List<AlefakInLinesData>>> getAlefakInLines() async {
+    final url = "${Apis.GET_ALEFAK_INN_LINES}";
+    final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_GET, url);
+    if (response != null && response.statusCode == 200) {
+      return MyResponse<List<AlefakInLinesData>>.fromJson(
+          json.decode(jsonEncode(response.data)));
+    } else {
+      return MyResponse<List<AlefakInLinesData>>.init(response!.statusCode.toString(),response.statusMessage!, null);
     }
   }
 }

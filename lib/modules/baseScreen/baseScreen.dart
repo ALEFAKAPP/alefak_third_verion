@@ -71,6 +71,7 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin{
     introProviderModel =Provider.of<IntroProviderModel>(context, listen: true);
     return Scaffold(
         key: _scaffoldKey,
+        backgroundColor: Colors.white,
         body: Column(children: [
           widget.showSettings?_actionBar():Container(height: 0,),
           Expanded(child:

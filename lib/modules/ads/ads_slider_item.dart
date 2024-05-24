@@ -32,69 +32,74 @@ class _AdsSliderItemState extends State<AdsSliderItem> {
     return InkWell(
       onTap: (){
       },
-      child: Stack(
-        alignment:AlignmentDirectional.bottomCenter ,
-        children: [
-        Container(
-        width: double.infinity,
-
-        child:Column(children: [
-          Expanded(child:
-          InkWell(
-            onTap: ()async{
-              switch(widget.AdsItem.type_id){
-                case "0":{
-                  MyUtils.navigate(context, NewServiceProviderDetailsScreen(widget.AdsItem));
-                }
-                  break;
-                case "1":{
-                  if((widget.AdsItem.url??"").isNotEmpty){
-                    _launchURLBrowser(widget.AdsItem.url??"");
-                  }else{
-                    if(Constants.currentUser!=null){
-                      if(Constants.APPLE_PAY_STATE){
-                        MyUtils.navigate(context, BuyCard());
-                      }else{
-                        await Fluttertoast.showToast(msg:tr("Your request has been successfully received") );
-                      }
-                    }else{
-                       msgreguser(context);
-                      // MyUtils.navigate(context, LoginScreen());
-                    }
-                  }
-                }
-                  break;
-                case "2":{
-                  if((widget.AdsItem.url??"").isNotEmpty){
-                    _launchURLBrowser(widget.AdsItem.url??"");
-                  }else{
-                    if(Constants.currentUser!=null){
-                      if(Constants.APPLE_PAY_STATE){
-                        MyUtils.navigate(context, BuyCard());
-                      }else{
-                        await Fluttertoast.showToast(msg:tr("Your request has been successfully received") );
-                      }
-                    }else{
-                       msgreguser(context);
-                      // MyUtils.navigate(context, LoginScreen());
-                    }
-                  }
-
-                }
-                  break;
-              }
-            },
-            child: TransitionImage(
-            widget.AdsItem.type_id=="0"?(widget.AdsItem.bannerPhoto??"").contains("https")?widget.AdsItem.bannerPhoto!:"https://alefak.com/uploads/${widget.AdsItem.bannerPhoto}":widget.AdsItem.bannerPhoto??"",
-            fit: BoxFit.cover,
-            radius: 15,
-            width: double.infinity,
-              backgroundColor: Colors.white,
-          ),)),
-        ],),
-
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: 5.w
         ),
-      ],),);
+        child: Stack(
+          alignment:AlignmentDirectional.bottomCenter ,
+          children: [
+          Container(
+          width: double.infinity,
+
+          child:Column(children: [
+            Expanded(child:
+            InkWell(
+              onTap: ()async{
+                switch(widget.AdsItem.type_id){
+                  case "0":{
+                    MyUtils.navigate(context, NewServiceProviderDetailsScreen(widget.AdsItem));
+                  }
+                    break;
+                  case "1":{
+                    if((widget.AdsItem.url??"").isNotEmpty){
+                      _launchURLBrowser(widget.AdsItem.url??"");
+                    }else{
+                      if(Constants.currentUser!=null){
+                        if(Constants.APPLE_PAY_STATE){
+                          MyUtils.navigate(context, BuyCard());
+                        }else{
+                          await Fluttertoast.showToast(msg:tr("Your request has been successfully received") );
+                        }
+                      }else{
+                         msgreguser(context);
+                        // MyUtils.navigate(context, LoginScreen());
+                      }
+                    }
+                  }
+                    break;
+                  case "2":{
+                    if((widget.AdsItem.url??"").isNotEmpty){
+                      _launchURLBrowser(widget.AdsItem.url??"");
+                    }else{
+                      if(Constants.currentUser!=null){
+                        if(Constants.APPLE_PAY_STATE){
+                          MyUtils.navigate(context, BuyCard());
+                        }else{
+                          await Fluttertoast.showToast(msg:tr("Your request has been successfully received") );
+                        }
+                      }else{
+                         msgreguser(context);
+                        // MyUtils.navigate(context, LoginScreen());
+                      }
+                    }
+
+                  }
+                    break;
+                }
+              },
+              child: TransitionImage(
+              widget.AdsItem.type_id=="0"?(widget.AdsItem.bannerPhoto??"").contains("https")?widget.AdsItem.bannerPhoto!:"https://alefak.com/uploads/${widget.AdsItem.bannerPhoto}":widget.AdsItem.bannerPhoto??"",
+              fit: BoxFit.cover,
+              radius: 15,
+              width: double.infinity,
+                backgroundColor: Colors.white,
+            ),)),
+          ],),
+
+          ),
+        ],),
+      ),);
   }
   _launchURLBrowser(String url) async {
     if (await canLaunch(url)) {

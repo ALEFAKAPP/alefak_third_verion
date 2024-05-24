@@ -261,7 +261,7 @@
   "هل_تريد_إلغاء_العملية" : "Do you want to cancel the operation?",
   "الدفع" : "Pay",
   "اصدار_البطاقة" : "Issuing the card",
-  "desc_futer_card" : "Enjoy exclusive discounts in clinics and stores for a year",
+  "desc_futer_card" : "Enjoy exclusive discounts in clinics and stores ",
   "لمعرفة_المزيد_اضغط_هنا" : "To learn more click here",
   "sub_total" : "Sub total",
   "بطاقة" : "Card",
@@ -317,5 +317,42 @@
   "show_code": "show code",
   "search_for_offer": "search by offer name",
   "home_search_btn_title": "What dose your Alefak need? search... ",
-  "about_alefak_home_title": "Alifak Altawnia in lines"
+  "about_alefak_home_title": "Alifak Altawnia in lines",
+  "distance_filter": "Distance",
+  "reset": "Reset",
+  "show_result_title": "Show Results",
+  "animal_type": "Animal Type",
+  "services_types": "Service Classifications",
+  "subscriptions_screen_title": "Subscriptions",
+  "sub_desc_1": "Benefit from all discounts",
+  "sub_desc_2": "Unlimited usage with no maximum limit",
+  "sub_desc_3": "Wide network of clinics and veterinary stores",
+  "sub_desc_4": "Issuance of cards for all your pets",
+  "sub_desc_5": "Instant activation of the card upon subscription",
+  "set_sub_duration": "Choose the subscription duration:",
+  "subscribe_btn_title": "Subscribe",
+  "subscribe_screen_btn_title": "Subscribe now",
+  "SAR": "SAR",
+  "week": "ْWeek",
+  "month": "Month",
+  "year": "Year",
+  "step_one": "Step one",
+  "step_tow": "Step tow",
+  "step_three": "Step three",
+  "next": "Next",
+  "clinics": "Clinics",
+  "available": "Available",
+  "see_all": "Show all",
+  "examination": "Examination",
+  "how_to_use_offer": "How to use",
+  "location": "Location",
+  "price": "Price",
+  "there_is_no_notificatiion": "There is no notifications",
+  "no_search": "No search data "
+
+
+
+
+
+
 }

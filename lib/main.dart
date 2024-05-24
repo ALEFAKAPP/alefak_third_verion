@@ -1,9 +1,12 @@
 import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/firebase_options.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
+import 'package:alefakaltawinea_animals_app/modules/cart/provider/subscription_provider.dart';
+import 'package:alefakaltawinea_animals_app/modules/search/provider/search_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/provider/home_offers_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/settings/terms_screen.dart';
+import 'package:alefakaltawinea_animals_app/modules/user_notifications/user_notifications_provider.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/providers.dart';
@@ -97,6 +100,18 @@ void main() async{
         ChangeNotifierProvider<ServiceProviderDetailsProvider>(
           create: (ctx) => ServiceProviderDetailsProvider(),
         ),
+
+        ChangeNotifierProvider<SearchProvider>(
+          create: (ctx) => SearchProvider(),
+        ),
+        ChangeNotifierProvider<SubscriptionProvider>(
+          create: (ctx) => SubscriptionProvider(),
+        ),
+        ChangeNotifierProvider<UserNotificationsProvider>(
+          create: (ctx) => UserNotificationsProvider(),
+        ),
+
+
 
 
       ],

@@ -5,7 +5,9 @@ class RegionsModel {
   RegionsModel({
       this.id, 
       this.name, 
-      this.getStates,});
+      this.getStates,
+    this.isSelected
+  });
 
   RegionsModel.fromJson(dynamic json) {
     id = json['id'];
@@ -20,6 +22,7 @@ class RegionsModel {
   int? id;
   String? name;
   List<Get_states>? getStates;
+  bool? isSelected;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

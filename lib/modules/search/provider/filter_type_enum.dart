@@ -1,0 +1,3 @@
+enum FiltersTypes{
+  CITY,ANiMAL_TYPE,CLINIC,CLASSIFICATION
+}

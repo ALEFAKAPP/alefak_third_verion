@@ -20,6 +20,9 @@ import 'package:alefakaltawinea_animals_app/core/view_model/BuyCards/BuyCardsVie
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../../modules/cart/subscriptions_screen.dart';
+import '../../../../utils/my_utils/myUtils.dart';
+
 class BuyCard extends StatefulWidget {
   @override
   State<BuyCard> createState() => _BuyCardState();
@@ -30,6 +33,12 @@ class _BuyCardState extends State<BuyCard> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      if((Constants.currentUser!.valid_subscriptions??0)<1){
+        MyUtils.navigateReplaceCurrent(context, SubscriptionScreen());
+      }
+    });
+    _buyCardViewModel.step.value=1;
     AnalyticsHelper().setScreen(screenName: "شاشة-إصدار البطاقة");
   }
 
@@ -130,8 +139,6 @@ class _BuyCardState extends State<BuyCard> {
                         SizedBox(height: 15,),
                         CounterCard(),
                         SizedBox(height: 15,),
-                        CouponSection(),
-                        SizedBox(height: 15,),
                         Obx(() => Container(
                           color: Colors.white,
                           child: Padding(
@@ -140,18 +147,6 @@ class _BuyCardState extends State<BuyCard> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    text(tr('sub_total'),fontSize: textSizeMedium.sp,isBold: true),
-                                    Row(
-                                      children: [
-                                        text('${_buyCardViewModel.subtotal}',fontSize: textSizeMedium.sp,isBold: true),
-                                        text(tr('curncy'),fontSize: textSizeMedium.sp,isBold: true),
-                                      ],
-                                    ),
-                                  ],
-                                ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -182,26 +177,13 @@ class _BuyCardState extends State<BuyCard> {
                                     :Container()
                                   ,),
                                 line(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    text(tr('المبلغ_الإجمالي'),textColor: primaryColor,isBold: true),
-                                    Row(
-                                      children: [
-                                        text('${_buyCardViewModel.total}',textColor: primaryColor,isBold: true),
-                                        text(tr('curncy'),textColor: primaryColor,isBold: true),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                text(tr('not_pay_card'),fontSize: textSizeSMedium),
+
                                 SizedBox(height: 5,),
                                 defaultButton(
                                     color: primaryColor,
                                     spacingStandard : 10,
-                                    text: tr('الدفع'),
+                                    text: tr('next'),
                                     function: () {
-                                      // _buyCardViewModel.changeStateAfterPayment();
                                       _buyCardViewModel.BuyCard();
                                     }),
                               ],

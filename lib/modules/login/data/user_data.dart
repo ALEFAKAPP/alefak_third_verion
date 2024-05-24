@@ -29,7 +29,8 @@ class UserData {
       this.userTypeId, 
       this.token, 
       this.activate,
-    this.photos
+    this.photos,
+    this.valid_subscriptions
   });
 
   UserData.fromJson(dynamic json) {
@@ -57,6 +58,7 @@ class UserData {
       });
     }
     color = json['color'];
+    valid_subscriptions=json['valid_subscriptions'];
     userTypeId = json['user_type_id'];
     token = json['token'];
     activate = json['activate'];
@@ -90,6 +92,7 @@ class UserData {
   String? token;
   dynamic? activate;
   List<PhotoModel>? photos;
+  int?valid_subscriptions;
 
 
   Map<String, dynamic> toJson() {
@@ -118,6 +121,7 @@ class UserData {
     map['user_type_id'] = userTypeId;
     map['token'] = token;
     map['activate'] = activate;
+    map['valid_subscriptions']=valid_subscriptions;
     if (this.photos != null) {
       map['photos'] = this.photos!.map((v) => v.toJson()).toList();
     }

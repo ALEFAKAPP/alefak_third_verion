@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:alefakaltawinea_animals_app/data/dio/my_rasponce.dart';
+import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/alefak_in_lies_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/categories_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/get_categories_list_api.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/get_home_offers_api.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/home_offers_model.dart';
+import 'package:alefakaltawinea_animals_app/modules/settings/apl/settings_api.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/apis.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/resources.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -21,6 +25,7 @@ class CategoriesProviderModel with ChangeNotifier {
   List<CategoriesDataModel> categoriesList=[];
   GetCategoriesListApi getCategoriesListApi=GetCategoriesListApi();
   List<HomeListOfOffersModel> homeOffersLists=[];
+  List<AlefakInLinesData> alefakInLinseData=[];
   getCategoriesList() async {
     setIsLoading(true);
     categoriesList.clear();
@@ -58,6 +63,12 @@ class CategoriesProviderModel with ChangeNotifier {
   }
   void setCategoriesList(List<CategoriesDataModel> value){
     categoriesList.addAll(value);
+    notifyListeners();
+  }
+  getAlefakInLine()async{
+    MyResponse<List<AlefakInLinesData>>  response = await SettingsApi().getAlefakInLines();
+    alefakInLinseData.clear();
+    alefakInLinseData.addAll(response.data??[]);
     notifyListeners();
   }
 

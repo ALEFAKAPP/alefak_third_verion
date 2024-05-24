@@ -83,6 +83,30 @@ class Apis{
   ///..............home offers.........................
   static String GET_HOME_OFFERS="${BASE_URL}/offers-categories";
   static String GET_HOME_OFFERS_BY_ID="${BASE_URL}/offers-categories/";
+  static String GET_ALEFAK_INN_LINES="${BASE_URL}/alefak-inlines";
+  static String GET_ALL_CITIES="${BASE_URL}/states";
+  static String GET_ANIMALS_TYPES="${BASE_URL}/types";
+  static String GET_SERVICE_CLASSIFICATION="${BASE_URL}/classifications";
+  static String GET_SUBSCRIPTIO_PLANE="${BASE_URL}/subscriptions";
+  static String SUBSCRIBE_IN_PLAN="${BASE_URL}/plan-subscribe";
+  static String ADD_CARD_BY_SUBSCRIPTION="${BASE_URL}/add-subscription-card";
+  static String GET_ALL_CLINICS="${BASE_URL}/shopsList/1";
+  static String GET_SHOP="${BASE_URL}/single-shop";
+  static String GET_USER_NOTIFICATIONS="${BASE_URL}/notifications";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

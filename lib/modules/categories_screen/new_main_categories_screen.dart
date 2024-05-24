@@ -5,6 +5,7 @@ import 'package:alefakaltawinea_animals_app/modules/ads/provider/ads_slider_prov
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/home_offers_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/homeTabsScreen/homeTabsScreen.dart';
+import 'package:alefakaltawinea_animals_app/modules/search/view/screens/search_filters_list.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/new_service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/getServiceProvidersApi.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
@@ -25,6 +26,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -61,10 +63,11 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> with
     categoriesProviderModel=Provider.of<CategoriesProviderModel>(context,listen: false);
     utilsProviderModel=Provider.of<UtilsProviderModel>(context,listen: false);
     WidgetsBinding.instance!.addPostFrameCallback((_)async{
-      await adsSliderProviderModel!.getAdsSlider();
-      await categoriesProviderModel!.getCategoriesList();
-      await categoriesProviderModel!.getHomeOffersList();
-      notificationNavigation();
+       adsSliderProviderModel!.getAdsSlider();
+       categoriesProviderModel!.getCategoriesList();
+       categoriesProviderModel!.getHomeOffersList();
+       categoriesProviderModel!.getAlefakInLine();
+       notificationNavigation();
       FirebaseDynamicLinks.instance.onLink.listen(
             (pendingDynamicLinkData) async{
           if (pendingDynamicLinkData != null) {
@@ -163,28 +166,34 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> with
   }
 
   Widget searchButton(){
-    return Container(
-      margin: EdgeInsets.only(top: 5.h,bottom: 8.h,left: 27.w,right: 27.w),
-      padding: EdgeInsets.symmetric(vertical:5.h,horizontal: 10.w),
+    return InkWell(
+      onTap: (){
+        MyUtils.navigate(context, SearchFiltersListScreen());
 
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.white,
-          boxShadow:[BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              offset:Offset(0,0),
-              blurRadius:3,
-              spreadRadius: 1
-          )]
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 5.h,bottom: 8.h,left: 27.w,right: 27.w),
+        padding: EdgeInsets.symmetric(vertical:5.h,horizontal: 10.w),
+
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.white,
+            boxShadow:[BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                offset:Offset(0,0),
+                blurRadius:3,
+                spreadRadius: 1
+            )]
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+          Text(tr('home_search_btn_title'),style:TextStyle(color: Color(0xff888888),fontSize: 14.sp,fontWeight: FontWeight.w400)),
+          Image.asset('assets/images/search_ic.png',width: 17.w,height: 17.w,),
+
+        ],),
+
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-        Text(tr('home_search_btn_title'),style:TextStyle(color: Color(0xff888888),fontSize: 14.sp,fontWeight: FontWeight.w400)),
-        Image.asset('assets/images/search_ic.png',width: 17.w,height: 17.w,),
-
-      ],),
-
     );
   }
   Widget aboutAlifakWidget(){
@@ -205,15 +214,25 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> with
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal:13.w,vertical: 12.h),
-              padding: EdgeInsets.symmetric(vertical: 5.h),
+            InkWell(
+              onTap: ()async{
+                if(Constants.APPLE_PAY_STATE){
+                  MyUtils.navigate(context, BuyCard());
+                }else{
+                  await Fluttertoast.showToast(msg:tr("Your request has been successfully received") );
+                }
 
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Color(0xffFB5659),
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal:13.w,vertical: 12.h),
+                padding: EdgeInsets.symmetric(vertical: 5.h),
+
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Color(0xffFB5659),
+                ),
+                child: Center(child:Text(tr("subscribe_screen_btn_title"),style: TextStyle(color: Colors.white,fontSize: 14.sp,fontWeight: FontWeight.w800),)),
               ),
-              child: Center(child:Text("اشترك الان",style: TextStyle(color: Colors.white,fontSize: 14.sp,fontWeight: FontWeight.w800),)),
             )
           ],),
         ),
@@ -232,34 +251,41 @@ class _NewMaiinCategoriesScreenState extends State<NewMainCategoriesScreen> with
                       SizedBox(
                         width: double.infinity,
                         height: 165.h,
-                        child: ListView.separated(
-                          itemCount: 5,
-                            scrollDirection: Axis.horizontal,
-                            separatorBuilder: (_,index){
-                            return SizedBox(width: 8.w,);
-                            },
-                            itemBuilder: (_,index){
-                          return Container(
-                            width: 180.w,
-                            padding: EdgeInsets.symmetric(vertical:13.h,horizontal: 15.w),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Color(0xffF6F7FB),
-                            ),
-                            child:Column(children: [
-                              Image.asset('assets/images/about_home_default_ic.png',
-                              width: 50.w,
-                                height: 50.w
-                                ,),
-                              SizedBox(height: 8.h,),
-                              Text("تطبيق أليفك التعاونية",textAlign: TextAlign.center,style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w800),),
-                              SizedBox(height: 3.h,),
-                              Text("وفر لكم شبكة واسعة من العغيادات البيطرية ومتاجر الحيوانات حول المملكة بالاضافة لعرض خدماتهم وبخصومات حصرية ",textAlign: TextAlign.center,style: TextStyle(fontSize: 11.sp,fontWeight: FontWeight.w500),),
+                        child: Consumer<CategoriesProviderModel>(
+                          builder: (context, snapshot,_) {
+                            return snapshot.alefakInLinseData.isEmpty?SizedBox():
+                            ListView.separated(
+                              itemCount: snapshot.alefakInLinseData.length,
+                                scrollDirection: Axis.horizontal,
+                                separatorBuilder: (_,index){
+                                return SizedBox(width: 8.w,);
+                                },
+                                itemBuilder: (_,index){
+                              return Container(
+                                width: 180.w,
+                                padding: EdgeInsets.symmetric(vertical:13.h,horizontal: 15.w),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Color(0xffF6F7FB),
+                                ),
+                                child:Column(children: [
+                                  TransitionImage(snapshot.alefakInLinseData[index].photo,
+                                  width: 50.w,
+                                    height: 50.w
+                                    ,),
+                                  SizedBox(height: 8.h,),
+                                  Text(snapshot.alefakInLinseData[index].name??'',textAlign: TextAlign.center,style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w800),),
+                                  SizedBox(height: 3.h,),
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                        child: Text(snapshot.alefakInLinseData[index].description??'',textAlign: TextAlign.center,style: TextStyle(fontSize: 11.sp,fontWeight: FontWeight.w500),)),
+                                  ),
 
-
-                            ],)
-                          );
-                        }),
+                                ],)
+                              );
+                            });
+                          }
+                        ),
                       ),
                     ],),
                 ),

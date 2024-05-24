@@ -18,6 +18,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class ServiceProvidersProviderModel with ChangeNotifier {
   ///.....ui controllers.........
   bool isLoading=false;
+  bool isDistanceActive=false;
 
 
   void setIsLoading(bool value){
@@ -32,6 +33,7 @@ class ServiceProvidersProviderModel with ChangeNotifier {
   int?selectedMarkerColor;
   bool fetchEnd=true;
   CategoriesDataModel? selectedCategory;
+  bool isDistanceFilterActive=false;
 
 
   /// ..........categories...........
@@ -44,7 +46,7 @@ class ServiceProvidersProviderModel with ChangeNotifier {
       serviceProviderModel = null;
     }
     MyResponse<ServiceProviderModel> response =
-    await getServiceProvidersApi.getServiceProviders(categoryId, page,keyword: keyword,isOnline:isOnline );
+    await getServiceProvidersApi.getServiceProvidersNew(categoryId, page,keyword: keyword,isOnline:isOnline,isDistanceActive: isDistanceActive );
     if (response.status == Apis.CODE_SUCCESS &&response.data!=null){
       ServiceProviderModel model=response.data;
       if(page>1){
@@ -216,6 +218,7 @@ class ServiceProvidersProviderModel with ChangeNotifier {
     notifyListeners();
 
   }
+
 
 
 }

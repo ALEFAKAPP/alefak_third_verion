@@ -15,6 +15,7 @@ class AppInfoModel {
   String? futureCard;
   int? priceCard;
   int? priceAdditionalCard;
+  String?how_to_take_offer_video;
 
   AppInfoModel(
       {this.aboutUs,
@@ -31,6 +32,7 @@ class AppInfoModel {
         this.futureCard,
         this.priceCard,
         this.priceAdditionalCard,
+        this.how_to_take_offer_video
       });
 
   AppInfoModel.fromJson(Map<String, dynamic> json) {
@@ -48,6 +50,7 @@ class AppInfoModel {
     futureCard = json['future_card'] ?? '';
     priceCard = json['price_card'] ?? 0.0;
     priceAdditionalCard = json['price_additional_card'] ?? 0.0;
+    how_to_take_offer_video=json['how_to_take_offer_video']??'';
   }
 
   Map<String, dynamic> toJson() {
