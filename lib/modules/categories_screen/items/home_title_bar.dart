@@ -23,52 +23,51 @@ class _HomeTitleBarState extends State<HomeTitleBar> {
    TextEditingController _cityController = TextEditingController();
    @override
   void initState() {
-     _cityController.text=Constants.currentUser!.stateName??tr("select_reagion");
+     if(Constants.currentUser!=null){
+       _cityController.text=Constants.currentUser!.stateName??tr("select_reagion");
+     }
      filteredCities.addAll(MyUtils.getCities());
      super.initState();
   }
    @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: Constants.currentUser!=null,
-      child: Container(
-        color: Colors.white,
-        padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
-      child: Row(children: [
-         Expanded(
-           flex: 1,
-             child: InkWell(
-               onTap: (){onAddressClick(context);},
-               child: Row(children: [
-           Text(_cityController.text,style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w800),),
-           SizedBox(width: 2.w,),
-           Image.asset('assets/images/home_dropdowen_icon.png',
-               width: 3.5.w,
-               height: 3.5.w,
-           ),
-         ],),
-             )),
-        Expanded(
-          flex: 2,
-            child: Center(child:Text("${tr("welcome_back")} ${Constants.currentUser!=null?(Constants.currentUser!.name):''}",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w800),),)),
-        Expanded(child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-          InkWell(
-            onTap:(){
-              Get.to(UserNotificationsScreen());
-            },
-            child: Image.asset('assets/images/notification_ic.png',
-              width: 6.w,
-              height: 6.w,
-            ),
-          )
-        ],))
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+    child: Row(children: [
+       Expanded(
+         flex: 1,
+           child:Constants.currentUser==null?SizedBox(): InkWell(
+             onTap: (){onAddressClick(context);},
+             child: Row(children: [
+         Text(_cityController.text,style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w800),),
+         SizedBox(width: 2.w,),
+         Image.asset('assets/images/home_dropdowen_icon.png',
+             width: 3.5.w,
+             height: 3.5.w,
+         ),
+       ],),
+           )),
+      Expanded(
+        flex: 2,
+          child: Constants.currentUser==null?SizedBox():Center(child:Text("${tr("welcome_back")} ${Constants.currentUser!=null?(Constants.currentUser!.name):''}",style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w800),),)),
+      Expanded(child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+        InkWell(
+          onTap:(){
+            Get.to(UserNotificationsScreen());
+          },
+          child: Image.asset('assets/images/notification_ic.png',
+            width: 6.w,
+            height: 6.w,
+          ),
+        )
+      ],))
 
-        /// title
-        /// notification icon
-      ],),),
-    );
+      /// title
+      /// notification icon
+    ],),);
   }
 
   onAddressClick(BuildContext context){

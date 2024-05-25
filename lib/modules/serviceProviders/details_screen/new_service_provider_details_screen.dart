@@ -520,7 +520,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
             GestureDetector(
               onTap: (){
                 setState(() {
-                  context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded=!(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded??false);
+                  context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded=!(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded??true);
                 });
               },
               child:Row(
@@ -559,7 +559,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                               borderRadius: BorderRadius.all(Radius.circular(50)),
                               color: Colors.white,
                             ),
-                            child: Image.asset((context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded??false)?"assets/images/dropdown_up.png":'assets/images/dropdown_arrow_down.png',
+                            child: Image.asset((context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded??true)?"assets/images/dropdown_up.png":'assets/images/dropdown_arrow_down.png',
                               width: 15.w,
                               height:15.w ,
                             ),
@@ -574,7 +574,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
             ),
             SizedBox(height: 8.h,),
             Visibility(
-              visible: context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded??false,
+              visible: context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded??true,
               child: Column(children: List.generate((context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].offers??[]).length, (offerIndex){
                 return Container(
                   padding: EdgeInsets.symmetric(vertical: 8.h,horizontal: 10.w),
