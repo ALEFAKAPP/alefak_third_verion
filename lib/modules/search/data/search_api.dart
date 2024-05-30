@@ -43,9 +43,19 @@ class SearchApi{
     }
   }
 
-  Future<MyResponse<List<ClinicModel>>> getAllClinics() async {
+  Future<MyResponse<List<ClinicModel>>> getAllClinics({List<int>? citiesIds}) async {
+    Map<String,dynamic>body={
+      "category_id":"1"
+    };
+    if((citiesIds??[]).isNotEmpty){
+      for(int i=0;i<citiesIds!.length;i++){
+        body["state_id[$i]"]=citiesIds[i];
+      }
+    }
+    FormData formData =  FormData.fromMap(body);
+
     final url = "${Apis.GET_ALL_CLINICS}";
-    final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_GET, url);
+    final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_POST, url,body:formData);
     if (response != null && response.statusCode == 200) {
       return MyResponse<List<ClinicModel>>.fromJson(
           json.decode(jsonEncode(response.data)));

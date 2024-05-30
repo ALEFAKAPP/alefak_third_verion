@@ -317,7 +317,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       value=model.description;
     }
 
-    return model.description;
+    return value;
   }
   String days(SubscriptionPlanModel model){
     String value="";
@@ -332,7 +332,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     }else{
       value=model.days;
     }
-    return model.days;
+    return value;
   }
 
 }

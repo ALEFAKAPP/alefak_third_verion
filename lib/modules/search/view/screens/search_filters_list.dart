@@ -70,10 +70,8 @@ class _SearchFiltersListScreenState extends State<SearchFiltersListScreen> {
                               data.allSelectedFilters.removeWhere((element) => element.id==itemModel.id);
 
                           }
-
                         }
-
-                        data.notifyListeners();
+                        data.getAllClinics();
 
                       },),
                     );

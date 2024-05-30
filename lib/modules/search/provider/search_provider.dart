@@ -41,8 +41,14 @@ class SearchProvider with ChangeNotifier{
     notifyListeners();
   }
   getAllClinics()async{
+    List<int>citiesIdes=[];
+    for(int i=0;i<(allSelectedFilters??[]).length;i++){
+      if(allSelectedFilters[i].type==FiltersTypes.CITY){
+        citiesIdes.add(allSelectedFilters[i].id);
+      }
+    }
     allClinics.clear();
-    final response=await SearchApi().getAllClinics();
+    final response=await SearchApi().getAllClinics(citiesIds: citiesIdes);
     List<ClinicModel> clinics=response.data;
     allClinics.addAll(clinics);
     notifyListeners();
