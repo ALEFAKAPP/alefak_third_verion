@@ -77,7 +77,7 @@ class _NewSearchScreenState extends State<NewSearchScreen> {
           Consumer<SearchProvider>(
             builder: (context,data,_) {
               return Visibility(
-                visible: context.read<SearchProvider>().allSelectedFilters.isNotEmpty,
+                visible: false/*context.read<SearchProvider>().allSelectedFilters.isNotEmpty*/,
                 child: InkWell(
                   onTap: (){
                     context.read<SearchProvider>().onShowAll();

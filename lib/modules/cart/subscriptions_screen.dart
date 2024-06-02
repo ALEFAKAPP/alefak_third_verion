@@ -1,5 +1,7 @@
 import 'package:alefakaltawinea_animals_app/modules/cart/model/subscriptionn_plan_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/cart/provider/subscription_provider.dart';
+import 'package:alefakaltawinea_animals_app/shared/components/dialog.dart';
+import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/edite_card_popup.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/laoding_view.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
@@ -243,7 +245,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         builder: (context,data,_) {
           return GestureDetector(
             onTap: ()async{
-              await data.onSubscribe();
+              if(Constants.currentUser==null){
+                msgreguser(context);
+              }else{
+                await data.onSubscribe();
+              }
             },
             child: Container(
             margin: EdgeInsets.symmetric(horizontal: 25.w),
@@ -314,7 +320,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     if(model.days=="365"){
       value=tr("year");
     }else{
-      value=model.description;
+      value=model.name;
     }
 
     return value;
@@ -330,7 +336,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     if(model.days=="365"){
       value="1";
     }else{
-      value=model.days;
+      value=model.description;
     }
     return value;
   }

@@ -13,8 +13,8 @@ import '../../utils/my_utils/myUtils.dart';
 void msgreguser(BuildContext context){
   showDialog(context: context, builder: (BuildContext context) {
     return DefaultDialogDelete(
-      title: "يجب التسجل في التطبيق",
-      txtBtn1: tr("intro_register_btn"),
+      title: "يجب التسجيل في التطبيق",
+      txtBtn1: tr("register"),
       onTap: (){
         MyUtils.navigate(context, LoginScreen());
       },

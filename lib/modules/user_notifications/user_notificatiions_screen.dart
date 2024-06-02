@@ -3,10 +3,12 @@ import 'package:alefakaltawinea_animals_app/modules/notifications/provider/notif
 import 'package:alefakaltawinea_animals_app/modules/user_notifications/user_notifications_provider.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
+import 'package:alefakaltawinea_animals_app/utils/my_widgets/edite_card_popup.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/laoding_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/Material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +42,7 @@ class _UserNotificationsScreenState extends State<UserNotificationsScreen> {
               return data.isLoading?LoadingProgress():data.notifications.isEmpty?
               _noData():
               ListView.builder(
+                padding: EdgeInsets.zero,
                   itemCount: data.notifications.length,
                   itemBuilder: (_,index){
                 return _item(data.notifications[index]);
@@ -60,14 +63,31 @@ class _UserNotificationsScreenState extends State<UserNotificationsScreen> {
   Widget _item(UserNotificationModel model){
     return Container(
       width:  double.infinity,
+      padding: EdgeInsets.all(10.w),
+      margin: EdgeInsets.all(10.w),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          boxShadow:[BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              offset:Offset(1,1),
+              blurRadius:1,
+              spreadRadius: 1
+          )]
+      ),
       child: Row(children: [
-        Image.asset(""),
+        Image.asset("assets/images/ic_notifications_blue.png",width: 20.w,height: 30.w,),
         SizedBox(width:20.w,),
-        Column(children: [
-          Text(model.title),
-          SizedBox(height:10.w,),
-          Text(model.message),
-        ],)
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+            Text(model.title.isNotEmpty?model.title:tr("notification"),style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w800),),
+            SizedBox(height:10.w,),
+            Text(model.message,style: TextStyle(color: Colors.grey,fontSize: 12.sp,fontWeight: FontWeight.w500),),
+          ],),
+        )
       ],),
     );
   }
@@ -86,7 +106,7 @@ class _UserNotificationsScreenState extends State<UserNotificationsScreen> {
             ),
           ),
           SizedBox(width: 20.w,),
-          Expanded(child: Text(tr("notification"),style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w700),),),
+          Expanded(child: Text(tr("notification_title"),style: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w700),),),
         ],),
     );
 

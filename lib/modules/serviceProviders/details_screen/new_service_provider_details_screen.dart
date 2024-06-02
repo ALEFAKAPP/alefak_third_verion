@@ -585,7 +585,9 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                   ),
                   child: GestureDetector(
                     onTap: (){
-                      Get.to(NewOfferDetailsScreen(serviceProvider: context.read<ServiceProviderDetailsProvider>().serviceProviderData, offer: (context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].offers??[])[offerIndex],));
+                      Get.to(NewOfferDetailsScreen(
+                        category:context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].name ,
+                        serviceProvider: context.read<ServiceProviderDetailsProvider>().serviceProviderData, offer: (context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].offers??[])[offerIndex],));
                     },
                     child: Row(
                       crossAxisAlignment:  CrossAxisAlignment.start,

@@ -5,6 +5,7 @@ import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/provider/sevice_providers_provicer_model.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseDimentions.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/baseTextStyle.dart';
+import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myColors.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/resources.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_widgets/laoding_view.dart';
@@ -96,7 +97,7 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen>  
         }),):Center(child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(tr("no_offers"),style: S.h3(color:Colors.white,))
+        Text(tr(Constants.currentUser==null?"no_providers":"no_providersـwith_city"),style: S.h3(color:Colors.white,))
       ],),);
   }
   void _scrollListener() {
@@ -129,16 +130,16 @@ class _ServiceProviderListScreenState extends State<ServiceProviderListScreen>  
               SizedBox(width:10.w),
               Text(widget.title,style: TextStyle(color: C.BASE_BLUE,fontSize: 17.sp,fontWeight: FontWeight.w800),),
             Expanded(child: SizedBox()) ,
-              SvgPicture.asset('assets/images/distance_arrange_ic.svg',width: 15.w,height: 15.w,color:context.read<ServiceProvidersProviderModel>().isDistanceFilterActive? C.BASE_BLUE:null),
-              SizedBox(width: 5.w,),
-              InkWell(
-                onTap: (){
-                  context.read<ServiceProvidersProviderModel>().isDistanceFilterActive=
-                      !context.read<ServiceProvidersProviderModel>().isDistanceFilterActive;
-                  context.read<ServiceProvidersProviderModel>().isDistanceActive=context.read<ServiceProvidersProviderModel>().isDistanceFilterActive;
-                  serviceProvidersProviderModel!.getServiceProvidersList(widget.categoryId, _currentLoadedPage);
-                },
-                  child: Text(tr("distance_filter"),style:TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w700,color:context.read<ServiceProvidersProviderModel>().isDistanceFilterActive? C.BASE_BLUE:null),)),
+              //SvgPicture.asset('assets/images/distance_arrange_ic.svg',width: 15.w,height: 15.w,color:context.read<ServiceProvidersProviderModel>().isDistanceFilterActive? C.BASE_BLUE:null),
+              //SizedBox(width: 5.w,),
+              // InkWell(
+              //   onTap: (){
+              //     context.read<ServiceProvidersProviderModel>().isDistanceFilterActive=
+              //         !context.read<ServiceProvidersProviderModel>().isDistanceFilterActive;
+              //     context.read<ServiceProvidersProviderModel>().isDistanceActive=context.read<ServiceProvidersProviderModel>().isDistanceFilterActive;
+              //     serviceProvidersProviderModel!.getServiceProvidersList(widget.categoryId, _currentLoadedPage);
+              //   },
+              //     child: Text(tr("distance_filter"),style:TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w700,color:context.read<ServiceProvidersProviderModel>().isDistanceFilterActive? C.BASE_BLUE:null),)),
               IconButton(onPressed: () {
                 Navigator.of(ctx).pop();
               }, icon: Image.asset(Res.IOS_BACK,height: 19.h,width: 19.h,fit: BoxFit.cover,),),

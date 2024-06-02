@@ -19,7 +19,8 @@ import 'elements/use_offer_bottom_sheet.dart';
 class NewOfferDetailsScreen extends StatefulWidget {
   final Data serviceProvider;
   final OfferModel offer;
-  const NewOfferDetailsScreen({required this.offer,required this.serviceProvider,Key? key}) : super(key: key);
+  final String category;
+  const NewOfferDetailsScreen({required this.category,required this.offer,required this.serviceProvider,Key? key}) : super(key: key);
 
   @override
   State<NewOfferDetailsScreen> createState() => _NewOfferDetailsScreenState();
@@ -75,7 +76,7 @@ class _NewOfferDetailsScreenState extends State<NewOfferDetailsScreen> {
                 ),
                 width: double.infinity,
                 color: C.BASE_BLUE,
-                child: Text(tr("examination"),textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 18.sp,fontWeight: FontWeight.w800),),
+                child: Text(widget.category,textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 18.sp,fontWeight: FontWeight.w800),),
               ),
               Row(
                 mainAxisAlignment:MainAxisAlignment.start,

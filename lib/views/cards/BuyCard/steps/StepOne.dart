@@ -34,6 +34,9 @@ class _BuyCardState extends State<BuyCard> {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      if(Constants.currentUser==null){
+        MyUtils.navigateReplaceCurrent(context, SubscriptionScreen());
+      }
       if((Constants.currentUser!.valid_subscriptions??0)<1){
         MyUtils.navigateReplaceCurrent(context, SubscriptionScreen());
       }

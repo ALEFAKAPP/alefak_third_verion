@@ -8,6 +8,7 @@ import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_scr
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/getServiceProvidersApi.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/apis.dart';
+import 'package:alefakaltawinea_animals_app/utils/my_utils/constants.dart';
 import 'package:alefakaltawinea_animals_app/utils/my_utils/myUtils.dart';
 import 'package:flutter/Material.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,7 +34,7 @@ class ServiceProvidersProviderModel with ChangeNotifier {
   int?selectedMarkerColor;
   bool fetchEnd=true;
   CategoriesDataModel? selectedCategory;
-  bool isDistanceFilterActive=false;
+  bool isDistanceFilterActive=Constants.currentUser!=null;
 
 
   /// ..........categories...........

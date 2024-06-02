@@ -34,10 +34,10 @@ class GetServiceProvidersApi{
     if(isOnline??false){
       body["is_online"]="1";
     }
-    if((isDistanceActive??false)&&Constants.currentUser!=null){
+    if(Constants.currentUser!=null){
       body["is_nearest"]="1";
-      body["latitude"]=Constants.currentUser!.latitude??"";
-      body["longitude"]=Constants.currentUser!.longitude??'';
+      /*body["latitude"]=Constants.currentUser!.latitude??"";
+      body["longitude"]=Constants.currentUser!.longitude??'';*/
 
     }
 

@@ -351,6 +351,11 @@
  "location": "الموقع",
  "price": "السعر",
  "there_is_no_notificatiion": "لا يوجد لديك اشعازات حاليا",
- "no_search": "لا يوجد نتائج متاحة"
+ "no_search": "لا يوجد نتائج متاحة",
+ "notification": "إشعار",
+ "notification_title": "الإشعارات",
+ "no_providersـwith_city": "عفوا قريباٍ سيتم تغطية مدينتك ",
+ "no_providers": "عفوا لا يوجد مزودي خدمة حاليا"
+
 
 }
