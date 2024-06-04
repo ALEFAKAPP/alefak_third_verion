@@ -18,6 +18,8 @@ class OfferModel {
   String?description_en;
   String?is_first;
   String?thumb;
+  String?first_classification;
+  List<String>?classification;
 
   OfferModel(
       {this.id,
@@ -38,7 +40,9 @@ class OfferModel {
         this.description_ar,
         this.description_en,
         this.is_first,
-        this.thumb
+        this.thumb,
+         this.classification,
+        this.first_classification
       });
 
   OfferModel.fromJson(Map<String, dynamic> json) {
@@ -66,6 +70,15 @@ class OfferModel {
     description_en=json["description_en"];
     is_first=json["is_first"]??"";
     thumb=json["thumb"]??"";
+    first_classification=json["first_classification"];
+    if (json['classification'] != null) {
+      classification = <String>[];
+      json['classification'].forEach((v) {
+        classification!.add(v);
+      });
+    }
+
+
   }
 
   Map<String, dynamic> toJson() {

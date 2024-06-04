@@ -316,6 +316,7 @@ class Classification {
   final String description;
   final String color;
   final List<OfferModel> offers;
+  final String photo;
   bool?isExpanded;
 
   Classification({
@@ -324,6 +325,7 @@ class Classification {
     required this.description,
     required this.color,
     required this.offers,
+    required this.photo,
     this.isExpanded
   });
 
@@ -333,6 +335,7 @@ class Classification {
     description: json["description"],
     color: json["color"],
     offers: List<OfferModel>.from(json["offers"].map((x) => OfferModel.fromJson(x))),
+      photo:json["photo"]
   );
 
   Map<String, dynamic> toJson() => {

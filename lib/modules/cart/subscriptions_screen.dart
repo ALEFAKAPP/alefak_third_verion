@@ -191,7 +191,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                 height: 20.h,
                               ),
                               Text(
-                                data.plans[index].newPrice.toString(),
+                                (data.plans[index].price-data.plans[index].discountValue).toString(),
                                 style: TextStyle(color: textColor, fontWeight: FontWeight.w800, fontSize: 35.sp, height:.4),
                               ),
                               SizedBox(
@@ -268,7 +268,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   Expanded(child: Row(
                     mainAxisAlignment:MainAxisAlignment.end,
                     children: [
-                      Text((data.plans[data.selectedPlanIndex].newPrice).toString(),style:TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w800)),
+                      Text((data.plans[data.selectedPlanIndex].price-data.plans[data.selectedPlanIndex].discountValue).toString(),style:TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w800)),
                       SizedBox(width: 3.w,),
                       Text(tr("SAR"),style:TextStyle(fontSize: 12.sp,fontWeight: FontWeight.w800))],
                   ))
@@ -300,17 +300,17 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   String discount(SubscriptionPlanModel model){
     String value='';
-    if(model.type=='value'){
-      double percent=((model.price-model.discountValue)/(model.price))*100;
+    if(model.discountType.contains('value')){
+      double percent=((model.discountValue)/(model.price))*100;
       value=percent.toInt().toString();
     }else{
-      double percent=(model.discountValue/100)*model.price;
+      double percent=model.discountValue.toDouble();
       value=percent.toInt().toString();
     }
     return value+"%";
   }
   String discription(SubscriptionPlanModel model){
-    String value="";
+    /*String value="";
     if(model.days=="7"){
       value=tr("week");
     }else
@@ -321,12 +321,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       value=tr("year");
     }else{
       value=model.name;
-    }
+    }*/
 
-    return value;
+    return model.display;
   }
   String days(SubscriptionPlanModel model){
-    String value="";
+   /* String value="";
     if(model.days=="7"){
       value="1";
     }else
@@ -337,8 +337,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       value="1";
     }else{
       value=model.description;
-    }
-    return value;
+    }*/
+    return model.count.toString();
+  }
+  String discountValue(SubscriptionPlanModel model){
+    return model.discountType=="value"? ((model.discountValue/model.price)*100).toString():model.discountValue.toString();
   }
 
 }

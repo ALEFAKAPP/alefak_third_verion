@@ -533,7 +533,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                          image: NetworkImage(context.read<ServiceProviderDetailsProvider>().serviceProviderData.bannerPhoto??'')),
+                          image: NetworkImage(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].photo??'')),
                         borderRadius: BorderRadius.only(topRight:Radius.circular(10),bottomRight:Radius.circular(15)),
                         color: Colors.white,
                     ),

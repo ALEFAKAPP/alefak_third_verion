@@ -36,8 +36,8 @@ class GetServiceProvidersApi{
     }
     if(Constants.currentUser!=null){
       body["is_nearest"]="1";
-      /*body["latitude"]=Constants.currentUser!.latitude??"";
-      body["longitude"]=Constants.currentUser!.longitude??'';*/
+      body["latitude"]=Constants.currentUser!.latitude??"";
+      body["longitude"]=Constants.currentUser!.longitude??'';
 
     }
 

@@ -94,7 +94,7 @@ class _SearchResultItemState extends State<SearchResultItem> with AutomaticKeepA
                   ),
                   child: GestureDetector(
                     onTap: (){
-                      Get.to(NewOfferDetailsScreen(category: tr("examination"),serviceProvider: widget.model, offer:widget.model.offers![index] ,));
+                      Get.to(NewOfferDetailsScreen(category: (widget.model.offers![index].classification??[]).isEmpty?"":widget.model.offers![index].classification!.first ??'',serviceProvider: widget.model, offer:widget.model.offers![index] ,));
                     },
                     child: Row(
                       crossAxisAlignment:  CrossAxisAlignment.start,

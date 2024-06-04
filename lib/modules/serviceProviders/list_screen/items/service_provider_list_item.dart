@@ -67,7 +67,7 @@ class _ServiceProviderListItemState extends State<ServiceProviderListItem> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(child: Text(
-                  widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].name!
+                  widget.serviceProvidersProviderModel!.serviceProviderModel!.data![widget.index].name??''
                   ,style: TextStyle(fontWeight: FontWeight.w800,fontSize: 13.5.sp)),),
                 InkWell(
                   onTap: (){

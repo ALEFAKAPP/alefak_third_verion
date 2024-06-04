@@ -14,12 +14,14 @@ class SubscriptionPlanModel {
   final String type;
   final String days;
   final String isRenewal;
-  final int price;
+  final num price;
   final String discountType;
-  final int discountValue;
+  final num discountValue;
   final String name;
-  final int newPrice;
+  final num newPrice;
   final List<dynamic> details;
+  final String display;
+  final String count;
 
   SubscriptionPlanModel({
     required this.id,
@@ -33,20 +35,24 @@ class SubscriptionPlanModel {
     required this.name,
     required this.newPrice,
     required this.details,
+    required this.display,
+    required this.count
   });
 
   factory SubscriptionPlanModel.fromJson(Map<String, dynamic> json) => SubscriptionPlanModel(
-    id: json["id"],
-    description: json["description"],
-    type: json["type"],
-    days: json["days"],
-    isRenewal: json["is_renewal"],
+    id: json["id"]??0,
+    description: json["description"]??"",
+    type: json["type"]??"",
+    days: json["days"]??"",
+    isRenewal: json["is_renewal"]??false,
     price: json["price"],
-    discountType: json["discount_type"],
-    discountValue: json["discount_value"],
-    name: json["name"],
-    newPrice: json["new_price"],
-    details: List<dynamic>.from(json["details"].map((x) => x)),
+    discountType: json["discount_type"]??"",
+    discountValue: json["discount_value"]??0,
+    name: json["name"]??"",
+    newPrice: json["new_price"]??0,
+    details:json["details"]==null?[]: List<dynamic>.from(json["details"].map((x) => x)),
+      display:json["display"]??'',
+      count:json["count"]
   );
 
   Map<String, dynamic> toJson() => {
