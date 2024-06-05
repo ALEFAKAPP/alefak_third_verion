@@ -1,6 +1,8 @@
 import 'package:alefakaltawinea_animals_app/core/servies/firebase/analytics_helper.dart';
 import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/offers/offers_list/service_provider_offers_list_screen.dart';
+import 'package:alefakaltawinea_animals_app/modules/search/model/animal_type_model.dart';
+import 'package:alefakaltawinea_animals_app/modules/search/provider/search_provider.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/elements/offer_widget.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/new_offer_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/service_provider_details_provider.dart';
@@ -62,6 +64,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
       "phone":"${widget.serviceProviderData.phone}"
     });
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      context.read<SearchProvider>().getServiceClassifications();
       context.read<ServiceProviderDetailsProvider>().getShop(widget.serviceProviderData.id??0);
 
       if(Constants.currentUser!=null){
@@ -159,6 +162,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                                   ))
                                 ],),
                             ),
+                            classificationsDropdown(),
                             SizedBox(height: 20.h,),
                             Padding(
                               padding:  EdgeInsets.symmetric(horizontal: D.default_10),
@@ -191,7 +195,9 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                             SizedBox(height: 13.h,),
                             Expanded(child: PageView(
                               children:[
-                                data.serviceProviderData.classifications!.isNotEmpty?
+                                (selectedClassificationIndex>0?
+                                (data.serviceProviderData.classifications??[]).where((element) => element.name==context.read<SearchProvider>().serviceClassifications[selectedClassificationIndex-1].name).isNotEmpty :
+                                data.serviceProviderData.classifications!.isNotEmpty)?
                                 ListView.separated(
                                     padding: EdgeInsets.zero,
                                     controller:provider.offersController ,
@@ -200,7 +206,10 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                                     },
                                     separatorBuilder: (ctx,index){
                                       return SizedBox(height: 5.h,);
-                                    }, itemCount:(data.serviceProviderData.classifications??[]).length):Center(child: Text(tr("no_offers")),),
+                                    },
+                                    itemCount:selectedClassificationIndex==0?(data.serviceProviderData.classifications??[]).length:
+                                    (data.serviceProviderData.classifications??[]).where((element) => element.name.contains(context.read<SearchProvider>().serviceClassifications[selectedClassificationIndex-1].name)).length
+                                ):Center(child: Text(tr("no_offers")),),
                                 isOnline?SizedBox():
                                 (data.serviceProviderData.addresses??[]).isNotEmpty?
                                 ListView.separated(
@@ -510,6 +519,8 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
     }
   }
   Widget classificationItem(int index){
+    List<Classification>items=selectedClassificationIndex==0?(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications??[]).toList():
+    (context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications??[]).where((element) => element.name.contains(context.read<SearchProvider>().serviceClassifications[selectedClassificationIndex-1].name)).toList();
     return Column(children: [
       SizedBox(height: 2.h,),
       Padding(
@@ -520,7 +531,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
             GestureDetector(
               onTap: (){
                 setState(() {
-                  context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded=!(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded??true);
+                  items[index].isExpanded=!(items[index].isExpanded??true);
                 });
               },
               child:Row(
@@ -533,7 +544,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                          image: NetworkImage(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].photo??'')),
+                          image: NetworkImage(items[index].photo??'')),
                         borderRadius: BorderRadius.only(topRight:Radius.circular(10),bottomRight:Radius.circular(15)),
                         color: Colors.white,
                     ),
@@ -549,7 +560,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                       child: Row(
                         children: [
                           Expanded(
-                            child:Text(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].name??'',textAlign:
+                            child:Text(items[index].name??'',textAlign:
                               TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 18.sp,fontWeight: FontWeight.w800),),
 
                           ),
@@ -559,7 +570,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                               borderRadius: BorderRadius.all(Radius.circular(50)),
                               color: Colors.white,
                             ),
-                            child: Image.asset((context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded??true)?"assets/images/dropdown_up.png":'assets/images/dropdown_arrow_down.png',
+                            child: Image.asset((items[index].isExpanded??true)?"assets/images/dropdown_up.png":'assets/images/dropdown_arrow_down.png',
                               width: 15.w,
                               height:15.w ,
                             ),
@@ -574,8 +585,8 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
             ),
             SizedBox(height: 8.h,),
             Visibility(
-              visible: context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].isExpanded??true,
-              child: Column(children: List.generate((context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].offers??[]).length, (offerIndex){
+              visible: items[index].isExpanded??true,
+              child: Column(children: List.generate((items[index].offers??[]).length, (offerIndex){
                 return Container(
                   padding: EdgeInsets.symmetric(vertical: 8.h,horizontal: 10.w),
                   margin: EdgeInsets.symmetric(vertical: 5.h,),
@@ -586,8 +597,8 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                   child: GestureDetector(
                     onTap: (){
                       Get.to(NewOfferDetailsScreen(
-                        category:context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].name ,
-                        serviceProvider: context.read<ServiceProviderDetailsProvider>().serviceProviderData, offer: (context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].offers??[])[offerIndex],));
+                        category:items[index].name ,
+                        serviceProvider: context.read<ServiceProviderDetailsProvider>().serviceProviderData, offer: (items[index].offers??[])[offerIndex],));
                     },
                     child: Row(
                       crossAxisAlignment:  CrossAxisAlignment.start,
@@ -603,11 +614,11 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                         Expanded(child: Column(
                           crossAxisAlignment:CrossAxisAlignment.start,
                           children: [
-                            Text(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].offers![offerIndex].title??'',style: TextStyle(fontWeight:FontWeight.w800,fontSize: 14.sp),),
+                            Text(items[index].offers![offerIndex].title??'',style: TextStyle(fontWeight:FontWeight.w800,fontSize: 14.sp),),
                             SizedBox(height: 3.h,),
                             Row(
                               children: [
-                                Expanded(child: Text(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications![index].offers![offerIndex].description_ar??'',style: TextStyle(fontWeight:FontWeight.w500,fontSize: 12.sp),)),
+                                Expanded(child: Text(items[index].offers![offerIndex].description_ar??'',style: TextStyle(fontWeight:FontWeight.w500,fontSize: 12.sp),)),
                                 SizedBox(width:3.w),
                                 Container(
                                   padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 8.w),
@@ -640,5 +651,84 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
       SizedBox(height: 2.h,),
     ],);
   }
+  int selectedClassificationIndex=0;
+    Widget classificationsDropdown(){
+    return Consumer<SearchProvider>(
+      builder: (context,data,_) {
+        List<String>calssifications=[];
+        calssifications.add(tr("all"));
+        if(data.serviceClassifications.isNotEmpty){
+          for(var item in data.serviceClassifications){
+            calssifications.add(item.name);
+          }
+        }
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            InkWell(
+              onTap:(){
+                setState(() {
+                  selectedClassificationIndex=0;
+                });
+              },
+                child: Icon(Icons.close)),
+            Container(
+              height: 20.h,
+              width: 90.w,
+              margin: EdgeInsets.symmetric(horizontal: 20.w,),
+              padding: EdgeInsets.symmetric(horizontal: 5.w),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: DropdownButton<String>(
+                  underline: Container(),
+                  menuMaxHeight: 150.h,
+                  icon:Image.asset("assets/images/filter_logo.png"),
+                  borderRadius: BorderRadius.all(Radius.circular(D.default_10)),
+                  style: TextStyle(color: Colors.black),
+                  hint: Container(
+                    child: Text(
+                      calssifications[selectedClassificationIndex],
+                      style: S.h2(color: Colors.black),
+                    ),
+                  ),
+                  isExpanded: true,
+                  items: calssifications.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Container(
+                        child: Row(
+                          children: [
+
+                            Expanded(
+                              child: Text(
+                                value,
+                                style: TextStyle(fontWeight: FontWeight.w800,fontSize: 12.sp),
+                              ),
+                            ),
+                            SizedBox(width:4.w,),
+                            Icon(value==calssifications[selectedClassificationIndex]?
+                            Icons.radio_button_checked :
+                            Icons.radio_button_off_outlined),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedClassificationIndex=calssifications.indexOf(value??calssifications[0]) ;
+                    });
+                  },
+                ),
+              ),
+            ),
+
+          ],
+        );
+      }
+    );
+    }
 
 }
