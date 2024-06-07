@@ -63,27 +63,47 @@ class SubscriptionData {
 class DataClass {
   final int invoiceId;
   final String invoiceUrl;
-  final dynamic customerReference;
-  final String userDefinedField;
+  final String customerReference;
 
   DataClass({
     required this.invoiceId,
     required this.invoiceUrl,
     required this.customerReference,
-    required this.userDefinedField,
   });
 
   factory DataClass.fromJson(Map<String, dynamic> json) => DataClass(
-    invoiceId: json["InvoiceId"],
-    invoiceUrl: json["InvoiceURL"],
-    customerReference: json["CustomerReference"],
-    userDefinedField: json["UserDefinedField"],
+    invoiceId: json["InvoiceId"]??-1,
+    invoiceUrl: json["InvoiceURL"]??"",
+    customerReference: json["CustomerReference"]??'',
   );
 
   Map<String, dynamic> toJson() => {
     "InvoiceId": invoiceId,
     "InvoiceURL": invoiceUrl,
     "CustomerReference": customerReference,
-    "UserDefinedField": userDefinedField,
+  };
+}
+
+class UserDefinedField {
+  final int planId;
+  final int userId;
+  final int discount;
+
+  UserDefinedField({
+    required this.planId,
+    required this.userId,
+    required this.discount,
+  });
+
+  factory UserDefinedField.fromJson(Map<String, dynamic> json) => UserDefinedField(
+    planId: json["plan_id"],
+    userId: json["user_id"],
+    discount: json["discount"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "plan_id": planId,
+    "user_id": userId,
+    "discount": discount,
   };
 }

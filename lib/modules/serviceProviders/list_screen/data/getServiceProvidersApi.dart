@@ -72,7 +72,8 @@ class GetServiceProvidersApi{
   }
   Future<MyResponse<Data>> getServiceProvider(int id) async {
     String url = "${Apis.GET_SERVICE_PROVIDER}/$id}";
-    final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_GET, url);
+
+    final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_GET, url );
     if (response != null && response.statusCode == 200) {
       return MyResponse<Data>.fromJson(
           json.decode(jsonEncode(response.data)));
@@ -90,9 +91,15 @@ class GetServiceProvidersApi{
       return MyResponse<HomeListOfOffersModel>.init(Apis.CODE_ERROR, "", null);
     }
   }
-  Future<MyResponse<Data>> getShop(int shopId) async {
+  Future<MyResponse<Data>> getShop(int shopId,{int? tageId}) async {
     String url = "${Apis.GET_SHOP}/${shopId}";
-    final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_GET, url);
+    Map<String, dynamic> body={};
+    if(tageId!=null){
+      body["tag_id[0]"]=tageId;
+    }
+    FormData formData =  FormData.fromMap(body);
+
+    final response = await BaseDioUtils.request(BaseDioUtils.REQUEST_POST, url,body: formData);
     if (response != null && response.statusCode == 200) {
       return MyResponse<Data>.fromJson(
           json.decode(jsonEncode(response.data)));

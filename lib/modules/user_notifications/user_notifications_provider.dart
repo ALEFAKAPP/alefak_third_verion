@@ -13,7 +13,7 @@ class UserNotificationsProvider with ChangeNotifier{
     notifications.clear();
     setIsLoading(true);
     final response= await UserNotificationsRepo().getUsernotifications();
-    notifications.addAll(response.data);
+    notifications.addAll(response.data??[]);
     setIsLoading(false);
   }
 

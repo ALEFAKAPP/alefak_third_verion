@@ -64,7 +64,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
       "phone":"${widget.serviceProviderData.phone}"
     });
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
-      context.read<SearchProvider>().getServiceClassifications();
+      context.read<SearchProvider>().getAnimalsTypes();
       context.read<ServiceProviderDetailsProvider>().getShop(widget.serviceProviderData.id??0);
 
       if(Constants.currentUser!=null){
@@ -195,9 +195,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                             SizedBox(height: 13.h,),
                             Expanded(child: PageView(
                               children:[
-                                (selectedClassificationIndex>0?
-                                (data.serviceProviderData.classifications??[]).where((element) => element.name==context.read<SearchProvider>().serviceClassifications[selectedClassificationIndex-1].name).isNotEmpty :
-                                data.serviceProviderData.classifications!.isNotEmpty)?
+                                data.serviceProviderData.classifications!.isNotEmpty?
                                 ListView.separated(
                                     padding: EdgeInsets.zero,
                                     controller:provider.offersController ,
@@ -207,8 +205,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                                     separatorBuilder: (ctx,index){
                                       return SizedBox(height: 5.h,);
                                     },
-                                    itemCount:selectedClassificationIndex==0?(data.serviceProviderData.classifications??[]).length:
-                                    (data.serviceProviderData.classifications??[]).where((element) => element.name.contains(context.read<SearchProvider>().serviceClassifications[selectedClassificationIndex-1].name)).length
+                                    itemCount:(data.serviceProviderData.classifications??[]).length
                                 ):Center(child: Text(tr("no_offers")),),
                                 isOnline?SizedBox():
                                 (data.serviceProviderData.addresses??[]).isNotEmpty?
@@ -519,8 +516,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
     }
   }
   Widget classificationItem(int index){
-    List<Classification>items=selectedClassificationIndex==0?(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications??[]).toList():
-    (context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications??[]).where((element) => element.name.contains(context.read<SearchProvider>().serviceClassifications[selectedClassificationIndex-1].name)).toList();
+    List<Classification>items=(context.read<ServiceProviderDetailsProvider>().serviceProviderData.classifications??[]);
     return Column(children: [
       SizedBox(height: 2.h,),
       Padding(
@@ -651,15 +647,15 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
       SizedBox(height: 2.h,),
     ],);
   }
-  int selectedClassificationIndex=0;
+  int selectedAnimalIndex=0;
     Widget classificationsDropdown(){
     return Consumer<SearchProvider>(
       builder: (context,data,_) {
-        List<String>calssifications=[];
-        calssifications.add(tr("all"));
-        if(data.serviceClassifications.isNotEmpty){
-          for(var item in data.serviceClassifications){
-            calssifications.add(item.name);
+        List<String>animals=[];
+        animals.add(tr("all"));
+        if(data.animalsTypes.isNotEmpty){
+          for(var item in data.animalsTypes){
+            animals.add(item.name);
           }
         }
         return Row(
@@ -668,7 +664,9 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
             InkWell(
               onTap:(){
                 setState(() {
-                  selectedClassificationIndex=0;
+                  selectedAnimalIndex=0;
+                  context.read<ServiceProviderDetailsProvider>().getShop(widget.serviceProviderData.id??0,tag_id:selectedAnimalIndex==0?null: data.animalsTypes[selectedAnimalIndex-1].id);
+
                 });
               },
                 child: Icon(Icons.close)),
@@ -689,12 +687,12 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                   style: TextStyle(color: Colors.black),
                   hint: Container(
                     child: Text(
-                      calssifications[selectedClassificationIndex],
+                      animals[selectedAnimalIndex],
                       style: S.h2(color: Colors.black),
                     ),
                   ),
                   isExpanded: true,
-                  items: calssifications.map((String value) {
+                  items: animals.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Container(
@@ -708,7 +706,7 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                               ),
                             ),
                             SizedBox(width:4.w,),
-                            Icon(value==calssifications[selectedClassificationIndex]?
+                            Icon(value==animals[selectedAnimalIndex]?
                             Icons.radio_button_checked :
                             Icons.radio_button_off_outlined),
                           ],
@@ -718,7 +716,8 @@ class _NewServiceProviderDetailsScreenState extends State<NewServiceProviderDeta
                   }).toList(),
                   onChanged: (value) {
                     setState(() {
-                      selectedClassificationIndex=calssifications.indexOf(value??calssifications[0]) ;
+                      selectedAnimalIndex=animals.indexOf(value??animals[0]) ;
+                      context.read<ServiceProviderDetailsProvider>().getShop(widget.serviceProviderData.id??0,tag_id:selectedAnimalIndex==0?null: data.animalsTypes[selectedAnimalIndex-1].id);
                     });
                   },
                 ),

@@ -47,9 +47,9 @@ void scrollToIndex() {
 
    });
 }
-getShop(int shopId)async{
+getShop(int shopId,{int?  tag_id})async{
    setIsLoading(true);
-   final respons=await GetServiceProvidersApi().getShop(shopId);
+   final respons=await GetServiceProvidersApi().getShop(shopId,tageId:tag_id);
    serviceProviderData=respons.data;
    setIsLoading(false);
 

@@ -56,7 +56,7 @@ class _UserNotificationsScreenState extends State<UserNotificationsScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
 
-        Text(tr('there_is_no_notificatiion'),style: S.h4(color: Colors.grey),)
+        Text(tr('there_is_no_notificatiion'),style: S.h2(color: Colors.grey),)
 
       ],),);
   }

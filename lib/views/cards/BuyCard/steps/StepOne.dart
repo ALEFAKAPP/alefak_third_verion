@@ -87,56 +87,6 @@ class _BuyCardState extends State<BuyCard> {
                     child: Column(
                       children: [
                         text(tr('desc_futer_card'),fontSize: 15.0.sp),
-                        InkWell(
-                            onTap:(){
-                              showBarModalBottomSheet(
-                                context: context,
-                                builder: (context) => SingleChildScrollView(
-                                  controller: ModalScrollController.of(context),
-                                  child: Container(
-                                    height: Get.height * 0.9,
-                                    child: Stack(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(0.0),
-                                          child: CachedNetworkImage(
-                                            imageUrl: urlImage +  Constants.APP_INFO!.futureCard!,
-                                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                                Center(child: SizedBox(width: 50.0,height: 50.0,child: CircularProgressIndicator(value: downloadProgress.progress,strokeWidth: 2,))),
-                                            errorWidget: (context, url, error) => Icon(Icons.error),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: (){
-                                            Get.back();
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Align(
-                                              alignment: Alignment.topLeft,
-                                              child: Container(
-                                                width: 40,
-                                                height: 40,
-                                                padding: const EdgeInsets.all(5.0),
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  color: Colors.black,
-                                                ),
-                                                child: Row(
-                                                  children: [
-                                                    Icon(Icons.arrow_drop_down_circle_outlined,size: 30,color: Colors.white ,),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },child: text(tr('لمعرفة_المزيد_اضغط_هنا'),fontSize: 15.0.sp,textColor: defaultRed)),
                         SizedBox(height: 10,),
                         TypeCard(),
                         SizedBox(height: 15,),
