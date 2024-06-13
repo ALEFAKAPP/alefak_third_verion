@@ -40,7 +40,8 @@ class _NewOfferDetailsScreenState extends State<NewOfferDetailsScreen> {
               Container(
                   width:double.infinity,
                   color: Colors.grey[200],
-                  child:TransitionImage((widget.offer.photo??"").isNotEmpty?(widget.offer.photo??""):widget.serviceProvider.bannerPhoto??'',
+                  child:TransitionImage((widget.offer.photo??"").isNotEmpty?(widget.offer.photo??"").contains("https://alefak.com/uploads/")?(widget.offer.photo??""):"https://alefak.com/uploads/"+(widget.offer.photo??"")
+                      :(widget.serviceProvider.bannerPhoto??'').contains("https://alefak.com/uploads/")?(widget.serviceProvider.bannerPhoto??''):"https://alefak.com/uploads/"+(widget.serviceProvider.bannerPhoto??''),
                   height: 220.h,
                   fit: BoxFit.cover
                     ,)
@@ -98,7 +99,7 @@ class _NewOfferDetailsScreenState extends State<NewOfferDetailsScreen> {
                         )]
                     ),
                     child:TransitionImage(
-                      widget.serviceProvider.photo??'',
+                      (widget.serviceProvider.photo??'').contains("https://alefak.com/uploads/")?(widget.serviceProvider.photo??''):"https://alefak.com/uploads/"+(widget.serviceProvider.photo??''),
                       radius:10,
                       fit: BoxFit.cover,
                       width: double.infinity,

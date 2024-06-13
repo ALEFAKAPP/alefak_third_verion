@@ -124,7 +124,9 @@ class UserProviderModel with ChangeNotifier{
 
       if(user !="null" && user.isNotEmpty &&!user.contains("user_type_id: 6")){
          Constants.currentUser=UserData.fromJson(jsonDecode(user));
-        setCurrentUserData(Constants.currentUser!);
+         bool? subscribStaus=await Constants.prefs!.getBool(Constants.SUBSCRIBE_STATUS_KEY!);
+         Constants.currentUser!.valid_subscriptions=(subscribStaus??false)?1:0;
+         setCurrentUserData(Constants.currentUser!);
         setIsLoading(false);
         await Constants.prefs!.setString(Constants.TOKEN_KEY!,Constants.currentUser!.token??"");
         Apis.TOKEN_VALUE=Constants.currentUser!.token??'';
@@ -136,8 +138,9 @@ class UserProviderModel with ChangeNotifier{
   saveUserToPrefrances(String user)async{
     await Constants.prefs!.setString(Constants.SAVED_USER_KEY!,user);
   }
-  setCurrentUserData(UserData user,){
-  currentUser=user;
+  setCurrentUserData(UserData user,)async{
+    await Constants.prefs!.setBool(Constants.SUBSCRIBE_STATUS_KEY!,(user.valid_subscriptions??0)>0);
+    currentUser=user;
   Constants.currentUser=user;
   Apis.TOKEN_VALUE=user.token!;
   notifyListeners();

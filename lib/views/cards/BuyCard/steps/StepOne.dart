@@ -86,7 +86,7 @@ class _BuyCardState extends State<BuyCard> {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        text(tr('desc_futer_card'),fontSize: 15.0.sp),
+                        text(tr('desc_futer_card'),fontSize: 15.0.sp,textColor: Colors.red),
                         SizedBox(height: 10,),
                         TypeCard(),
                         SizedBox(height: 15,),

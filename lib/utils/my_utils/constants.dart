@@ -18,6 +18,8 @@ class Constants extends Object{
   static int OTP_LENGTH=4;
   //static String? SAVED_PHONE_KEY="SAVED_PHONE";
   static String? SAVED_USER_KEY="SAVED_USER";
+  static String? SUBSCRIBE_STATUS_KEY="SUBSCRIBE_STATUS_KEY";
+
   //static String? SAVED_PASSWORD_KEY="SAVED_PASSWORD";
   static List<RegionsModel> REGIONS=[];
   static List<Get_states> STATES=[];
@@ -36,7 +38,7 @@ class Constants extends Object{
   static double DEVICE_WIDTH=0.0;
   static bool IS_FORCE_UPDATE=false;
   static String TOKEN_KEY="TOKEN_KEY";
-  static double APP_VERSIONs=2.992;
+  static double APP_VERSIONs=2.999;
 
 
 

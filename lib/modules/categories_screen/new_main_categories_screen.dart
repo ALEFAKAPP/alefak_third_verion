@@ -6,6 +6,7 @@ import 'package:alefakaltawinea_animals_app/modules/baseScreen/baseScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/categories_screen/data/home_offers_model.dart';
 import 'package:alefakaltawinea_animals_app/modules/homeTabsScreen/homeTabsScreen.dart';
 import 'package:alefakaltawinea_animals_app/modules/search/view/screens/search_filters_list.dart';
+import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/new_offer_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/details_screen/new_service_provider_details_screen.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/getServiceProvidersApi.dart';
 import 'package:alefakaltawinea_animals_app/modules/serviceProviders/list_screen/data/serviceProvidersModel.dart';
@@ -365,7 +366,8 @@ Widget offersList({required int id,required String title,required List<OfferElem
                 itemBuilder: (ctx,index){
                   return InkWell(
                     onTap: (){
-                      MyUtils.navigate(context, NewServiceProviderDetailsScreen(data[index].offer.shop,offerIndex:data[index].offer.shop.offers!.indexOf(data[index].offer.shop.offers!.where((element) => element.id==data[index].offer.id).first)));
+                      MyUtils.navigate(context, NewOfferDetailsScreen(serviceProvider
+                          :data[index].offer.shop,offer:data[index].offer.shop.offers!.where((element) => element.id==data[index].offer.id).first..photo, category: '',));
                     },
                     child: Container(
                       margin: EdgeInsets.all(D.default_10),
